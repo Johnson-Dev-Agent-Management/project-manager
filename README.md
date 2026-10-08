@@ -55,6 +55,8 @@ ports 5001/5174 and deletes its database and stops its services on exit.
 Playwright's managed Chromium download was denied by network policy; the actual
 browser scenario passed using preinstalled system Chromium. This was browser E2E,
 not an API-only substitute. Development startup, HTML serving, health and proxied
-project listing were also checked. Fresh-task snapshot restoration remains unverified.
+project listing were also checked. The published environment was verified in a fresh cloud task: locked setup,
+all checks and both browser phases passed; services stopped cleanly. The fresh
+task used the published image and caches, rather than a cache-empty bootstrap.
 
 See [cloud setup](docs/cloud-setup.md) for environment controls and remaining steps.
