@@ -1,9 +1,13 @@
 # Private Codex Cloud setup
 
 ## Status
-Bootstrap instructions are prepared. The cloud environment, runtime installation,
-application scaffold, and test results are not yet verified.
-Update this section with evidence when those steps are complete.
+The initial application scaffold is implemented and validated in this cloud machine.
+Locked setup, lint, strict type checking, builds, 3 frontend tests, 4 backend tests,
+and two actual Chromium browser E2E phases passed. See README.md for exact versions
+and commands. The parent verified repository privacy through the GitHub connector
+and reports environment `project-manager-dev`, Only me, this repository only.
+Publication and fresh-task restoration are not verified in this execution context.
+The parent is handling environment settings, publication and draft PR #1 metadata.
 
 ## Environment configuration
 - Repository: Joshbomb75/project-manager only.
@@ -28,7 +32,16 @@ Start with restricted internet access and package-manager destinations.
 Permit only the registries, official runtime download hosts, and GitHub endpoints that
 the actual setup requires. Review redirects before expanding the allowlist.
 Do not select unrestricted internet or local/private network access to fix a failed download.
-Record the tested domain allowlist here after setup.
+The current runtime uses the platform's broad Package managers preset, with no
+custom destinations. Successful setup used `registry.npmjs.org`, `dot.net`,
+`builds.dotnet.microsoft.com` and `api.nuget.org`, plus the platform HTTPS GitHub
+proxy. `ci.dot.net` was denied during automatic channel lookup; the explicit SDK
+version avoids it. `cdn.playwright.dev` was denied; system Chromium avoids any
+browser download. `api.github.com` was denied to this machine; the parent handles
+GitHub metadata through its connector. No extra browser domains are needed.
+The available draft tool cannot remove read-only preset rules: the parent must
+review the preset in environment settings to enforce a minimal domain policy.
+Do not describe the existing preset as a tested minimal allowlist.
 
 Use cloud-supported permissions for normal development operations. If automatic review
 is offered, it can reduce interruptions, but it is not an isolation guarantee and
@@ -82,3 +95,31 @@ refresh/republish the reusable environment as needed and verify its starting bra
 Do not treat cloud VM storage as the permanent copy: commit important work to GitHub.
 
 Official guide: https://learn.chatgpt.com/docs/environments/cloud-environments
+
+## Tested fields for the parent to save
+
+Install script:
+
+```bash
+#!/usr/bin/env bash
+set -Eeuo pipefail
+cd /workspace/project-manager
+bash scripts/setup.sh
+```
+
+Startup instructions:
+
+> Use the existing `/workspace/project-manager` checkout; cloud tasks are already
+> isolated, so do not create a worktree unless explicitly requested. Read AGENTS.md.
+> Confirm the scaffold branch/commit is present until the owner merges it. Run
+> `bash scripts/setup.sh` if dependencies need refresh, then `bash scripts/dev.sh`
+> in a persistent command session. Verify API health on loopback port 5000 and
+> proxied `/api/projects` on loopback port 5173 using the README curl commands.
+> Run `bash scripts/check.sh` and `bash scripts/e2e.sh` for validation. Processes
+> must restart after snapshot restore; Ctrl+C stops only the dev-owned processes.
+> Never expose the loopback development app or use real user data.
+
+The setup task used cloud execution only and did not enable Actions, paid extras,
+credits, deployments, external databases, or production secrets. Billing settings,
+connector installation scope, publication and a fresh task require parent/owner
+verification through controls unavailable to this machine.
