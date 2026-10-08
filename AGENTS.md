@@ -3,8 +3,8 @@
 ## Project
 A project management application built with React, TypeScript, C#, and ASP.NET Core.
 Development is performed by coding agents in a private Codex Cloud environment.
-This repository currently contains bootstrap documentation; the application and
-validation scripts must be implemented and verified in the cloud before claiming setup is complete.
+The cloud-tested baseline creates and lists projects through React and ASP.NET Core,
+with SQLite persistence and automated unit and browser tests.
 
 ## Scope and authorization
 - Work only on Joshbomb75/project-manager and its development dependencies.
@@ -17,7 +17,7 @@ validation scripts must be implemented and verified in the cloud before claiming
 - Use synthetic development data. Never commit credentials, database files, or environment secrets.
 - These instructions guide behavior; actual access controls must be enforced in the environment and GitHub.
 
-## Intended baseline
+## Architecture
 - One repository: `src/web/` for React + strict TypeScript + Vite;
   `src/api/ProjectManager.Api/` for ASP.NET Core; `tests/` for backend tests.
 - Use .NET 10 LTS and Node.js 24 LTS, current supported patches.
@@ -31,8 +31,7 @@ validation scripts must be implemented and verified in the cloud before claiming
   before using real user data or offering shared/public access.
 
 ## Required developer commands
-Implement the following root-level Bash entry points in the first application task.
-Until they exist and have passed, treat this list as the target interface, not verified commands.
+The following root-level Bash entry points are implemented and passed cloud validation.
 
 - `bash scripts/setup.sh`: restore pinned frontend and backend dependencies;
   prepare development-only data/configuration; safe to rerun.
@@ -60,8 +59,8 @@ Run relevant tests for a change and the complete check script before handing off
 - If parallel agents are explicitly requested, give each agent an independent branch/worktree
   and clearly bounded ownership; coordinate overlapping files before integration.
 
-## First end-to-end task
-Implement creating and listing projects:
+## Baseline end-to-end acceptance criteria
+Preserve these verified behaviors:
 1. A user enters a nonblank project name in the React interface.
 2. ASP.NET Core validates and persists the project in SQLite.
 3. The project appears in the list and remains after a page reload and API restart.
