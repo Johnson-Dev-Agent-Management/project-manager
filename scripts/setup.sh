@@ -1,6 +1,17 @@
 #!/usr/bin/env bash
 source "$(dirname "$0")/common.sh"
-[[ $(node --version) == v24.19.0 ]] || { echo 'Node 24.19.0 required' >&2; exit 1; }
+required_node_version=$(<"$ROOT/.nvmrc")
+if [[ $(node --version) != "v$required_node_version" ]]; then
+  # The cloud image supplies bootstrap Node/npm; keep the project runtime in
+  # the writable workspace. No additional download domain is required.
+  npm install --prefix /workspace/.node --no-save --package-lock=false \
+    --no-audit --no-fund "node@$required_node_version"
+  hash -r
+fi
+[[ $(node --version) == "v$required_node_version" ]] || {
+  echo "Node $required_node_version required; found $(node --version)" >&2
+  exit 1
+}
 if [[ ! -x "$DOTNET_ROOT/dotnet" ]]; then
   mkdir -p "$DOTNET_ROOT"
   installer=$(mktemp)
