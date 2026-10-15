@@ -20,3 +20,12 @@ case "$(uname -s)" in
 esac
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
 cd "$ROOT"
+
+# Paths embedded in connection strings are not converted by Git Bash for .NET.
+native_path() {
+  if [[ $WINDOWS_SHELL == true ]]; then
+    cygpath -am -- "$1"
+  else
+    printf '%s\n' "$1"
+  fi
+}

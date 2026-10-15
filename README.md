@@ -70,18 +70,23 @@ For **native Windows with Git Bash**, install Node.js **24.22.0** and the
 node --version   # v24.22.0
 dotnet --version # 10.0.402
 bash scripts/setup.sh
+bash scripts/check.sh
+bash scripts/dev.sh
 ```
 
 On Windows, setup uses tools on PATH and preserves your normal cache locations.
 If Node or the pinned .NET SDK is missing, it exits with install instructions;
 it does not run the Unix .NET installer. The .NET version comes from `global.json`.
 Cloud automatic installation is unchanged.
+The development and E2E scripts convert database filenames to Windows paths
+before passing them to SQLite, including paths containing spaces.
 
 For local startup, use the underlying commands below. In one terminal, from the
 repository root:
 
 ```bash
-ConnectionStrings__Projects="Data Source=$PWD/.data/projects.db" \
+database_path=$(node -p 'require("node:path").resolve(".data/projects.db")')
+ConnectionStrings__Projects="Data Source=$database_path" \
   dotnet run --project src/api/ProjectManager.Api --no-launch-profile \
   --urls http://127.0.0.1:5000
 ```
@@ -117,10 +122,17 @@ dependency manifests and lockfiles remained unchanged. Validation reused the
 existing dependency caches; it did not republish the saved
 cloud environment or verify a fresh session from a new image.
 
+Development startup was checked with `bash scripts/dev.sh`: the API health check
+and Vite-proxied project listing passed, SQLite created `.data/projects.db`, and
+both services stopped on exit. Simulated Windows runs of dev/E2E verified native
+database paths containing spaces and safe exits on conversion failures; Linux
+paths were preserved.
+
 Simulated Git Bash/MSYS/Cygwin cases verified missing, mismatched, and runtime-only
 .NET installations; a matching SDK; and missing/mismatched Node versions. Missing
 prerequisites stopped before installation or restore, with Windows instructions.
 The matching SDK case preserved PATH/cache settings and completed restore. These
-checks ran in the cloud with command stubs; native Windows execution remains unverified.
+checks ran in the cloud with command stubs; native Windows server startup and
+browser E2E remain unverified.
 
 See [cloud setup](docs/cloud-setup.md) for environment controls and remaining steps.

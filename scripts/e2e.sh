@@ -18,7 +18,8 @@ ready() {
   cat "$test_dir"/*.log >&2; return 1
 }
 dotnet build src/api/ProjectManager.Api --no-restore
-export ConnectionStrings__Projects="Data Source=$test_dir/projects.db"
+database_path=$(native_path "$test_dir/projects.db")
+export ConnectionStrings__Projects="Data Source=$database_path"
 start_api() {
   dotnet src/api/ProjectManager.Api/bin/Debug/net10.0/ProjectManager.Api.dll --urls http://127.0.0.1:5001 >"$test_dir/api.log" 2>&1 &
   api_pid=$!; pids+=("$api_pid")
