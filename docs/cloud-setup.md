@@ -7,7 +7,7 @@ fresh cloud task on 2026-10-07. The task fetched `codex/cloud-bootstrap` at
 and confirmed clean process shutdown and a clean working tree. All builds, lint,
 strict type checking, 3 frontend tests, 4 backend tests and two browser phases passed.
 The implementation commit is `7b5db5686c3ad313dfa3e2a4ef8f91260884174c`.
-The current Node 24.22.0 upgrade passed setup twice, the complete check script,
+The Node 24.22.0 and .NET SDK 10.0.402 upgrades passed setup, the complete check script,
 and both browser E2E phases in the current task. See README.md for exact tested
 tool versions and results; these results do not verify a republished environment.
 
@@ -37,6 +37,10 @@ without any dependency-domain denial. It inherited the published image's runtime
 and caches; this confirms reuse, not a complete cache-empty machine bootstrap.
 
 The pinned .NET installer avoids automatic channel lookup at `ci.dot.net`.
+The exact SDK is **10.0.402**, read from `global.json`. In native Windows shells,
+setup checks installed tools and reports missing SDKs instead of invoking this installer.
+Cloud activation also places XDG runtime locks and first-use data in writable
+workspace cache directories, so SDK 10.0.402 works with a read-only home directory.
 Browser tests use system Chromium, so no Playwright browser CDN is required.
 The Node bootstrap uses the existing `registry.npmjs.org` allowance, so this
 upgrade does not require broadening network access.
@@ -57,12 +61,13 @@ cd /workspace/project-manager
 bash scripts/setup.sh
 ```
 
-## Persistent Node 24.22.0 configuration
+## Persistent runtime configuration
 
 `.nvmrc` is the source of the exact project Node version. The install script above
 runs `scripts/setup.sh`, which installs `node@24.22.0` under `/workspace/.node`
 when the image's Node version differs. All project entry points prepend this
-runtime to PATH. npm stays at the image's version; application lockfiles are
+runtime to PATH. Setup also installs SDK **10.0.402** from `global.json` if the
+selected SDK differs. npm stays at the image's version; application lockfiles are
 unchanged. Setup can be rerun and also works with the older 24.19.0 bootstrap
 runtime, so fresh sessions need not depend on a manually installed shell runtime.
 
@@ -77,8 +82,8 @@ cannot change configuration. The owner still needs to:
 2. Save/apply the configuration and refresh or republish its prepared image using
    the environment UI. Preserve the existing private repository and network settings.
 3. Start a fresh cloud task using the updated checkout and run setup, checks, and
-   browser E2E. Confirm `bash -c 'source scripts/common.sh; node --version'`
-   prints `v24.22.0`. Also check `node --version` in the fresh task. The project
+   browser E2E. Confirm `bash -c 'source scripts/common.sh; node --version; dotnet --version'`
+   prints `v24.22.0` and `10.0.402`. Also check `node --version` in the fresh task. The project
    scripts use the pinned runtime even if the base image's default interactive
    `node` remains older; updating that default requires the environment's runtime
    selection or persistent PATH configuration.

@@ -13,7 +13,7 @@ Target Node **24.22.0** is pinned in `.nvmrc`; the official
 [Node.js changelog](https://github.com/nodejs/node/blob/v24.22.0/doc/changelogs/CHANGELOG_V24.md#24.22.0)
 identifies it as the October 14, 2026 **Krypton LTS** release.
 
-Tested in Codex Cloud: Node **24.22.0**, npm **11.9.0**, .NET SDK **10.0.401**,
+Tested in Codex Cloud: Node **24.22.0**, npm **11.9.0**, .NET SDK **10.0.402**,
 React **19.3.0**, TypeScript **6.0.3**, Vite **8.3.3**, EF Core **10.0.9**,
 SQLitePCLRaw bundle **3.0.5**, Playwright **1.64.0** and system Chromium
 **151.0.7922.173**. Exact npm versions and integrity hashes are in package-lock.json;
@@ -50,8 +50,8 @@ both processes. No public preview or production secrets are required.
 
 ## Local development
 
-For your own local checkout, install Git, Bash, .NET SDK **10.0.401**, and
-[nvm](https://github.com/nvm-sh/nvm). On Windows, use WSL for these Bash commands.
+For your own local checkout, install Git, Bash, .NET SDK **10.0.402**, and
+[nvm](https://github.com/nvm-sh/nvm) on Linux/macOS or WSL.
 From the repository root, select the same Node version as the cloud environment:
 
 ```bash
@@ -63,8 +63,22 @@ dotnet restore tests/ProjectManager.Api.Tests --locked-mode
 mkdir -p .data
 ```
 
-The root-level scripts configure cloud paths under `/workspace`. Locally, use
-the underlying commands instead. In one terminal, from the repository root:
+For **native Windows with Git Bash**, install Node.js **24.22.0** and the
+**Windows .NET SDK 10.0.402**, then reopen Git Bash and run:
+
+```bash
+node --version   # v24.22.0
+dotnet --version # 10.0.402
+bash scripts/setup.sh
+```
+
+On Windows, setup uses tools on PATH and preserves your normal cache locations.
+If Node or the pinned .NET SDK is missing, it exits with install instructions;
+it does not run the Unix .NET installer. The .NET version comes from `global.json`.
+Cloud automatic installation is unchanged.
+
+For local startup, use the underlying commands below. In one terminal, from the
+repository root:
 
 ```bash
 ConnectionStrings__Projects="Data Source=$PWD/.data/projects.db" \
@@ -75,7 +89,6 @@ ConnectionStrings__Projects="Data Source=$PWD/.data/projects.db" \
 In a second terminal, from the repository root:
 
 ```bash
-nvm use
 npm --prefix src/web run dev -- --port 5173 --strictPort
 ```
 
@@ -86,9 +99,9 @@ Local npm may differ from the tested cloud npm **11.9.0**;
 
 ## Verified results
 
-For the Node **24.22.0** upgrade, `bash scripts/setup.sh` installed the pinned
-runtime starting from the image's Node **24.19.0**. A second setup run reused it
-and restored locked dependencies successfully. `bash scripts/check.sh` passed
+With Node **24.22.0** and .NET SDK **10.0.402**, `bash scripts/setup.sh`
+installed the pinned SDK and restored locked dependencies successfully.
+`bash scripts/check.sh` passed
 lint, strict typecheck, frontend/backend builds and all **3 frontend tests** and
 **4 backend tests**; the backend build had zero warnings and errors.
 Backend tests cover trimming, blank/null rejection, listing and database persistence
@@ -101,7 +114,13 @@ ports 5001/5174 and deletes its database and stops its services on exit.
 Both phases used preinstalled system Chromium **151.0.7922.173**. A new shell
 sourcing `scripts/common.sh` selected Node **24.22.0**, and all application
 dependency manifests and lockfiles remained unchanged. Validation reused the
-existing .NET installation and dependency caches; it did not republish the saved
+existing dependency caches; it did not republish the saved
 cloud environment or verify a fresh session from a new image.
+
+Simulated Git Bash/MSYS/Cygwin cases verified missing, mismatched, and runtime-only
+.NET installations; a matching SDK; and missing/mismatched Node versions. Missing
+prerequisites stopped before installation or restore, with Windows instructions.
+The matching SDK case preserved PATH/cache settings and completed restore. These
+checks ran in the cloud with command stubs; native Windows execution remains unverified.
 
 See [cloud setup](docs/cloud-setup.md) for environment controls and remaining steps.
