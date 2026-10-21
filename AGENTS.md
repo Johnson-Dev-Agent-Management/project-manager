@@ -59,6 +59,40 @@ Run relevant tests for a change and the complete check script before handing off
 - If parallel agents are explicitly requested, give each agent an independent branch/worktree
   and clearly bounded ownership; coordinate overlapping files before integration.
 
+## Pull Request Attribution and Documentation
+- These conventions apply to all future PRs unless explicitly overridden by the user.
+  Preserve the existing draft PR workflow and GitHub authentication/ownership.
+- Identify AI-authored PRs explicitly. When Codex creates a PR for changes primarily
+  implemented by an AI agent, use `.github/pull_request_template.md` and include
+  these exact structured lines (replace the author with the actual agent if different):
+
+  ```text
+  Implementation type: AI
+  Implementation author: Codex Cloud
+  ```
+
+- Apply the `AI-authored` GitHub label when permissions and tooling permit, and verify
+  that it was applied. Its description is "Changes primarily implemented by an AI coding agent."
+  Report unavailable tooling or denied permissions instead of claiming success.
+- Include a concise summary, the relevant milestone or issue (or explicitly state
+  none), tests performed, and known limitations or follow-up work. Distinguish
+  **Passed**, **Failed**, and **Not run** validation, including commands and reasons
+  where relevant. Never claim checks passed unless their results were actually verified.
+- Human-authored PRs use `Implementation type: Human` and `Implementation author: Human`.
+  Never infer implementation authorship from the GitHub account opening the PR,
+  and never automatically label human-authored PRs as `AI-authored`.
+- `.github/workflows/pr-attribution.yml` provides automatic labeling from the
+  structured type field after it is merged into the default branch and GitHub
+  Actions is enabled. It handles opened, edited, and reopened PRs, including drafts
+  and forks; it creates or corrects the label description when processing an AI PR.
+  It reads PR metadata only, with `pull-requests: write`, and never checks out or
+  executes PR code. Do not add untrusted code execution to this privileged workflow.
+- Attribution remains self-declared: keep exactly one type field and name the actual
+  implementer. Automation only adds labels; if attribution is corrected to Human,
+  remove an incorrect `AI-authored` label manually. If automation is unavailable,
+  a maintainer must create/apply the label. See `docs/pr-attribution.md` for setup
+  and verification steps; do not change repository-wide security settings to enable it.
+
 ## Baseline end-to-end acceptance criteria
 Preserve these verified behaviors:
 1. A user enters a nonblank project name in the React interface.
