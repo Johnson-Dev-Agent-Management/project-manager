@@ -48,6 +48,21 @@ Check readiness with `curl -fsS http://127.0.0.1:5000/api/health` (status `ok`)
 and `curl -fsS http://127.0.0.1:5173/api/projects` (JSON array). Ctrl+C cleans up
 both processes. No public preview or production secrets are required.
 
+## Appearance
+
+The square button in the top-right corner switches between light mode (sun) and
+dark mode (moon). It supports keyboard activation and has a visible focus outline.
+The first visit follows the device theme; a selection is remembered in this
+browser and applied before the app renders. If browser storage is unavailable,
+switching still works for the current page. Both themes cover the page, form,
+buttons, and error messages, including on small screens.
+
+| Light mode | Dark mode |
+| --- | --- |
+| ![Light mode with sun toggle](docs/images/theme-light.png) | ![Dark mode with moon toggle](docs/images/theme-dark.png) |
+
+Screenshots use synthetic example projects.
+
 ## Local development
 
 For your own local checkout, install Git, Bash, .NET SDK **10.0.402**, and
@@ -106,21 +121,45 @@ Local npm may differ from the tested cloud npm **11.9.0**;
 
 With Node **24.22.0** and .NET SDK **10.0.402**, `bash scripts/setup.sh`
 installed the pinned SDK and restored locked dependencies successfully.
-`bash scripts/check.sh` passed
-lint, strict typecheck, frontend/backend builds and all **3 frontend tests** and
-**4 backend tests**; the backend build had zero warnings and errors.
+`bash scripts/check.sh` ran these underlying commands successfully:
+
+```bash
+npm --prefix src/web run lint
+npm --prefix src/web run typecheck
+npm --prefix src/web run build
+npm --prefix src/web test
+dotnet build tests/ProjectManager.Api.Tests --no-restore
+dotnet test tests/ProjectManager.Api.Tests --no-build --no-restore
+```
+
+All checks passed, including **6 frontend tests** and **4 backend tests**;
+the backend build had zero warnings and errors.
 Backend tests cover trimming, blank/null rejection, listing and database persistence
-across application restart. Frontend tests cover creation, validation and load failure.
+across application restart. Frontend tests cover creation, validation, load failure,
+theme switching in both directions, saved preferences, and unavailable storage.
 
 `bash scripts/e2e.sh` passed **two browser phases** of the same persistence scenario:
 creation, server validation and page reload; then a fresh browser request after
 stopping/restarting the API against the same temporary SQLite database. E2E uses
 ports 5001/5174 and deletes its database and stops its services on exit.
+Each phase ran `npm --prefix src/web run e2e` (Playwright) with `E2E_PHASE=create`
+or `E2E_PHASE=restart`: **8 tests per phase, 16 passed total**. Alongside project
+persistence, browser checks cover keyboard activation, preference persistence,
+device dark mode, saved light/dark preferences before React loads, invalid saved
+preferences, unavailable storage, and the square toggle's mobile layout.
 Both phases used preinstalled system Chromium **151.0.7922.173**. A new shell
 sourcing `scripts/common.sh` selected Node **24.22.0**, and all application
 dependency manifests and lockfiles remained unchanged. Validation reused the
 existing dependency caches; it did not republish the saved
 cloud environment or verify a fresh session from a new image.
+
+The production build was also served on loopback using
+`node src/web/node_modules/vite/bin/vite.js preview src/web --host 127.0.0.1 --port 5175 --strictPort`
+after sourcing `scripts/common.sh`. A headless Chromium smoke check verified both
+icons, themed input colors, persistence after reload, mobile layout, and no page
+errors. With the application JavaScript blocked, a saved dark preference and dark
+background still applied before React loaded. The screenshots above were captured
+from that build using synthetic API responses. No application dependencies changed.
 
 Development startup was checked with `bash scripts/dev.sh`: the API health check
 and Vite-proxied project listing passed, SQLite created `.data/projects.db`, and
