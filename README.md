@@ -109,7 +109,9 @@ passed both browser phases using the reported system Chromium fallback.
 Measured frontend coverage: **96% lines, 75% branches**; backend: **100% lines,
 75% branches**. Neither codebase has a new coverage threshold.
 
-Hosted run results, the tested commit, controlled failure evidence, and remaining
+Hosted Linux/Windows checks and both matched-browser phases passed; a controlled
+failing assertion also failed the aggregate gate and retained diagnostics.
+Hosted run results, the tested commits, controlled failure evidence, and remaining
 acceptance items are recorded in the [Phase A report](docs/milestones/milestone-0-phase-a-report.md).
 See [CI operations](docs/ci.md) for commands, protected-policy changes, artifact
 scope, and limitations. Phase A does not establish branch enforcement.
