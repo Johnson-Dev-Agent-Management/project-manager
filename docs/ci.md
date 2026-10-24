@@ -77,7 +77,7 @@ tags and inspected through their action manifests for this implementation:
 | actions/checkout | v5 | `fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09` |
 | actions/setup-node | v5 | `a0853c24544627f65ddf259abe73b1d18a591444` |
 | actions/setup-dotnet | v5 | `26b0ec14cb23fa6904739307f278c14f94c95bf1` |
-| actions/upload-artifact | v5 | `330a01c490aca151604b8cf639adc76d48f6c5d4` |
+| actions/upload-artifact | v7 | `cf430e030ddbb5b0abf93d22962f4752f3646cd9` |
 
 Setup Actions cache npm/NuGet downloads using OS, lockfiles, and toolchain files.
 The initial hosted run must demonstrate cache misses; manual dispatch's

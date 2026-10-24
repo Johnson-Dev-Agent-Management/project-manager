@@ -1,4 +1,6 @@
 """Exercise failure handling in the CI evidence reader and aggregate gate."""
+import contextlib
+import io
 import importlib.util
 import json
 import os
@@ -66,7 +68,7 @@ class EvidenceTests(unittest.TestCase):
         success = {name: {'result': 'success'} for name in ('frontend', 'backend', 'windows-smoke', 'e2e')}
         with tempfile.TemporaryDirectory() as directory:
             env = {'GITHUB_STEP_SUMMARY': str(Path(directory) / 'summary.md'), 'HEAD_SHA': 'head', 'TESTED_SHA': 'tested'}
-            with patch.dict(os.environ, {**env, 'RESULTS': json.dumps(success)}):
+            with patch.dict(os.environ, {**env, 'RESULTS': json.dumps(success)}), contextlib.redirect_stdout(io.StringIO()):
                 exec(gate, {})
             for outcome in ('failure', 'cancelled', 'skipped', 'missing'):
                 results = dict(success)
@@ -74,6 +76,6 @@ class EvidenceTests(unittest.TestCase):
                     del results['frontend']
                 else:
                     results['frontend'] = {'result': outcome}
-                with self.subTest(outcome=outcome), patch.dict(os.environ, {**env, 'RESULTS': json.dumps(results)}):
+                with self.subTest(outcome=outcome), patch.dict(os.environ, {**env, 'RESULTS': json.dumps(results)}), contextlib.redirect_stdout(io.StringIO()):
                     with self.assertRaises(SystemExit):
                         exec(gate, {})
