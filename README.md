@@ -136,3 +136,26 @@ checks ran in the cloud with command stubs; native Windows server startup and
 browser E2E remain unverified.
 
 See [cloud setup](docs/cloud-setup.md) for environment controls and remaining steps.
+
+## Pull request attribution
+
+Use the [PR template](.github/pull_request_template.md) to name the implementation
+author and report passed, failed, and unrun checks. AI implementations use
+`Implementation type: AI` plus the actual agent name, normally `Codex Cloud`;
+manual implementations use `Human`. See [attribution setup](docs/pr-attribution.md)
+for automatic `AI-authored` labeling, manual fallback, and its security boundaries.
+
+Attribution validation used Python **3.12.14**:
+`python3 -B -m unittest discover -s tests -p 'test_pr_attribution.py' -v`
+passed all **8 tests** against the workflow script with a mocked GitHub API.
+YAML parsing and checks of workflow triggers, permissions, and script isolation
+also passed. Live GitHub Actions execution remains unverified until merge.
+
+During this change, `bash scripts/setup.sh` restored dependencies and
+`bash scripts/check.sh` passed npm lint/typecheck/build/test (3 frontend tests),
+`dotnet build tests/ProjectManager.Api.Tests --no-restore`, and
+`dotnet test tests/ProjectManager.Api.Tests --no-build --no-restore` (4 backend tests).
+`bash scripts/e2e.sh` passed both browser persistence phases using the Node, npm,
+.NET SDK, and Chromium versions recorded above. Initial check/E2E attempts failed
+because dependencies were absent or sandbox sockets were denied; after setup and
+granting per-command network access for loopback tests, both commands passed.
