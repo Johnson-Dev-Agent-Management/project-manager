@@ -7,7 +7,7 @@ The cloud-tested baseline creates and lists projects through React and ASP.NET C
 with SQLite persistence and automated unit and browser tests.
 
 ## Scope and authorization
-- Work only on Joshbomb75/project-manager and its development dependencies.
+- Work only on Johnson-Dev-Agent-Management/project-manager and its development dependencies.
 - Run builds, tests, dependency installation, and development services in the cloud.
   Do not use the owner's personal computer, files, browser sessions, or local services for project execution.
 - Within an assigned task, implement changes, install necessary project dependencies,
@@ -16,6 +16,13 @@ with SQLite persistence and automated unit and browser tests.
 - Keep the repository and development environment private. Do not broaden repository or service access.
 - Use synthetic development data. Never commit credentials, database files, or environment secrets.
 - These instructions guide behavior; actual access controls must be enforced in the environment and GitHub.
+
+## Milestone planning
+- Before milestone work, read [Milestone 0: Trusted Development Foundation](docs/milestones/milestone-0.md).
+- Follow the assigned phase, its acceptance criteria, and the acceptance-report format.
+  The plan is not authorization to start another phase, merge, or change GitHub settings.
+- Treat CI configuration, test definitions, coverage thresholds, and engineering standards
+  as protected policy. Explicitly identify proposed changes; never silently weaken controls.
 
 ## Architecture
 - One repository: `src/web/` for React + strict TypeScript + Vite;
@@ -51,8 +58,8 @@ Run relevant tests for a change and the complete check script before handing off
 
 ## Git workflow
 - Read the current repository state and any task-specific instructions first.
-- Start from the owner's specified branch or the latest main. For the initial cloud setup,
-  use codex/cloud-bootstrap so these instructions are present before the owner merges the PR.
+- Start from the owner's specified branch or the latest main. The initial cloud-bootstrap
+  branch has been merged; do not use that historical branch as the default baseline.
 - Work on a codex/<short-task-name> feature branch. Never force-push shared branches.
 - Keep one coherent draft PR per task. Explain the behavior, validation, and limitations.
 - Preserve existing work and the Apache license. Do not merge your own PR.
