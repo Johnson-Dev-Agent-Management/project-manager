@@ -24,6 +24,8 @@ TestResults/
 src/api/**/appsettings.Local.json
 .data/
 .artifacts/
+.tools/
+.cache/
 logs/
 *.log
 
