@@ -1,0 +1,39 @@
+name: Locked development setup
+description: Select pinned runtimes, restore download caches, and run the root setup command.
+inputs:
+  cache:
+    description: Restore and save dependency download caches
+    default: 'true'
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+      with:
+        node-version-file: .nvmrc
+        cache: ${{ inputs.cache == 'true' && 'npm' || '' }}
+        package-manager-cache: false
+        cache-dependency-path: |
+          src/web/package-lock.json
+          .nvmrc
+          .npm-version
+    - uses: actions/setup-dotnet@26b0ec14cb23fa6904739307f278c14f94c95bf1 # v5
+      with:
+        global-json-file: global.json
+        cache: ${{ inputs.cache == 'true' }}
+        cache-dependency-path: |
+          src/api/ProjectManager.Api/packages.lock.json
+          tests/ProjectManager.Api.Tests/packages.lock.json
+          global.json
+    - name: Locked setup
+      shell: bash
+      run: |
+        mkdir -p .artifacts
+        git rev-parse HEAD > .artifacts/tested-commit.txt
+        npm install --global "npm@$(cat .npm-version)"
+        bash scripts/setup.sh 2>&1 | tee .artifacts/setup.log
+        {
+          node --version
+          npm --version
+          dotnet --version
+          python3 --version
+        } > .artifacts/tool-versions.txt

@@ -1,0 +1,149 @@
+name: Foundational CI
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      cold-cache:
+        description: Disable dependency download caches for bootstrap diagnosis
+        type: boolean
+        default: false
+permissions:
+  contents: read
+concurrency:
+  group: foundational-ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+defaults:
+  run:
+    shell: bash
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+  NUGET_PACKAGES: ${{ github.workspace }}/.cache/nuget
+  npm_config_cache: ${{ github.workspace }}/.cache/npm
+jobs:
+  frontend:
+    name: frontend
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/setup
+        with:
+          cache: ${{ inputs.cold-cache != true }}
+      - name: Frontend and attribution checks
+        run: bash scripts/check.sh frontend 2>&1 | tee .artifacts/check.log
+      - name: Upload frontend evidence
+        if: always()
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
+        with:
+          name: frontend-evidence
+          path: .artifacts/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 7
+  backend:
+    name: backend
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/setup
+        with:
+          cache: ${{ inputs.cold-cache != true }}
+      - name: Backend checks
+        run: bash scripts/check.sh backend 2>&1 | tee .artifacts/check.log
+      - name: Upload backend evidence
+        if: always()
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
+        with:
+          name: backend-evidence
+          path: .artifacts/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 7
+  windows-smoke:
+    name: windows-smoke
+    runs-on: windows-2025
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/setup
+        with:
+          cache: ${{ inputs.cold-cache != true }}
+      - name: Rerun setup and build in Git Bash
+        run: |
+          bash scripts/setup.sh 2>&1 | tee .artifacts/setup-rerun.log
+          bash scripts/build.sh 2>&1 | tee .artifacts/build.log
+          echo 'Windows Git Bash: setup, repeated setup, and both builds Passed' >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload Windows evidence
+        if: always()
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
+        with:
+          name: windows-evidence
+          path: .artifacts/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 7
+  e2e:
+    name: e2e
+    needs: [frontend, backend]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/setup
+        with:
+          cache: ${{ inputs.cold-cache != true }}
+      - name: Install version-matched Chromium
+        run: |
+          npx --prefix src/web --no-install playwright install --with-deps chromium 2>&1 | tee .artifacts/browser-install.log
+          npx --prefix src/web --no-install playwright --version
+      - name: Browser persistence checks
+        run: bash scripts/e2e.sh 2>&1 | tee .artifacts/e2e.log
+      - name: Upload browser evidence
+        if: always()
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
+        with:
+          name: e2e-evidence
+          path: .artifacts/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 7
+  quality-gate:
+    name: quality-gate
+    needs: [frontend, backend, windows-smoke, e2e]
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+    steps:
+      - name: Require explicit success from every job
+        env:
+          RESULTS: ${{ toJSON(needs) }}
+          TESTED_SHA: ${{ github.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          results = json.loads(os.environ['RESULTS'])
+          expected = {'frontend', 'backend', 'windows-smoke', 'e2e'}
+          lines = [f"Head commit: {os.environ['HEAD_SHA']}",
+                   f"Tested workflow commit: {os.environ['TESTED_SHA']}",
+                   '', '| Job | Result |', '| --- | --- |']
+          lines += [f"| {name} | {value['result']} |" for name, value in results.items()]
+          summary = '\n'.join(lines) + '\n'
+          print(summary)
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as output:
+              output.write(summary)
+          if set(results) != expected or any(value['result'] != 'success' for value in results.values()):
+              raise SystemExit('Failed: every required job must explicitly succeed')
+          PY
