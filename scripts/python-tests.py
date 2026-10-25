@@ -1,4 +1,4 @@
-"""Run attribution and CI evidence tests, rejecting accidental empty discovery."""
+"""Run attribution and CI evidence tests, rejecting empty discovery and skips."""
 import sys
 import unittest
 
@@ -9,4 +9,8 @@ for pattern in ('test_pr_attribution.py', 'test_ci_*.py'):
         raise SystemExit(f'No tests discovered for {pattern}')
     suite.addTests(discovered)
 result = unittest.TextTestRunner(verbosity=2).run(suite)
-sys.exit(0 if result.wasSuccessful() else 1)
+if result.skipped:
+    print('Failed Python validation: skipped tests are not allowed:', file=sys.stderr)
+    for test, reason in result.skipped:
+        print(f'  {test.id()}: {reason}', file=sys.stderr)
+sys.exit(0 if result.wasSuccessful() and not result.skipped else 1)
