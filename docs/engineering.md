@@ -77,11 +77,14 @@ checks both projects; built-in recommended .NET analyzers, nullable checking,
 and warnings-as-errors apply to API and tests. xUnit analyzers remain supplied
 by the locked xUnit package. No analyzer rule is suppressed.
 
-ESLint is explicitly changed from 10.12.0 to 9.39.5 because JSX accessibility
-6.10.2 declares peers through ESLint 9. Existing recommended lint rules are retained
-and type-aware, Hooks, test-integrity, and accessibility rules are added. This is
-a compatibility policy change requiring human review, not a removed check.
-Revisit the compatible lint/plugin set in dependency-update PRs.
+ESLint 10.12.0 and @eslint/js 10.0.1 remain at Phase A's supported versions.
+Accessibility rules use the pinned HTML Academy fork 6.11.0, which explicitly
+supports ESLint 10, under the transparent npm alias
+`eslint-plugin-jsx-a11y: npm:@htmlacademy/eslint-plugin-jsx-a11y@6.11.0`.
+Its package manifest, rule exports, and changes from upstream 6.10.2 were reviewed
+for compatibility. The full recommended accessibility rules remain enabled.
+This additional dependency source requires human policy review like other tooling;
+there is no peer-dependency bypass or lint-rule suppression.
 
 Linux x64 policy tools are pinned by version **and SHA-256** in
 `scripts/policy-tools.json`: actionlint 1.7.12, ShellCheck 0.11.0, Gitleaks 8.30.1.

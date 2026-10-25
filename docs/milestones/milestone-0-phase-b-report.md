@@ -34,3 +34,16 @@ neither was changed. Independent review/identity separation and Phase C controls
 are not established. Cloud release-asset downloads are currently blocked by its
 network allowlist; local actionlint/ShellCheck/Gitleaks execution remains Not run
 until downloads are available. CI will run the pinned tools on hosted runners.
+
+Initial reliability qualification correctly stopped on run 2 when port preflight
+rejected TIME_WAIT sockets after successful cleanup. The fix uses reusable socket
+binding plus listen to reject live listeners; two real-socket regressions verify
+occupied-listener safety and reuse after closure. A later local qualification was
+invalidated while its shell script was being edited, so neither attempt is counted
+as the required ten-run pass. Final qualification will restart from run 1.
+
+The first hosted policy check failed on ShellCheck SC2329 for dev cleanup; cleanup
+is now explicitly invoked on the normal exit path as well as through its trap.
+No ShellCheck rule is suppressed. The temporary ESLint 9 compatibility selection
+was replaced with the baseline ESLint 10 and the explicitly compatible pinned
+HTML Academy accessibility fork; unsupported ESLint is not retained.

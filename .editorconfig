@@ -10,7 +10,7 @@ trim_trailing_whitespace = true
 
 [*.cs]
 indent_size = 4
+dotnet_diagnostic.xUnit1004.severity = error
 
 [*.py]
 indent_size = 4
-dotnet_diagnostic.xUnit1004.severity = error

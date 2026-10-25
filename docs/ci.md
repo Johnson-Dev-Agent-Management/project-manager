@@ -103,7 +103,7 @@ without broader exclusions; recommended analyzers, type-aware lint, formatting,
 secret and dependency checks; reviewed update PR configuration; production artifact
 provenance and ten-run E2E qualification; standards and acceptance evidence.
 
-ESLint's compatibility version change, obsolete no-floor regression test
+The ESLint-10-compatible accessibility fork, obsolete no-floor regression test
 replacement with floor rejection tests, and repository-wide formatting are
 explicit proposals. Historical plan/report formatting changes carry no semantic
 changes. No existing behavioral assertion is removed; the old creation/list,

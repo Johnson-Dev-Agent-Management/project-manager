@@ -40,7 +40,7 @@ cleanup() {
   echo "E2E diagnostics: $log_dir (exit $result)"
   exit "$result"
 }
-trap cleanup EXIT
+trap 'cleanup' EXIT
 trap 'exit 130' INT
 trap 'exit 143' TERM
 # Fail before starting services; never kill a process that already owns a port.
