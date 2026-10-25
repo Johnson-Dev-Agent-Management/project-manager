@@ -44,18 +44,7 @@ trap cleanup EXIT
 trap 'exit 130' INT
 trap 'exit 143' TERM
 # Fail before starting services; never kill a process that already owns a port.
-python3 - <<'PY'
-import socket
-sockets = []
-try:
-    for port in (5001, 5174):
-        listener = socket.socket()
-        listener.bind(('127.0.0.1', port))
-        sockets.append(listener)
-finally:
-    for listener in sockets:
-        listener.close()
-PY
+python3 scripts/e2e-ports.py
 ready() {
   local deadline=$((SECONDS + 30))
   while ((SECONDS < deadline)); do
