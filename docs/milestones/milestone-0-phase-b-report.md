@@ -1,7 +1,8 @@
 # Milestone 0, Phase B acceptance report
 
-Status: **Passed automated qualification for the snapshot below; independent human
-acceptance remains Not run. Local standalone scanner execution is incomplete.**
+Status: **Historical automated evidence recorded; P2 Python discovery follow-up
+below. Independent human acceptance remains Not run. Local standalone scanner
+execution is incomplete.**
 Implementation type: AI
 Implementation author: Codex Cloud
 
@@ -20,6 +21,10 @@ checks use covered/valid counts so rounded Cobertura rates cannot promote a
 below-floor result; regressions cover reports whose rounded rates equal a floor.
 The PR records the follow-up's actual tested head/merge SHA and final run after
 inspection, without pretending this earlier run tested those later changes.
+
+Review correction: these historical checks did not reject an individual empty
+Python module hidden by passing modules in the same discovery pattern. The P2
+follow-up below strengthens that policy; earlier green results do not validate it.
 
 | Requirement | Outcome                                                | Evidence                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | ----------- | ------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -208,3 +213,50 @@ Unresolved risks/owner actions:
 - No merge, purchase, services, visibility/permission/protection changes, deployment,
   independent AI review, or Phase C implementation occurred. Next: human review of B;
   Phase C requires a separate owner assignment and resolution of inherited risks.
+
+## P2 review follow-up: reject every empty Python test module
+
+Inspected starting PR head: `f6ecaac4ddc01bf9f6fcc712fd020fb67e94d628`.
+Only `scripts/python-tests.py`, `tests/test_ci_python_runner.py`, and this report
+change in this bounded follow-up. This is a **protected-policy strengthening**:
+each module matching the existing `test_pr_attribution.py` / `test_ci_*.py`
+patterns must contribute at least one discovered test. The loader records empty
+module identities during ordinary unittest discovery, prints every identity and
+filename, and rejects discovery before test execution. Valid suites are assembled
+once and executed once. Pattern-level zero-discovery rejection, skipped-test
+diagnostics, assertion failure/error rejection, and successful suites are retained.
+
+Three new subprocess regressions use isolated temporary directories: a passing
+attribution module plus a passing CI module and an empty `test_ci_security.py`;
+multiple empty CI modules and an empty attribution module with every name checked;
+and three passing modules whose per-module marker files fail on duplicate execution.
+The five previous runner regressions and their assertions remain.
+
+**Failed before the fix, as expected:**
+`python3 -B -m unittest discover -s tests -p 'test_ci_python_runner.py' -v`
+ran eight tests with three failure events (one test and two subtests). The mixed
+passing/empty fixture was incorrectly accepted with exit 0, `Ran 2 tests`, `OK`.
+The same isolated fixture with the corrected runner exits 1 with:
+
+```text
+Empty test module: test_ci_security (test_ci_security.py)
+```
+
+**Passed locally after the fix:** the focused command above (8 tests),
+`python3 -B scripts/python-tests.py` (26 tests: 8 attribution + 18 CI/policy),
+and complete `bash scripts/check.sh` (13 frontend, 10 backend, 26 Python tests).
+All pass with zero failures/skips; backend build has zero warnings/errors.
+Coverage remains 96.87% lines / 100% branches frontend and 100% / 75% backend.
+An initial full Python invocation without sandbox socket access produced two
+PermissionErrors in the existing real-socket tests; rerunning with already
+authorized per-command network access passed. No test was skipped or relaxed.
+
+Final follow-up head, tested merge SHA, actual hosted conclusions and CI/job links
+are recorded in PR #7 after inspection, separately from the historical snapshots
+above. Submitting a workflow or an earlier green commit is not passing evidence
+for this follow-up. Local browser E2E and standalone scanners are **Not run** for
+this Python/report-only follow-up; the unchanged hosted workflow runs those checks.
+Screenshots remain historical; no application UI changes require new captures.
+Application behavior, discovery patterns, coverage scope/floors, dependencies,
+workflows, scanner policy and GitHub settings are unchanged. Independent review,
+phase acceptance and merging remain owner actions; Phase C is not started.
