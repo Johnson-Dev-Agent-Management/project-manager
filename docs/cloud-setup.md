@@ -1,5 +1,11 @@
 # Private Codex Cloud setup
 
+Historical bootstrap record: the paths, repository ownership/visibility, and
+runtime activation described below reflect earlier tasks. Phase A now uses
+checkout-relative tool storage and portable cache selection; see [current CI and
+setup instructions](ci.md) and the [Phase A report](milestones/milestone-0-phase-a-report.md).
+The saved cloud environment was not republished by Phase A.
+
 ## Baseline verification
 The private `project-manager-dev` environment was published and verified in a
 fresh cloud task on 2026-10-07. The task fetched `codex/cloud-bootstrap` at

@@ -19,7 +19,7 @@ SQLitePCLRaw bundle **3.0.5**, Playwright **1.64.0** and system Chromium
 **151.0.7922.173**. Exact npm versions and integrity hashes are in package-lock.json;
 NuGet versions/content hashes are in both packages.lock.json files.
 
-From `/workspace/project-manager`:
+From the repository root:
 
 ```bash
 bash scripts/setup.sh
@@ -29,20 +29,18 @@ bash scripts/dev.sh
 bash scripts/e2e.sh
 ```
 
-Setup reads the exact Node version from `.nvmrc`. If the cloud image has a
-different version, setup installs the pinned runtime into `/workspace/.node`
-using npm's `node` package from `registry.npmjs.org`. All root-level scripts
-activate that runtime through `scripts/common.sh`; npm itself is unchanged.
-Setup also verifies the pinned SDK, installs it into `/workspace/.dotnet`
-if absent, and runs `npm --prefix src/web ci` and
-`dotnet restore tests/ProjectManager.Api.Tests --locked-mode`. Cloud-local caches
-and tool activation are defined by `scripts/common.sh`; setup is safe to rerun.
-The cloud image supplies bootstrap Node/npm and Chromium. On another image,
-provide bootstrap Node/npm and Chromium before setup/E2E; E2E uses `chromium` from PATH
-or `PLAYWRIGHT_CHROMIUM_EXECUTABLE`, otherwise Playwright's installed browser.
+Setup reads exact Node, npm, and .NET SDK versions from `.nvmrc`, `.npm-version`,
+and `global.json`. It restores with `npm --prefix src/web ci` and
+`dotnet restore tests/ProjectManager.Api.Tests --locked-mode`. On Linux/macOS,
+missing tools install under ignored checkout-local `.tools/`; writable caches
+are selected by `scripts/common.sh`, with prepared cloud cache reuse when available.
+Windows uses installed tools on PATH and preserves native cache paths.
+See [CI commands and policy](docs/ci.md) for hosted runner behavior, cache overrides,
+coverage scope, report validation, and exact command groups.
 
-Check runs npm lint, typecheck, build and test, then `dotnet build` and
-`dotnet test` for the backend test project. Dev builds and starts the API DLL on
+Check runs npm lint, typecheck, build and coverage tests, then `dotnet build` and
+`dotnet test` with coverage for the backend test project, plus Python attribution
+and CI evidence tests. Coverage is informational without new thresholds. Dev builds and starts the API DLL on
 loopback port 5000 and Vite on loopback port 5173. Vite proxies `/api` to the API.
 Check readiness with `curl -fsS http://127.0.0.1:5000/api/health` (status `ok`)
 and `curl -fsS http://127.0.0.1:5173/api/projects` (JSON array). Ctrl+C cleans up
@@ -64,7 +62,7 @@ mkdir -p .data
 ```
 
 For **native Windows with Git Bash**, install Node.js **24.22.0** and the
-**Windows .NET SDK 10.0.402**, then reopen Git Bash and run:
+**Windows .NET SDK 10.0.402** and npm **11.9.0**, then reopen Git Bash and run:
 
 ```bash
 node --version   # v24.22.0
@@ -77,7 +75,7 @@ bash scripts/dev.sh
 On Windows, setup uses tools on PATH and preserves your normal cache locations.
 If Node or the pinned .NET SDK is missing, it exits with install instructions;
 it does not run the Unix .NET installer. The .NET version comes from `global.json`.
-Cloud automatic installation is unchanged.
+Linux/cloud automatic installation uses checkout-relative tool storage.
 The development and E2E scripts convert database filenames to Windows paths
 before passing them to SQLite, including paths containing spaces.
 
@@ -99,10 +97,26 @@ npm --prefix src/web run dev -- --port 5173 --strictPort
 
 Open **http://127.0.0.1:5173**. Stop each process with Ctrl+C. The UI proxies
 `/api` to port 5000; projects persist in the checkout's ignored `.data/projects.db`.
-Local npm may differ from the tested cloud npm **11.9.0**;
+Setup requires npm **11.9.0**, as recorded in `.npm-version`;
 `npm ci` uses the committed lockfile without upgrading application dependencies.
 
-## Verified results
+## Phase A validation
+
+`bash scripts/setup.sh` and `bash scripts/check.sh` passed in the cloud with
+Node 24.22.0, npm 11.9.0, SDK 10.0.402, 3 frontend tests, 4 backend integration
+cases, 8 existing attribution tests, and 4 CI evidence tests. `bash scripts/e2e.sh`
+passed both browser phases using the reported system Chromium fallback.
+Measured frontend coverage: **96% lines, 75% branches**; backend: **100% lines,
+75% branches**. Neither codebase has a new coverage threshold.
+
+Hosted Linux/Windows checks and both matched-browser phases passed; a controlled
+failing assertion also failed the aggregate gate and retained diagnostics.
+Hosted run results, the tested commits, controlled failure evidence, and remaining
+acceptance items are recorded in the [Phase A report](docs/milestones/milestone-0-phase-a-report.md).
+See [CI operations](docs/ci.md) for commands, protected-policy changes, artifact
+scope, and limitations. Phase A does not establish branch enforcement.
+
+## Historical verified results
 
 With Node **24.22.0** and .NET SDK **10.0.402**, `bash scripts/setup.sh`
 installed the pinned SDK and restored locked dependencies successfully.
