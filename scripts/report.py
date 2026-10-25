@@ -34,17 +34,17 @@ def floors(lines, branches):
 def report(kind):
     if kind == 'frontend':
         web = ROOT / 'src/web'
-        expected = {str(path.relative_to(web)) for path in (web / 'src').rglob('*')
+        expected = {path.relative_to(web).as_posix() for path in (web / 'src').rglob('*')
                     if path.name.endswith(('.test.ts', '.test.tsx'))}
         if not expected:
             raise ValueError('No frontend test files')
         count = junit(ARTIFACTS / 'frontend/junit.xml', expected)
         data = json.loads((ARTIFACTS / 'frontend/coverage/coverage-summary.json').read_text())
-        production = {str(path.resolve()) for path in (web / 'src').rglob('*')
+        production = {path.resolve() for path in (web / 'src').rglob('*')
                       if path.suffix in ('.ts', '.tsx')
                       and not path.name.endswith(('.test.ts', '.test.tsx', '.d.ts'))
                       and path.name != 'test-setup.ts'}
-        if set(data) - {'total'} != production:
+        if {Path(name).resolve() for name in data if name != 'total'} != production:
             raise ValueError('Frontend coverage must include every production TS/TSX file')
         total = data['total']
         if total['lines']['total'] <= 0 or total['branches']['total'] <= 0:
@@ -77,7 +77,7 @@ def report(kind):
         return f'backend: {len(cases)} tests; lines {lines:.2f}%; branches {branches:.2f}% (floors: 80% lines / 70% branches)'
     if kind in ('e2e-create', 'e2e-restart'):
         specs = ROOT / 'src/web/e2e'
-        expected = {str(path.relative_to(specs)) for path in specs.rglob('*')
+        expected = {path.relative_to(specs).as_posix() for path in specs.rglob('*')
                     if path.name.endswith(('.spec.ts', '.spec.tsx', '.test.ts', '.test.tsx'))}
         if not expected:
             raise ValueError('No browser suites')

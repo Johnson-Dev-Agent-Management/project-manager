@@ -14,7 +14,7 @@
     "test": "vitest run",
     "e2e": "playwright test",
     "test:coverage": "vitest run --coverage --reporter=default --reporter=junit --outputFile.junit=../../.artifacts/frontend/junit.xml",
-    "format:check": "prettier --check \"../../**/*.{ts,tsx,js,json,yml,yaml,md,html,css}\""
+    "format:check": "prettier --check --ignore-path ../../.prettierignore ../.."
   },
   "dependencies": {
     "react": "19.3.0",

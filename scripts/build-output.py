@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def files(directory):
-    return {str(path.relative_to(directory)): hashlib.sha256(path.read_bytes()).hexdigest()
+    return {path.relative_to(directory).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
             for path in sorted(directory.rglob('*')) if path.is_file()}
 
 
