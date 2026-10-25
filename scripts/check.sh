@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck source=common.sh
 source "$(dirname "$0")/common.sh"
 frontend() {
   rm -rf .artifacts/frontend

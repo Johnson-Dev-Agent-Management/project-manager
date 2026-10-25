@@ -7,6 +7,7 @@ setup instructions](ci.md) and the [Phase A report](milestones/milestone-0-phase
 The saved cloud environment was not republished by Phase A.
 
 ## Baseline verification
+
 The private `project-manager-dev` environment was published and verified in a
 fresh cloud task on 2026-10-07. The task fetched `codex/cloud-bootstrap` at
 `5e7d0a2dca651c815f64ca3040ee056a1c9e46c8`, ran setup, checks and browser E2E,
@@ -18,6 +19,7 @@ and both browser E2E phases in the current task. See README.md for exact tested
 tool versions and results; these results do not verify a republished environment.
 
 ## Access and billing
+
 - Repository: private `Joshbomb75/project-manager`; PR #1 merged the baseline into `main`.
 - Environment: `project-manager-dev`, repository selection contains only this repo,
   privacy is **Only me**.
@@ -35,6 +37,7 @@ tool versions and results; these results do not verify a republished environment
   unrelated repositories.
 
 ## Network and approvals
+
 The published environment uses **Custom domains only** with these exact entries:
 `registry.npmjs.org`, `dot.net`, `builds.dotnet.microsoft.com`,
 `api.nuget.org` and `github.com`. There are no proxy secrets.
@@ -60,6 +63,7 @@ execution in the cloud and report blocked steps. Do not broaden access, disable
 security controls, enable paid extras or switch to local execution.
 
 ## Install script
+
 ```bash
 #!/usr/bin/env bash
 set -Eeuo pipefail
@@ -98,7 +102,9 @@ These owner steps are required to verify the saved environment in a fresh task;
 successful checks in the current task do not establish that it was republished.
 
 ## Development and validation
+
 From `/workspace/project-manager`:
+
 ```bash
 bash scripts/setup.sh
 bash scripts/check.sh
@@ -115,6 +121,7 @@ processes. E2E owns ports 5001/5174 and cleans up its services and temporary dat
 Authentication and authorization must be implemented before shared/public use or real data.
 
 ## Assigning future work
+
 Choose **New chat > Cloud > project-manager-dev**, then assign a bounded task:
 
 > In Joshbomb75/project-manager, implement [feature] from latest main.

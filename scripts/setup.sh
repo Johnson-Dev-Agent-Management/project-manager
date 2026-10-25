@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck source=common.sh
 source "$(dirname "$0")/common.sh"
 required_node_version=$(<"$ROOT/.nvmrc")
 required_npm_version=$(<"$ROOT/.npm-version")

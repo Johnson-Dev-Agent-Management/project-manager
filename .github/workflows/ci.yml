@@ -34,8 +34,17 @@ jobs:
       - uses: ./.github/actions/setup
         with:
           cache: ${{ inputs.cold-cache != true }}
-      - name: Frontend and attribution checks
+      - name: Frontend checks
         run: bash scripts/check.sh frontend 2>&1 | tee .artifacts/check.log
+      - name: Package production frontend
+        run: bash scripts/production-build.sh web
+      - name: Upload production frontend
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: web-production
+          path: .artifacts/build/web
+          if-no-files-found: error
+          retention-days: 7
       - name: Upload frontend evidence
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
@@ -58,6 +67,15 @@ jobs:
           cache: ${{ inputs.cold-cache != true }}
       - name: Backend checks
         run: bash scripts/check.sh backend 2>&1 | tee .artifacts/check.log
+      - name: Publish Release API
+        run: bash scripts/production-build.sh api
+      - name: Upload published API
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: api-production
+          path: .artifacts/build/api
+          if-no-files-found: error
+          retention-days: 7
       - name: Upload backend evidence
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
@@ -108,8 +126,18 @@ jobs:
         run: |
           npx --prefix src/web --no-install playwright install --with-deps chromium 2>&1 | tee .artifacts/browser-install.log
           npx --prefix src/web --no-install playwright --version
-      - name: Browser persistence checks
-        run: bash scripts/e2e.sh 2>&1 | tee .artifacts/e2e.log
+      - name: Download production frontend from this run
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
+        with:
+          name: web-production
+          path: .artifacts/build/web
+      - name: Download published API from this run
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
+        with:
+          name: api-production
+          path: .artifacts/build/api
+      - name: Ten consecutive browser persistence executions
+        run: bash scripts/e2e-qualify.sh 2>&1 | tee .artifacts/e2e.log
       - name: Upload browser evidence
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
@@ -119,9 +147,54 @@ jobs:
           include-hidden-files: true
           if-no-files-found: error
           retention-days: 7
+  policy:
+    name: policy
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/setup
+        with:
+          cache: ${{ inputs.cold-cache != true }}
+      - name: Standards, static analysis, and test integrity
+        run: bash scripts/policy.sh 2>&1 | tee .artifacts/policy.log
+      - name: Upload policy evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: policy-evidence
+          path: .artifacts/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 7
+  supply-chain:
+    name: supply-chain
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: ./.github/actions/setup
+        with:
+          cache: ${{ inputs.cold-cache != true }}
+      - name: Secrets and current dependency advisories
+        run: bash scripts/security.sh 2>&1 | tee .artifacts/security.log
+      - name: Upload supply-chain evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: supply-chain-evidence
+          path: .artifacts/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 7
   quality-gate:
     name: quality-gate
-    needs: [frontend, backend, windows-smoke, e2e]
+    needs: [frontend, backend, windows-smoke, e2e, policy, supply-chain]
     if: always()
     runs-on: ubuntu-24.04
     timeout-minutes: 2
@@ -135,7 +208,7 @@ jobs:
           python3 - <<'PY'
           import json, os
           results = json.loads(os.environ['RESULTS'])
-          expected = {'frontend', 'backend', 'windows-smoke', 'e2e'}
+          expected = {'frontend', 'backend', 'windows-smoke', 'e2e', 'policy', 'supply-chain'}
           lines = [f"Head commit: {os.environ['HEAD_SHA']}",
                    f"Tested workflow commit: {os.environ['TESTED_SHA']}",
                    '', '| Job | Result |', '| --- | --- |']

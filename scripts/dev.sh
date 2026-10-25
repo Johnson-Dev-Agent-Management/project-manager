@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck source=common.sh
 source "$(dirname "$0")/common.sh"
 pids=()
 cleanup() { trap - EXIT INT TERM; for pid in "${pids[@]}"; do kill "$pid" 2>/dev/null || true; done; for pid in "${pids[@]}"; do wait "$pid" 2>/dev/null || true; done; }
