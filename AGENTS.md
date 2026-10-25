@@ -1,12 +1,14 @@
 # Agent instructions
 
 ## Project
+
 A project management application built with React, TypeScript, C#, and ASP.NET Core.
 Development is performed by coding agents in a private Codex Cloud environment.
 The cloud-tested baseline creates and lists projects through React and ASP.NET Core,
 with SQLite persistence and automated unit and browser tests.
 
 ## Scope and authorization
+
 - Work only on Johnson-Dev-Agent-Management/project-manager and its development dependencies.
 - Run builds, tests, dependency installation, and development services in the cloud.
   Do not use the owner's personal computer, files, browser sessions, or local services for project execution.
@@ -18,6 +20,7 @@ with SQLite persistence and automated unit and browser tests.
 - These instructions guide behavior; actual access controls must be enforced in the environment and GitHub.
 
 ## Milestone planning
+
 - Before milestone work, read [Milestone 0: Trusted Development Foundation](docs/milestones/milestone-0.md).
 - Follow the assigned phase, its acceptance criteria, and the acceptance-report format.
   The plan is not authorization to start another phase, merge, or change GitHub settings.
@@ -25,6 +28,7 @@ with SQLite persistence and automated unit and browser tests.
   as protected policy. Explicitly identify proposed changes; never silently weaken controls.
 
 ## Architecture
+
 - One repository: `src/web/` for React + strict TypeScript + Vite;
   `src/api/ProjectManager.Api/` for ASP.NET Core; `tests/` for backend tests.
 - Use .NET 10 LTS and Node.js 24 LTS, current supported patches.
@@ -37,7 +41,15 @@ with SQLite persistence and automated unit and browser tests.
 - Authentication, authorization, and deployment are separate features and must be implemented
   before using real user data or offering shared/public access.
 
+## Engineering standards
+
+Read [engineering standards](docs/engineering.md) and [CI operation](docs/ci.md)
+for required checks, behavioral test mapping, protected coverage floors, security
+triage, and exception rules. Changes to these controls require independent human
+review; Phase B adds checks but does not establish Phase C enforcement.
+
 ## Required developer commands
+
 The following root-level Bash entry points are implemented and passed cloud validation.
 
 - `bash scripts/setup.sh`: restore pinned frontend and backend dependencies;
@@ -47,9 +59,17 @@ The following root-level Bash entry points are implemented and passed cloud vali
 - `bash scripts/dev.sh`: start frontend and backend on documented loopback ports;
   clean up child processes on exit.
 - `bash scripts/e2e.sh`: start isolated test services and a temporary SQLite database,
-  run the UI-to-API persistence scenario, and clean up only test-owned processes/files.
+  run the UI-to-API persistence scenario against production build output and the
+  published Release API, and clean up only test-owned processes/files.
   Prefer a headless browser test when the environment supports it. If unavailable,
   report the exact limitation; do not describe API-only checks as browser E2E tests.
+
+- `bash scripts/policy.sh`: formatting, .NET format/analyzers, ShellCheck, actionlint,
+  and Python policy tests.
+- `bash scripts/security.sh`: fresh npm/NuGet advisory checks and redacted Gitleaks
+  scans of history and the tracked working tree.
+- `bash scripts/e2e-qualify.sh`: ten consecutive full executions using previously
+  prepared output from `bash scripts/production-build.sh`; no retries.
 
 Record the underlying npm/dotnet commands and actual results in README.md.
 Keep setup independent of personal credentials. Use npm ci and locked NuGet restore
@@ -57,6 +77,7 @@ after generating and committing lock files. Update locks intentionally when chan
 Run relevant tests for a change and the complete check script before handing off a PR.
 
 ## Git workflow
+
 - Read the current repository state and any task-specific instructions first.
 - Start from the owner's specified branch or the latest main. The initial cloud-bootstrap
   branch has been merged; do not use that historical branch as the default baseline.
@@ -67,6 +88,7 @@ Run relevant tests for a change and the complete check script before handing off
   and clearly bounded ownership; coordinate overlapping files before integration.
 
 ## Pull Request Attribution and Documentation
+
 - These conventions apply to all future PRs unless explicitly overridden by the user.
   Preserve the existing draft PR workflow and GitHub authentication/ownership.
 - Identify AI-authored PRs explicitly. When Codex creates a PR for changes primarily
@@ -101,7 +123,9 @@ Run relevant tests for a change and the complete check script before handing off
   and verification steps; do not change repository-wide security settings to enable it.
 
 ## Baseline end-to-end acceptance criteria
+
 Preserve these verified behaviors:
+
 1. A user enters a nonblank project name in the React interface.
 2. ASP.NET Core validates and persists the project in SQLite.
 3. The project appears in the list and remains after a page reload and API restart.

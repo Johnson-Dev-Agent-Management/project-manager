@@ -1,139 +1,112 @@
-# Foundational CI — Milestone 0, Phase A
+# CI operation — Milestone 0, Phase B
 
-Implementation starts from main `653ade674f81f90598f4dd92894705834ca007ed`.
-The assigned plan was read from [planning PR #5](https://github.com/Johnson-Dev-Agent-Management/project-manager/pull/5),
-commit `0fcc272e2a68c3112abaaca7fc0bc0b0715e34ec`; it was not yet on main.
-This implementation does not merge or duplicate that planning change.
-
-## Commands and compatibility
-
-Run from any checkout location with Bash, Python 3, bootstrap Node/npm, curl,
-and the platform prerequisites for .NET installed:
+Run in an authorized cloud checkout. Exact Node 24.22.0, npm 11.9.0, and
+.NET SDK 10.0.402 remain pinned. Setup uses npm ci and locked NuGet restore;
+Linux/macOS may install runtimes under ignored `.tools`. Native Windows uses
+Git Bash and pinned tools on PATH; `cygpath -am` database conversion is preserved.
+There is no required `/workspace` location or dependency on personal credentials.
 
 ```bash
 bash scripts/setup.sh
 bash scripts/check.sh
+bash scripts/policy.sh
+bash scripts/security.sh
 bash scripts/e2e.sh
+# Qualification using output produced above; ten full executions, no retries:
+bash scripts/e2e-qualify.sh
 ```
 
-Node 24.22.0 (`.nvmrc`), npm 11.9.0 (`.npm-version`), and SDK 10.0.402
-(`global.json`, no roll-forward) are checked by setup. Linux/macOS setup can
-install the exact tools under ignored `.tools/`; it uses `npm ci` and
-`dotnet restore tests/ProjectManager.Api.Tests --locked-mode`. Dependency changes
-require intentional lock regeneration. No personal credentials are needed.
+| Entry point                      | Underlying checks                                                                                                                                       |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `check.sh frontend`              | npm lint, typecheck, build, test:coverage; report integrity/floors; Python attribution/policy regression tests                                          |
+| `check.sh backend`               | dotnet build and test --no-build --no-restore, xUnit, real SQLite, TRX/Coverlet, report integrity/floors                                                |
+| `check.sh`                       | Both groups and Python tests                                                                                                                            |
+| `policy.sh`                      | Prettier --check, dotnet format --verify-no-changes --no-restore --severity info for both projects, ShellCheck, actionlint, Python tests                |
+| `security.sh`                    | npm audit, forced uncached locked NuGet restore and transitive vulnerability JSON, fail-closed parser, redacted Gitleaks history and tracked-tree scans |
+| `build.sh`                       | Existing frontend/backend/test-project Windows-compatible build smoke                                                                                   |
+| `production-build.sh [web\|api]` | Vite build or dotnet publish -c Release --no-restore; output/provenance under .artifacts/build                                                          |
+| `e2e.sh [--use-builds]`          | Default builds production output; optional flag consumes verified existing output; both browser phases and cleanup                                      |
+| `e2e-qualify.sh`                 | Ten consecutive full executions of e2e.sh --use-builds, fresh scenario database each time; abort at first failure                                       |
 
-`scripts/common.sh` honors tools on PATH and explicit cache variables, supports
-`PROJECT_TOOLS_DIR` / `PROJECT_CACHE_DIR`, and reuses sibling prepared cloud tools
-and caches if present. Default new tool/cache directories are checkout-relative;
-there is no required `/workspace` location. Download caches contain packages,
-not node_modules or compiled output. The historical cloud image remains usable.
+[Engineering standards](engineering.md) specifies contracts, behavioral mapping,
+80% line / 70% branch floors per codebase, coverage scope, security triage, exact
+analysis policy, and the empty exception register. The [Phase A report](milestones/milestone-0-phase-a-report.md)
+is historical evidence; Phase B report records current outcomes.
 
-Native Windows uses **Git Bash** with the exact Windows Node/npm/.NET tools on
-PATH. Setup reports missing prerequisites rather than invoking Unix installers.
-Existing `cygpath -am` database conversion is preserved. Hosted Windows runs setup
-twice and `bash scripts/build.sh` (both frontend and backend/test-project builds).
-Windows browser execution is not part of Phase A.
+## Workflows and production browser testing
 
-The common root commands used by development and CI are:
+`Foundational CI` retains every PR to main (including drafts), push to main,
+and manual dispatch with `cold-cache`. No path filters. Stable check names:
+**frontend**, **backend**, **windows-smoke**, **e2e**, **policy**, **supply-chain**,
+and **quality-gate**. E2E depends on frontend/backend. The always-running aggregate
+gate accepts only explicit success from all six dependencies, rejecting missing,
+failed, skipped, and cancelled jobs. Python tests exercise each dependency's
+failure outcomes. These names are not configured as required checks in Phase B.
 
-| Command | Underlying validation |
-| --- | --- |
-| `bash scripts/check.sh frontend` | npm lint, typecheck, build, `test:coverage`; Python attribution and CI report/gate tests |
-| `bash scripts/check.sh backend` | `dotnet build --no-restore`, `dotnet test --no-build --no-restore` with TRX and Coverlet |
-| `bash scripts/check.sh` | Both groups and Python tests |
-| `bash scripts/build.sh` | npm build and `dotnet build tests/ProjectManager.Api.Tests --no-restore` |
-| `bash scripts/e2e.sh` | Debug API build, isolated SQLite/Vite, Playwright create/reload phase, API restart, Playwright persistence phase |
+Frontend/backend jobs publish separate production artifacts. E2E downloads only
+named artifacts from the **current workflow run**, with digest mismatch treated
+as an error. It verifies each output file's SHA-256 and the exact checkout commit
+and workflow run recorded in provenance. It serves Vite's built hashed assets
+with `vite preview`, proxies `/api` to the published Release API, and asserts both
+the asset path and proxied health response. It never rebuilds the downloaded API
+or replaces production output with a dev server.
 
-E2E uses loopback ports 5001/5174, one Chromium worker, no retries, synthetic data,
-and a temporary database. It stops test-owned processes and deletes the database.
-Logs/reports remain under `.artifacts/e2e/`. CI installs the Chromium matched to
-Playwright 1.64.0 (`npx --prefix src/web --no-install playwright install --with-deps chromium`).
-Restricted cloud development can explicitly use `PLAYWRIGHT_CHROMIUM_EXECUTABLE`
-or the reported `chromium` PATH fallback; CI does not auto-select that fallback.
-Production-output E2E improvements belong to Phase B.
+Loopback ports 5001/5174 must be free; occupied ports fail before service startup.
+Readiness requests have one-second connection/response bounds and a 30-second
+deadline. The API runs on a new temporary SQLite file per full execution; both
+phases share that file across an actual API process restart. Chromium uses one
+worker, explicit zero retries, and focused-test rejection. Unknown/missing phases
+fail at configuration load. CI installs Playwright 1.64.0's matched Chromium.
+Restricted cloud runs explicitly report the optional system Chromium fallback.
 
-## Workflow and evidence
+Each execution retains a unique `.artifacts/e2e/run-*` directory with startup
+logs, proxy evidence, scenario/commit identity, JUnit, HTML, failure screenshots/
+traces, successful validation/persistence screenshots, and a cleanup result.
+Temporary database directories are removed after stopping/reaping only owned
+child PIDs. Teardown has a bounded graceful wait before killing a surviving
+owned process. Qualification keeps all ten runs and stops on the first failure;
+failed attempts are not replaced by successful retries.
 
-`Foundational CI` runs on every PR targeting main (including drafts), pushes to
-main, and manual dispatch. There are no path filters. Stable check names are
-**frontend**, **backend**, **windows-smoke**, **e2e**, and **quality-gate**.
-E2E waits for frontend/backend; the aggregate gate always evaluates all four
-jobs and accepts only explicit success. A failed, cancelled, skipped, or missing
-dependency fails the gate. No required validation uses continue-on-error.
-These names are documented for later review, not configured as required checks.
+## Runners, tools, evidence, and costs
 
-Linux uses `ubuntu-24.04`; the small Windows check uses `windows-2025` and Git Bash.
-Validation jobs have 10-minute timeouts; the gate has 2 minutes. Superseded runs
-on the same PR/ref are cancelled. The token has only contents:read, checkout does
-not persist credentials, and no production secrets are provided. The separate
-metadata-only privileged `pr-attribution.yml` remains unchanged and never executes
-PR code. No GitHub settings or protections are modified.
+Linux stays on ubuntu-24.04; Windows stays on windows-2025 with Git Bash repeated
+setup and build only. Validation timeouts remain ten minutes, gate two minutes.
+Superseded runs are cancelled. Tokens are contents:read; checkout credentials are
+not persisted. Supply-chain checkout fetches full history for secret scanning.
+The privileged metadata-only attribution workflow is unchanged and never runs
+PR code. No permission, visibility, merge, deployment, or protection changes occur.
 
-External Actions are pinned to full SHAs, resolved against the upstream major
-tags and inspected through their action manifests for this implementation:
+Existing full-SHA pins for checkout v5, setup-node v5, setup-dotnet v5, and
+upload-artifact v7 are retained. Download-artifact v8 is pinned to
+`9000827ccba6bdab643e8b6fd33ac0654aef8333`; its Node 24 manifest and current-run
+artifact selection were inspected. Archive tools use explicit SHA-256 pins.
+All policy changes require independent human review.
 
-| Action | Major | Commit |
-| --- | --- | --- |
-| actions/checkout | v5 | `fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09` |
-| actions/setup-node | v5 | `a0853c24544627f65ddf259abe73b1d18a591444` |
-| actions/setup-dotnet | v5 | `26b0ec14cb23fa6904739307f278c14f94c95bf1` |
-| actions/upload-artifact | v7 | `cf430e030ddbb5b0abf93d22962f4752f3646cd9` |
+Dependency download caches retain Phase A's OS/lock/toolchain keys. Routine
+artifacts, including diagnostics from failed jobs and production outputs, retain
+seven days. Missing artifacts fail upload. GitHub step summaries record counts,
+coverage, and aggregate head/tested merge SHAs. The acceptance report retains
+summaries and immutable run/commit links beyond artifact expiry. Review screenshots
+alongside tests, not as a replacement for assertions.
 
-Setup Actions cache npm/NuGet downloads using OS, lockfiles, and toolchain files.
-The initial hosted run must demonstrate cache misses; manual dispatch's
-`cold-cache` input disables download caches for subsequent diagnosis.
-Browser downloads are not cached. No paid service is added.
+No new paid service or browser matrix is introduced. Ten-run qualification is
+performed by the single E2E job; actual wall time and aggregate runner duration
+are measured from Actions metadata in the report. Security advisories and hosted
+images can change between runs, so a historical green result is not a perpetual
+security guarantee. Main-push verification follows only an owner-performed merge.
 
-Each validation job uploads `.artifacts/` for 7 days even on failure; missing
-artifact directories fail upload. Evidence includes setup/check logs, exact
-checked-out commit and tool versions, JUnit/TRX, coverage, and browser HTML reports
-with failure traces/screenshots. Report validation rejects missing/empty reports,
-zero tests, failed/skipped tests, and empty coverage. Python discovery separately
-rejects zero attribution or CI evidence tests. Step summaries show counts and
-coverage; the aggregate summary records both PR head and tested workflow SHA
-(the PR merge ref for normal PR runs). Artifact expiry means acceptance evidence
-must also be recorded in the PR and durable acceptance report.
+## Explicit protected-policy changes
 
-Measure elapsed workflow time and summed job duration after hosted runs; target
-warm feedback under ten minutes, with actual usage reported instead of a billing
-promise. Main-push behavior cannot be observed before an owner-authorized merge.
+Phase B adds behavioral tests, ordinary TS discovery and complete authored-config
+checking; focus/skip/empty/missing-report safeguards; measured coverage floors
+without broader exclusions; recommended analyzers, type-aware lint, formatting,
+secret and dependency checks; reviewed update PR configuration; production artifact
+provenance and ten-run E2E qualification; standards and acceptance evidence.
 
-## Informational coverage scope
-
-There are **no new numerical coverage thresholds**. Frontend V8 coverage uses
-`@vitest/coverage-v8` 5.0.3 with Vitest 5.0.3, includes every `src/**/*.{ts,tsx}`
-production file (including unimported `main.tsx`), and excludes only test files,
-`test-setup.ts`, and type-only `.d.ts` declarations. Reports: text, JSON summary,
-Cobertura, HTML. Existing application test discovery is unchanged in Phase A.
-
-Backend uses Coverlet collector 6.0.4 with Microsoft.NET.Test.Sdk 17.14.1. It
-instruments the whole `ProjectManager.Api` assembly, including unexecuted code;
-only the test assembly, third-party assemblies, and generated `obj` sources are
-outside scope. Auto-properties remain included. Coverlet's default attribute
-exclusions (Obsolete, GeneratedCode, ExcludeFromCodeCoverage) are not broadened;
-there are currently no authored exclusions using these attributes. Output is
-Cobertura; Debug symbols preserve source mapping. Lines and branches are reported
-separately for each codebase. Coverage is evidence of execution, not assertion
-quality; baseline review and any threshold policy belong to Phase B.
-
-## Proposed protected-policy changes
-
-Independent human review is required for these proposed changes:
-
-- New CI workflow/composite setup, immutable Action pins, read-only token,
-  concurrency/timeouts, cache behavior, diagnostics, and success-only gate.
-- Portable setup/common scripts, exact npm selection, frontend/backend check
-  selectors, build-only smoke entry point, and retained E2E evidence.
-- New report validation, zero-test Python discovery guard, and tests of report
-  failure cases and the actual gate implementation.
-- New V8/Coverlet tooling and locked dependencies; explicit production coverage
-  inclusion/exclusions, without thresholds.
-- Playwright report/trace configuration; existing application, integration,
-  browser, and attribution assertions remain unchanged.
-- This CI operating document, acceptance report, README command corrections, and
-  a historical-context notice in cloud setup documentation.
-
-No assertions are removed, tests skipped, thresholds lowered, compiler/lint rules
-relaxed, or privileged labeling code altered. These are review obligations;
-server-enforced policy ownership, independent identities, security hardening,
-merge probes, and branch enforcement remain outside Phase A.
+The ESLint-10-compatible accessibility fork, obsolete no-floor regression test
+replacement with floor rejection tests, and repository-wide formatting are
+explicit proposals. Historical plan/report formatting changes carry no semantic
+changes. No existing behavioral assertion is removed; the old creation/list,
+validation, reload, and restart checks are retained and strengthened. There are
+no operative exceptions, suppressed rules, retries, or lowered coverage targets.
+Phase C, independent AI review, orchestration, and merge controls are outside scope.

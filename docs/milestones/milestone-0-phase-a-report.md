@@ -16,14 +16,14 @@ The outcomes below describe historical Phase A validation. These snapshots do no
 validate the Python runner follow-up. PR #6 records the follow-up's exact head,
 tested merge SHA, run link, actual test counts, and results after CI inspection.
 
-| Criterion | Outcome | Evidence |
-| --- | --- | --- |
-| A1 | Passed | Fresh hosted Ubuntu restored locked dependencies; npm/NuGet cache misses verified; existing lint/type/build/application/attribution checks passed outside /workspace |
-| A2 | Passed | Native windows-2025 Git Bash: setup, repeated setup, frontend/backend builds; zero build warnings/errors |
-| A3 | Passed | Hosted matched Chromium executed both phases against isolated SQLite; validation/create/reload/API restart persistence passed |
-| A4 | Passed | Frontend 96% lines / 75% branches; backend 100% lines / 75% branches, including untested production scope; no numerical thresholds |
-| A5 | Passed | Controlled failing assertion failed frontend and aggregate gate, E2E skipped, diagnostics uploaded; temporary test removed afterward |
-| A6 | Passed | Exact snapshots, commands, results, coverage, and limits recorded here and in the PR; human verification remains pending |
+| Criterion | Outcome | Evidence                                                                                                                                                             |
+| --------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A1        | Passed  | Fresh hosted Ubuntu restored locked dependencies; npm/NuGet cache misses verified; existing lint/type/build/application/attribution checks passed outside /workspace |
+| A2        | Passed  | Native windows-2025 Git Bash: setup, repeated setup, frontend/backend builds; zero build warnings/errors                                                             |
+| A3        | Passed  | Hosted matched Chromium executed both phases against isolated SQLite; validation/create/reload/API restart persistence passed                                        |
+| A4        | Passed  | Frontend 96% lines / 75% branches; backend 100% lines / 75% branches, including untested production scope; no numerical thresholds                                   |
+| A5        | Passed  | Controlled failing assertion failed frontend and aggregate gate, E2E skipped, diagnostics uploaded; temporary test removed afterward                                 |
+| A6        | Passed  | Exact snapshots, commands, results, coverage, and limits recorded here and in the PR; human verification remains pending                                             |
 
 ## Historical GitHub Actions snapshots
 
@@ -132,10 +132,10 @@ are recorded in PR #6 after inspection, separately from the historical snapshots
 
 ## Coverage and protected policy
 
-| Production codebase | Lines | Branches | Tool |
-| --- | --- | --- | --- |
-| Frontend | 96% (24/25) | 75% (18/24) | Vitest/V8 coverage 5.0.3 |
-| Backend API | 100% (17/17) | 75% (3/4) | Coverlet collector 6.0.4 / Test SDK 17.14.1 |
+| Production codebase | Lines        | Branches    | Tool                                        |
+| ------------------- | ------------ | ----------- | ------------------------------------------- |
+| Frontend            | 96% (24/25)  | 75% (18/24) | Vitest/V8 coverage 5.0.3                    |
+| Backend API         | 100% (17/17) | 75% (3/4)   | Coverlet collector 6.0.4 / Test SDK 17.14.1 |
 
 Frontend includes unimported production files, including main.tsx at 0% lines;
 exclusions are tests, test setup, and type declarations. Backend instruments the

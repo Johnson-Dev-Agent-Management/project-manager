@@ -18,17 +18,27 @@ class FixtureTests(unittest.TestCase):
     def test_skipped(self):
         self.fail('a skipped test must not execute')
 '''
+RUN_ONCE = '''from pathlib import Path
+import unittest
+class FixtureTests(unittest.TestCase):
+    def test_passes(self):
+        marker = Path(__file__).with_suffix('.executed')
+        self.assertFalse(marker.exists(), 'test executed more than once')
+        marker.touch()
+'''
 
 
 class PythonRunnerTests(unittest.TestCase):
-    def run_runner(self, attribution=PASSING, evidence=PASSING):
+    def run_runner(self, attribution=PASSING, evidence=PASSING, extra_modules=None):
         with tempfile.TemporaryDirectory() as directory:
             tests = Path(directory) / 'tests'
             tests.mkdir()
-            for filename, source in (
-                ('test_pr_attribution.py', attribution),
-                ('test_ci_fixture.py', evidence),
-            ):
+            modules = {
+                'test_pr_attribution.py': attribution,
+                'test_ci_fixture.py': evidence,
+                **(extra_modules or {}),
+            }
+            for filename, source in modules.items():
                 if source is not None:
                     (tests / filename).write_text(source)
             return subprocess.run(
@@ -53,6 +63,29 @@ class PythonRunnerTests(unittest.TestCase):
         result = self.run_runner()
         self.assertEqual(result.returncode, 0, result.stdout)
         self.assertIn('Ran 2 tests', result.stdout)
+        self.assertIn('OK', result.stdout)
+
+    def test_empty_ci_module_fails_among_passing_modules(self):
+        result = self.run_runner(extra_modules={'test_ci_security.py': ''})
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertIn('Empty test module: test_ci_security (test_ci_security.py)', result.stdout)
+
+    def test_every_empty_module_is_named_including_attribution(self):
+        for attribution, modules, expected in (
+            (PASSING, {'test_ci_empty.py': '', 'test_ci_security.py': 'class NotATest:\n    pass\n'},
+             ('test_ci_empty', 'test_ci_security')),
+            ('', {}, ('test_pr_attribution',)),
+        ):
+            with self.subTest(expected=expected):
+                result = self.run_runner(attribution=attribution, extra_modules=modules)
+                self.assertNotEqual(result.returncode, 0, result.stdout)
+                for module in expected:
+                    self.assertIn(f'Empty test module: {module} ({module}.py)', result.stdout)
+
+    def test_multiple_passing_modules_execute_once_each(self):
+        result = self.run_runner(RUN_ONCE, RUN_ONCE, {'test_ci_security.py': RUN_ONCE})
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertIn('Ran 3 tests', result.stdout)
         self.assertIn('OK', result.stdout)
 
     def test_each_discovery_pattern_must_find_tests(self):
