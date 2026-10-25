@@ -7,13 +7,13 @@ test('loads empty state and creates a project', async () => {
   expect(screen.getByRole('status')).toHaveTextContent('Loading');
   await screen.findByText('No projects yet.');
   fireEvent.change(screen.getByLabelText('Project name'), { target: { value: 'Example' } });
-  fireEvent.click(screen.getByRole('button'));
+  fireEvent.click(screen.getByRole('button', { name: 'Create project' }));
   await screen.findByText('Example');
   expect(fetchMock.mock.calls[1][1].body).toBe(JSON.stringify({ name: 'Example' }));
 });
 test('shows server validation failure', async () => {
   vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce({ ok: true, json: async () => [] }).mockResolvedValueOnce({ ok: false, json: async () => ({ errors: { name: ['Project name is required.'] } }) }));
-  render(<App />); await screen.findByText('No projects yet.'); fireEvent.click(screen.getByRole('button'));
+  render(<App />); await screen.findByText('No projects yet.'); fireEvent.click(screen.getByRole('button', { name: 'Create project' }));
   expect(await screen.findByRole('alert')).toHaveTextContent('Project name is required.');
 });
 test('shows a loading error', async () => {

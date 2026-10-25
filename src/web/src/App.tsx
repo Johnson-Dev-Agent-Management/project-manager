@@ -1,4 +1,5 @@
 import { useEffect, useState, type FormEvent } from 'react';
+import ThemeToggle from './ThemeToggle';
 type Project = { id: number; name: string };
 export default function App() {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -28,5 +29,5 @@ export default function App() {
     } catch (reason) { setError(reason instanceof Error ? reason.message : 'Could not create project.'); }
     finally { setSaving(false); }
   }
-  return <main><h1>Projects</h1><form onSubmit={submit}><label htmlFor="project-name">Project name</label><input id="project-name" value={name} onChange={event => setName(event.target.value)} /><button disabled={loading || saving}>{saving ? 'Creating…' : 'Create project'}</button></form>{error && <p role="alert">{error}</p>}{loading ? <p role="status">Loading projects…</p> : projects.length === 0 ? <p>No projects yet.</p> : <ul>{projects.map(project => <li key={project.id}>{project.name}</li>)}</ul>}</main>;
+  return <main><header className="page-header"><h1>Projects</h1><ThemeToggle /></header><form onSubmit={submit}><label htmlFor="project-name">Project name</label><input id="project-name" value={name} onChange={event => setName(event.target.value)} /><button disabled={loading || saving}>{saving ? 'Creating…' : 'Create project'}</button></form>{error && <p role="alert">{error}</p>}{loading ? <p role="status">Loading projects…</p> : projects.length === 0 ? <p>No projects yet.</p> : <ul>{projects.map(project => <li key={project.id}>{project.name}</li>)}</ul>}</main>;
 }
