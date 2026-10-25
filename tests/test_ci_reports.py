@@ -91,7 +91,7 @@ class EvidenceTests(unittest.TestCase):
                     report.report('backend')
                 (backend / 'run').mkdir()
                 coverage = backend / 'run/coverage.cobertura.xml'
-                coverage.write_text('<coverage lines-valid="10" branches-valid="10" line-rate="1" branch-rate="1"/>')
+                coverage.write_text('<coverage lines-valid="10" branches-valid="10" lines-covered="10" branches-covered="10" line-rate="1" branch-rate="1"/>')
                 self.assertIn('lines 100.00%', report.report('backend'))
                 (tests / 'MissingTests.cs').write_text('namespace Example;')
                 with self.assertRaises(ValueError):
@@ -102,8 +102,8 @@ class EvidenceTests(unittest.TestCase):
                     with self.assertRaises(ValueError):
                         report.report('backend')
                 trx.write_text(good)
-                for attributes in ('lines-valid="10" branches-valid="10" line-rate="0.79999" branch-rate="1"',
-                                   'lines-valid="10" branches-valid="10" line-rate="1" branch-rate="0.69999"',
+                for attributes in ('lines-valid="100000" branches-valid="10" lines-covered="79999" branches-covered="10" line-rate="0.8" branch-rate="1"',
+                                   'lines-valid="10" branches-valid="100000" lines-covered="10" branches-covered="69999" line-rate="1" branch-rate="0.7"',
                                    'lines-valid="0" branches-valid="10" line-rate="0" branch-rate="1"'):
                     coverage.write_text(f'<coverage {attributes}/>')
                     with self.assertRaises(ValueError):

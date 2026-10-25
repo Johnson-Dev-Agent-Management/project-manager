@@ -71,8 +71,8 @@ def report(kind):
         coverage = ET.parse(files[0]).getroot()
         if int(coverage.attrib['lines-valid']) <= 0 or int(coverage.attrib['branches-valid']) <= 0:
             raise ValueError('Empty backend coverage')
-        lines = float(coverage.attrib['line-rate']) * 100
-        branches = float(coverage.attrib['branch-rate']) * 100
+        lines = int(coverage.attrib['lines-covered']) / int(coverage.attrib['lines-valid']) * 100
+        branches = int(coverage.attrib['branches-covered']) / int(coverage.attrib['branches-valid']) * 100
         floors(lines, branches)
         return f'backend: {len(cases)} tests; lines {lines:.2f}%; branches {branches:.2f}% (floors: 80% lines / 70% branches)'
     if kind in ('e2e-create', 'e2e-restart'):

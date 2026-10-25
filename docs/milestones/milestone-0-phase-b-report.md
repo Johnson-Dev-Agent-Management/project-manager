@@ -15,7 +15,9 @@ One implementation agent; no independent AI review or orchestration.
 
 The following snapshot is verified evidence, not a prediction for later commits.
 This evidence follow-up adds screenshots/reporting and normalizes report/manifest
-paths for Windows, plus fixes the npm formatting entry point's root ignore path.
+paths for Windows, plus fixes the npm formatting entry point's root ignore path. Backend floor
+checks use covered/valid counts so rounded Cobertura rates cannot promote a
+below-floor result; regressions cover reports whose rounded rates equal a floor.
 The PR records the follow-up's actual tested head/merge SHA and final run after
 inspection, without pretending this earlier run tested those later changes.
 
