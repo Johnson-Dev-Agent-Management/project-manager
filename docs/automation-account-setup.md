@@ -1,6 +1,6 @@
 # Manual automation-account setup — Phase C
 
-Status: **Owner-selected approach; not connected or verified.**
+Status: **Automation API identity and Write role verified; full separation incomplete.**
 Use a dedicated GitHub automation account, outside collaborator with **Write**
 on `Johnson-Dev-Agent-Management/project-manager` only. No organization membership,
 Admin/Maintain role, bypass, or access to `Joshbomb75` credentials. `Joshbomb75`
@@ -17,13 +17,23 @@ Reviewed official documentation and current connection metadata during Phase C:
 | ---------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Codex Cloud supports connected GitHub repositories and pushing changes | [OpenAI Codex Cloud](https://help.openai.com/en/articles/20001545-using-codex-cloud); repository permission and task Git setup are separate requirements                               |
 | Provider account selection/reconnection exists                         | [OpenAI connection guide](https://help.openai.com/en/articles/20001494-connecting-and-managing-app-accounts-in-chatgpt); exact UI and multi-account availability depend on app/surface |
-| This task can push branches and create draft PRs                       | Existing branch push and PR #15 verified under **Joshbomb75**, not the proposed automation account                                                                                     |
+| Automation API identity and repository role                            | Resumed session explicitly selects **Codex GitHub**: `codexcodemachine` (ID `348095294`), collaborator **write**, `push: true`, `admin: false`, `maintain: false`                      |
+| Automation organization membership                                     | Selected connection reports an empty organization-membership list; owner must still confirm outside-collaborator status and repository-only grants                                     |
+| This task can push branches and create draft PRs                       | Historical branch push and PR #15 used **Joshbomb75**; automation Git push, workflow-file write and replacement PR authorship remain unverified                                        |
 | Automation outside collaborator works for both paths here              | **Unverified until the new identity passes the separate Git/API/PR checks below**; generic product documentation is insufficient                                                       |
-| Owner credentials are unavailable through all agent routes             | **Unverified / not satisfied**: current connector still identifies as Joshbomb75; no enforcement work may start                                                                        |
+| Owner credentials are unavailable through all agent routes             | **Not satisfied**: tool account selectors still expose **Primary / Joshbomb75** alongside Codex GitHub; the owner route was not invoked in this resumed session                        |
 
-Current connector inspection lists only the owner user and organization app
+The owner reports creating, inviting and connecting `codexcodemachine`. Do not
+repeat account creation or invitation. The resumed session verifies the selected
+automation API identity and role; it does not verify the owner's billing screens,
+absence of bypass, or Git/workflow credentials. See the [current readback](milestones/evidence/phase-c/identity-readback.json).
+The remaining manual work starts at steps 6–8 below, plus any unverified items
+from the earlier setup. Selecting the automation connection does not hide the
+owner connection from this task.
+
+Historical connector inspection listed only the owner user and organization app
 installations, both with repository selection `all`; no automation account is
-present. This describes installation selection, not the effective token's scopes
+present in that historical snapshot. This describes installation selection, not the effective token's scopes
 or a complete inventory of credentials. Do not silently narrow shared installations
 that other tasks depend on. Any necessary installation-selection change is for
 the owner to review and perform, and must leave implementation access scoped to
@@ -31,13 +41,20 @@ this repository. The general ChatGPT GitHub research app's documented read acces
 does not establish Codex write support; use the Codex-enabled connection actually
 exposing Git/PR operations, and test it.
 
-In this documentation follow-up, ordinary `git push origin codex/m0-phase-c`
+In the earlier documentation follow-up, ordinary `git push origin codex/m0-phase-c`
 failed with **could not read Username for https://github.com**. The connector
 still returned `Joshbomb75` afterward. The earlier push is historical support
 evidence; the present Git credential path is not working and has not been
 reauthenticated. No owner credential was added/recovered. Publishing this
 authorized documentation through the existing connector does not verify Git
 push support or credential separation for the future automation account.
+
+In the resumed session, public Git fetch succeeds, but cloud `gh api user`
+returns **Forbidden**. `GH_TOKEN` is set; its value was not read or printed.
+Known Git/CLI credential helpers and standard credential files were checked by
+presence only, with none found. This bounded inventory is not proof of absence
+through all routes. No Git push, workflow-comment capability test, replacement
+PR or protection probe is run while the separation prerequisites remain unmet.
 
 ## Manual steps and stop points
 

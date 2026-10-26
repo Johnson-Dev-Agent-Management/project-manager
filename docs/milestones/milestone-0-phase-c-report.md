@@ -15,14 +15,14 @@
 - One implementation agent. No account/permission/protection/visibility changes,
   destructive probes, merges, purchases, deployment or orchestration performed.
 
-| Requirement | Outcome                                               | Evidence and remaining condition                                                                                                                                                                                                           |
-| ----------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| C1          | Unverified                                            | Branch read reports main unprotected; rulesets list empty; detailed branch protection inaccessible (403). Exact proposed controls and owner readback procedure prepared, not applied                                                       |
-| C2          | Unverified; current identity arrangement insufficient | Connector authenticates as owner `Joshbomb75`, repository role admin; cloud Git authenticated principal/scope not proven. Distinct restricted implementation identity and removal of reviewer credentials from agent reach remain required |
-| C3          | Unverified                                            | Seven successful Phase B check names/source observed; no required-check enforcement demonstrated. CODEOWNERS and exact required-check/review configuration proposed; base-branch bootstrap and independent approval pending                |
-| C4          | Unverified / Not run                                  | Full plan mapped to the disposable-target ledger; no target approved, no probes run. Draft CI validates preparation changes, not protection behavior                                                                                       |
-| C5          | Passed (documentation only; human acceptance pending) | Recovery, failure handling, bounded exceptions, readback, artifact retention and safe stop procedure documented in the owner checklist                                                                                                     |
-| C6          | Not run / Unverified                                  | Owner acceptance of Phase C pending; no authorized Phase C merge or resulting main run. M0 is not complete                                                                                                                                 |
+| Requirement | Outcome                                               | Evidence and remaining condition                                                                                                                                                                                                    |
+| ----------- | ----------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| C1          | Unverified                                            | Branch read reports main unprotected; rulesets list empty; detailed branch protection inaccessible (403). Exact proposed controls and owner readback procedure prepared, not applied                                                |
+| C2          | Unverified; partial API verification passed           | Selected connector is `codexcodemachine`, Write, admin=false, maintain=false. Primary / Joshbomb75 remains exposed as another selectable route; Git push actor, workflow-file write and replacement PR authorship remain unverified |
+| C3          | Unverified                                            | Seven successful Phase B check names/source observed; no required-check enforcement demonstrated. CODEOWNERS and exact required-check/review configuration proposed; base-branch bootstrap and independent approval pending         |
+| C4          | Unverified / Not run                                  | Full plan mapped to the disposable-target ledger; no target approved, no probes run. Draft CI validates preparation changes, not protection behavior                                                                                |
+| C5          | Passed (documentation only; human acceptance pending) | Recovery, failure handling, bounded exceptions, readback, artifact retention and safe stop procedure documented in the owner checklist                                                                                              |
+| C6          | Not run / Unverified                                  | Owner acceptance of Phase C pending; no authorized Phase C merge or resulting main run. M0 is not complete                                                                                                                          |
 
 ## Verified prerequisites and observations
 
@@ -33,9 +33,10 @@ agent instructions now preserve that visibility while keeping cloud development
 private. No visibility change occurred. The owner chose a dedicated automation
 account as an outside collaborator with **Write on this repository only**, no
 organization membership, Admin/Maintain access, bypass or personal owner credentials.
-`Joshbomb75` remains the independent human reviewer and merger. Username, native
-Codex connection, workflow-file access, CI capability and separation verification
-remain pending; [manual setup guidance](../automation-account-setup.md) records
+`Joshbomb75` remains the independent human reviewer and merger. The owner has
+created and connected `codexcodemachine`; its selected API identity and Write
+role are now verified. Git push identity, workflow-file access, end-to-end CI
+capability and full separation remain pending; [manual setup guidance](../automation-account-setup.md) records
 documented support versus the still-unverified account-specific paths.
 
 The owner **conditionally approved only the exact two-branch settings proposal**
@@ -54,6 +55,54 @@ disposable target initial SHA is **Unassigned (target not created)**; reviewed
 source SHA and exact probe operations must be pinned/approved before execution.
 No Phase C enforcement result has changed from Unverified.
 
+### Resumed-session identity readback
+
+The [sanitized readback](evidence/phase-c/identity-readback.json), recorded on
+**2026-10-26 UTC**, supersedes the historical selected-connector identity below:
+
+- Every GitHub connector call in the resumed session explicitly selects
+  **Codex GitHub**. `get_user_login` returns **codexcodemachine**, ID **348095294**.
+  Collaborator lookup reports **write**; repository metadata reports
+  `push: true`, `admin: false`, `maintain: false`. Organization-membership lookup
+  reports `[]`. These reads establish the selected account's API identity and
+  repository role, not complete credential scopes or absence of bypass.
+- Tool account selectors also expose **Primary / Joshbomb75**. The owner route
+  was not called, but it has not been removed or verified inaccessible. Choosing
+  Codex GitHub explicitly does not satisfy the owner's requirement that reviewer
+  credentials be unavailable through **every** route. C2 remains Unverified.
+- Public Git fetch restored `codex/m0-phase-c` at
+  `cd408a4fa4147afb760e96d96ad1333eeaa313b6`; it proves read connectivity only.
+  Cloud `gh api user --jq '{login: .login, id: .id}'` returns **Forbidden**.
+  `GH_TOKEN` is set; values were never read/printed. Known Git helper settings
+  and standard credential-file presence checks found none. This limited inventory
+  does not establish an authenticated Git push actor or complete exclusion of
+  owner credentials. No credential was added, recovered or replaced.
+- Main remains `0a923d420c3e7c22b339c193e7ce8e14e73d03b6`, reported unprotected.
+  Listed rulesets including parents are `[]`; detailed protection read remains
+  **403 Resource not accessible by integration**. Inaccessible controls stay
+  Unverified. The approved protection payload is unchanged.
+- PR #15 is still a draft authored by **Joshbomb75**. It has not been recreated
+  or closed. Recreation remains pending the owner's existing Git/API separation
+  prerequisites. No capability-test branch, workflow edit or enforcement probe
+  is run in this session. Documentation preparation may continue through the
+  explicitly selected automation connector without claiming full separation.
+- The automation connector can read Phase B main-run metadata and all seven
+  successful job summaries for run `40223238331`. This establishes those read
+  operations; fresh workflow execution and log/artifact access for a replacement
+  PR are not inferred from it.
+
+Resumed-session documentation validation **Passed**: `bash scripts/setup.sh`
+with Node **24.22.0**, npm **11.9.0**, SDK **10.0.402**, npm ci and locked NuGet
+restore; complete `bash scripts/check.sh` with **13 frontend**, **10 backend**
+and **26 Python** tests, zero failures/skips and zero backend build warnings/errors.
+Coverage remains frontend **96.87% lines / 100% branches**, backend **100% / 75%**.
+Repository Prettier check and `git diff --check` passed. Only the identity
+documentation and new sanitized readback change from `cd408a4`; no workflows,
+CODEOWNERS, payload, checks, thresholds or permissions change. No new tests were
+added for this documentation-only update. Standalone policy/security, browser
+qualification and Windows checks are **Not run locally** for this update; fresh
+hosted results, when available, must be recorded against its exact head in PR #15.
+
 ### Initial observation snapshot (historical)
 
 Read `AGENTS.md`, the M0 plan, Phase A/B reports, engineering standards, CI
@@ -65,7 +114,7 @@ at **2026-10-25 18:51:30 UTC** into the starting main SHA. The owner explicitly
 confirms A/B human acceptance in this task. This satisfies owner acceptance for
 preparation; identity separation remains an unmet enforcement prerequisite.
 
-Current API observations on **2026-10-26 UTC** are retained in the
+Initial API observations on **2026-10-26 UTC** are retained in the
 [sanitized inspection snapshot](evidence/phase-c/inspection.json). These are
 point-in-time readbacks, not claims of protections activated:
 
@@ -122,7 +171,7 @@ App **15368** (`github-actions`):
 These establish merged CI prerequisites/check source, not independent enforcement.
 Historical failure probes and cached artifacts are not reused as Phase C results.
 
-## Preparation validation
+## Preparation validation (historical)
 
 **Passed locally in the authorized cloud environment:** `bash scripts/setup.sh`
 (Node **24.22.0**, npm **11.9.0**, SDK **10.0.402**, npm ci and locked NuGet
@@ -195,10 +244,11 @@ in PR #15; local Git commit metadata is not substituted for remote push identity
 not accepted exceptions. Follow [the concrete owner checklist](../branch-enforcement.md)
 before settings changes or probes. Tooling cannot mutate protection settings;
 owner application/readback is required if that remains true after approval.
-Owner selected the automation outside-collaborator approach. They must manually
-check billing and configure/connect that account, then verify its actual Git/API
+Owner selected and reports configuring/connecting the automation outside-collaborator
+account. Its API identity and Write role are now verified. Remaining work is owner
+billing readback, removal of the exposed owner connection, and actual Git/API
 identity, workflow-file access, CI capability and absence of owner/admin credentials
-from all agent routes. Recreate the bootstrap PR only after these checks. No such
+from all agent routes. Recreate the bootstrap PR only after these checks. No
 account/connection change was made by the agent.
 
 Next work is the remaining Phase C settings/readback and full valid/defect matrix,

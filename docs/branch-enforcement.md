@@ -8,8 +8,17 @@ probes. One implementation agent; no autonomous merging or additional AI review.
 
 ## Identity prerequisite
 
-The current connector authenticates as `Joshbomb75`, the human owner's account.
-The owner confirms that this account also creates the AI PRs and that they
+The selected **Codex GitHub** connection now authenticates as `codexcodemachine`
+(ID `348095294`) with collaborator **Write**, `push: true`, `admin: false` and
+`maintain: false`. Organization-membership lookup reports no memberships.
+However, the tool account selectors still expose **Primary / Joshbomb75**;
+that route was not invoked. Owner-credential exclusion remains **not satisfied**.
+Cloud `gh api user` returns Forbidden; authenticated Git push, workflow-file
+write and replacement PR authorship remain Unverified. See the [resumed-session
+readback](milestones/evidence/phase-c/identity-readback.json).
+
+PR #15 remains authenticated as `Joshbomb75`, the human owner's account.
+The owner confirms that this account created the earlier AI PRs and that they
 human-approved and merged Phases A/B. An AI-authored label declares implementation
 authorship, not authentication independence. GitHub cannot count the PR author's
 own approval. A separate chat, Git author name, bot comment, or credential for the
@@ -19,7 +28,8 @@ Owner-selected human policy reviewer and designated merger: **Joshbomb75**.
 Owner-selected implementation approach: a **dedicated GitHub automation account**,
 outside collaborator with **Write on this repository only**, no organization
 membership, Admin/Maintain role, bypass or access to personal owner credentials.
-The username and actual connection are pending. Preserve its ability to propose
+The account is `codexcodemachine`; API identity and role are verified, while
+Git/workflow capability and full separation remain pending. Preserve its ability to propose
 workflow changes and run/read CI; verify workflow-file credential permissions
 without granting administration. See [manual setup and capability verification](automation-account-setup.md).
 
@@ -146,13 +156,18 @@ The owner must approve outstanding actions explicitly; blank boxes are not appro
 
 - [x] A/B accepted; intentionally public repository visibility confirmed by owner.
 - [x] Owner chose automation outside collaborator, Write on this repository only;
-      `Joshbomb75` remains human reviewer/merger. Actual setup is not yet verified.
+      `Joshbomb75` remains human reviewer/merger. Selected API identity is now
+      `codexcodemachine`, with Write and no Admin/Maintain role verified.
 - [ ] Owner checks billing, manually creates/invites/connects the account, and
       verifies minimum credential access including workflow-file changes and CI.
+      Owner reports account creation/invitation/connection complete; billing,
+      actual Git push actor, workflow-file write and end-to-end CI access remain
+      unverified. Do not create or invite the account again.
 - [ ] Verify reviewer/admin credentials are unavailable to the implementation
       agent through Git and **every** API/connector route, including alternative
       connections and retained environment state; merely changing the default
-      connection is insufficient.
+      connection is insufficient. **Still blocked:** Primary / Joshbomb75 remains
+      exposed in tool account selectors. No owner-route call was made.
 - [ ] Independently review the CODEOWNERS bootstrap and the sole CI trigger
       addition for `codex/m0-phase-c-target`; recreate this draft under the distinct
       principal before owner approval. Owner alone decides any bootstrap merge.
