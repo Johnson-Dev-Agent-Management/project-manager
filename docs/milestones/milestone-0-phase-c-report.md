@@ -5,8 +5,9 @@
 - Implementation type: AI
 - Implementation author: Codex Cloud
 - Starting main: `0a923d420c3e7c22b339c193e7ce8e14e73d03b6`.
-- Implementation PR/head/tested workflow SHA and final CI: recorded in the draft
-  PR after creation and inspection; no current-head success inferred here.
+- Implementation draft: [#15](https://github.com/Johnson-Dev-Agent-Management/project-manager/pull/15).
+  Current head/tested workflow SHA and final CI are recorded in its acceptance
+  report after inspection; predecessor results do not validate a later head.
 - Independent human: owner `Joshbomb75` confirmed human acceptance and merging of
   Phases A/B during this task. Same authenticated account created those PRs;
   GitHub has no recorded approving reviews on #7. This is owner acceptance,
@@ -24,6 +25,36 @@
 | C6          | Not run / Unverified                                  | Owner acceptance of Phase C pending; no authorized Phase C merge or resulting main run. M0 is not complete                                                                                                                                 |
 
 ## Verified prerequisites and observations
+
+### Owner decisions after the initial inspection
+
+The owner confirms the repository is **intentionally public**; the planning and
+agent instructions now preserve that visibility while keeping cloud development
+private. No visibility change occurred. The owner chose a dedicated automation
+account as an outside collaborator with **Write on this repository only**, no
+organization membership, Admin/Maintain access, bypass or personal owner credentials.
+`Joshbomb75` remains the independent human reviewer and merger. Username, native
+Codex connection, workflow-file access, CI capability and separation verification
+remain pending; [manual setup guidance](../automation-account-setup.md) records
+documented support versus the still-unverified account-specific paths.
+
+The owner **conditionally approved only the exact two-branch settings proposal**
+at `94c03cb3c1e108660d29954bb277b15552143acb`; its payload is unchanged. They
+will apply settings in an owner-controlled session and provide readback after
+all prerequisites. This is not permission for the agent to configure GitHub,
+create/invite accounts, change permissions, incur costs or run destructive probes.
+PR #15 must be recreated under the verified automation identity before independent
+owner review; it has not been recreated. Both Git and every API/connector route
+must exclude owner credentials, including alternative connections/retained state.
+
+C15b is clarified to require a valid, independently reviewed PR and a separately
+authorized owner merge under all target protections. No direct push or bypass is
+allowed. It remains pending without that separate merge authorization. The actual
+disposable target initial SHA is **Unassigned (target not created)**; reviewed
+source SHA and exact probe operations must be pinned/approved before execution.
+No Phase C enforcement result has changed from Unverified.
+
+### Initial observation snapshot (historical)
 
 Read `AGENTS.md`, the M0 plan, Phase A/B reports, engineering standards, CI
 operation and PR template before changes. Cloud Git fetched current main and
@@ -57,8 +88,8 @@ point-in-time readbacks, not claims of protections activated:
   existing/future policy including CODEOWNERS itself. Owner eligibility requires
   readback/validation on each actual target. The proposal cannot yet govern PRs.
 
-The inherited public visibility conflicts with the private planning assumption;
-it is reported, not changed. Organization billing/Team eligibility, audit logs,
+The initial private planning assumption is superseded by the owner's confirmation
+that public visibility is intentional. Organization billing/plan eligibility, audit logs,
 all available credential scopes, additional credential routes and absence of
 bypass privileges are **Unverified**. A missing administration capability in one
 connector is not proof that owner credentials are unavailable everywhere.
@@ -133,14 +164,42 @@ Explicit protected-policy proposals:
 3. Add the exact owner protection payload, approval/bootstrap/identity checklist,
    serial verification ledger and recovery procedures. These are proposals and
    instructions, not effective GitHub configuration or blanket probe approval.
+4. Owner-directed follow-up corrects AGENTS/planning visibility to intentionally
+   public source with private cloud development, records the chosen automation
+   outside-collaborator approach and conditional approval without modifying the
+   protection payload, and tightens C15b to a separately authorized owner merge
+   of an independently reviewed valid PR. Historical A/B reports retain their
+   original observations with a superseding visibility clarification. The new
+   manual identity guide distinguishes documented support from missing live
+   identity/permission evidence. No workflow, check or security threshold changed
+   in this documentation follow-up.
+
+Follow-up local validation: `bash scripts/check.sh` again passed **13 frontend,
+10 backend, 26 Python** tests with zero failures/skips, the same coverage and
+zero backend build warnings/errors; Prettier repository check and `git diff --check`
+passed. `git diff 94c03cb -- .github docs/milestones/evidence/phase-c/proposed-protection.json`
+is empty: the conditionally approved payload, CODEOWNERS and workflow are unchanged.
+Follow-up hosted CI conclusions are recorded for the exact new head in PR #15;
+the earlier successful run is historical evidence only.
+
+The follow-up's ordinary Git push failed with **could not read Username for
+https://github.com**. A subsequent connector identity read still returned
+`Joshbomb75`; this is a partially unavailable Git path, not proof that owner
+credentials are excluded from every route. No owner credential was restored.
+The documentation is published through the existing owner-authenticated connector
+to the same preparation draft; actual Git push capability for the new account
+remains untested. Exact API-published head/tree and hosted validation are recorded
+in PR #15; local Git commit metadata is not substituted for remote push identity.
 
 **Exception register: none.** Identity separation and target approval are blockers,
 not accepted exceptions. Follow [the concrete owner checklist](../branch-enforcement.md)
 before settings changes or probes. Tooling cannot mutate protection settings;
 owner application/readback is required if that remains true after approval.
-Owner must choose a supported separate contribution principal, approve its exact
-access, recreate the bootstrap under that principal for independent human approval,
-and remove human/admin credentials from all agent routes. No such change was made.
+Owner selected the automation outside-collaborator approach. They must manually
+check billing and configure/connect that account, then verify its actual Git/API
+identity, workflow-file access, CI capability and absence of owner/admin credentials
+from all agent routes. Recreate the bootstrap PR only after these checks. No such
+account/connection change was made by the agent.
 
 Next work is the remaining Phase C settings/readback and full valid/defect matrix,
 then owner review/acceptance and any separately authorized merge/main verification.

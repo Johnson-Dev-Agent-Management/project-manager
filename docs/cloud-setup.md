@@ -6,6 +6,13 @@ checkout-relative tool storage and portable cache selection; see [current CI and
 setup instructions](ci.md) and the [Phase A report](milestones/milestone-0-phase-a-report.md).
 The saved cloud environment was not republished by Phase A.
 
+Current ownership/visibility: **Johnson-Dev-Agent-Management/project-manager is
+intentionally public**, confirmed by the owner during Phase C. The cloud
+development environment remains private. Historical personal/private repository
+references below describe the bootstrap, not the current intended setup.
+See [manual automation-account setup](automation-account-setup.md) for the chosen
+outside-collaborator identity and the still-pending connection/separation checks.
+
 ## Baseline verification
 
 The private `project-manager-dev` environment was published and verified in a
@@ -90,7 +97,8 @@ cannot change configuration. The owner still needs to:
    the script above, run against a checkout containing this upgrade. Before the
    PR is merged, use `codex/node-24-22`; after merging, use latest `main`.
 2. Save/apply the configuration and refresh or republish its prepared image using
-   the environment UI. Preserve the existing private repository and network settings.
+   the environment UI. Preserve intentionally public repository visibility, private
+   cloud-environment access, and existing network settings.
 3. Start a fresh cloud task using the updated checkout and run setup, checks, and
    browser E2E. Confirm `bash -c 'source scripts/common.sh; node --version; dotnet --version'`
    prints `v24.22.0` and `10.0.402`. Also check `node --version` in the fresh task. The project

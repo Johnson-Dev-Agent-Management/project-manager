@@ -1,5 +1,9 @@
 # Milestone 0, Phase A acceptance report
 
+Phase C owner clarification: repository visibility is intentionally **public**;
+no visibility change is needed. The historical visibility question below is
+resolved as a planning correction. Cloud environment privacy remains required.
+
 Status: **Historical automated acceptance evidence recorded; review follow-up
 validation and independent human review tracked in PR #6.**
 Implementation type: AI

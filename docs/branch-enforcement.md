@@ -1,6 +1,6 @@
 # Branch enforcement — Phase C owner checklist
 
-Status: **Proposed; not applied. Milestone 0 remains incomplete.**
+Status: **Settings conditionally owner-approved; not applied. Milestone 0 remains incomplete.**
 See the [acceptance report](milestones/milestone-0-phase-c-report.md) and
 [probe ledger](milestones/milestone-0-phase-c-probes.md). This is a reviewable
 configuration package, not authorization to change settings or run destructive
@@ -15,17 +15,19 @@ authorship, not authentication independence. GitHub cannot count the PR author's
 own approval. A separate chat, Git author name, bot comment, or credential for the
 same account does not solve this.
 
-Proposed human policy reviewer and designated merger: **Joshbomb75**, subject to
-explicit checklist approval. Proposed implementation identity: **unassigned**.
-The owner must choose and approve one supported path:
+Owner-selected human policy reviewer and designated merger: **Joshbomb75**.
+Owner-selected implementation approach: a **dedicated GitHub automation account**,
+outside collaborator with **Write on this repository only**, no organization
+membership, Admin/Maintain role, bypass or access to personal owner credentials.
+The username and actual connection are pending. Preserve its ability to propose
+workflow changes and run/read CI; verify workflow-file credential permissions
+without granting administration. See [manual setup and capability verification](automation-account-setup.md).
 
-- A distinct machine account with repository Write access only, using credentials
-  limited to this repository; no organization ownership, Admin/Maintain, rule
-  bypass, or reviewer credential access. Verify any seat cost before provisioning.
-- A GitHub App that can author PRs as its own principal and push branches end to
-  end, with repository-only installation and minimum contents/pull-request write
-  permissions (workflows write only if necessary and explicitly approved).
-  Existing connector installation does not prove this contribution path exists.
+The repository is intentionally **public**; no visibility correction is needed.
+Keep the cloud development environment private. Public-only outside collaboration
+is expected not to add a GitHub seat, but actual billing must be checked by the
+owner before invitation. No account, invitation, permission or cost action is
+delegated to the agent.
 
 Do not provision, install, purchase, revoke, or change permissions implicitly.
 Use the supported environment/connection configuration to switch both Git and
@@ -38,10 +40,10 @@ absence of administration/bypass. A role response is not a token-scope inventory
 
 This preparation draft may be owner-authored under existing authentication. It
 must be recreated under the approved implementation principal before `Joshbomb75`
-can provide an independent bootstrap approval. Alternatively, an explicitly
-designated qualified second human may approve, but that alone does not remove
-owner credentials from agent reach. Both credential separation and independent
-approval must be resolved. No approval is to be submitted by the implementation
+can provide an independent bootstrap approval. The owner specifically requires
+recreation under the automation account, not approval using the same owner
+identity. Both credential separation and independent approval must be resolved.
+No approval is to be submitted by the implementation
 agent, even if an API would accept it.
 
 ## Exact proposed configuration
@@ -133,20 +135,30 @@ access, real review requests, and restrictions for the actual implementation act
 
 ## Approval checklist and bootstrap order
 
-The owner must approve each item explicitly; blank boxes are not approvals.
+The owner conditionally approved the exact settings proposed at commit
+`94c03cb3c1e108660d29954bb277b15552143acb`. The JSON payload is unchanged.
+The owner, not the agent, will apply the settings and supply readback. Conditional
+approval does not establish enforcement or authorize immediate execution. All
+existing stronger protections must be preserved. No separate account creation,
+invitation, access change, cost, merge or destructive probe is delegated.
 
-- [ ] Confirm A/B accepted (owner confirmed in this task); accept current public
-      visibility discrepancy as unresolved without changing visibility here.
-- [ ] Select the distinct implementation account/App and approve its exact
-      repository-only permissions. Confirm no new cost without separate consent.
-- [ ] Confirm `Joshbomb75` as human policy reviewer/merger with Write eligibility;
-      attest reviewer/admin credentials are unavailable to the agent through both
-      Git and every API/connector route. Verify this before enforcement probes.
+The owner must approve outstanding actions explicitly; blank boxes are not approvals.
+
+- [x] A/B accepted; intentionally public repository visibility confirmed by owner.
+- [x] Owner chose automation outside collaborator, Write on this repository only;
+      `Joshbomb75` remains human reviewer/merger. Actual setup is not yet verified.
+- [ ] Owner checks billing, manually creates/invites/connects the account, and
+      verifies minimum credential access including workflow-file changes and CI.
+- [ ] Verify reviewer/admin credentials are unavailable to the implementation
+      agent through Git and **every** API/connector route, including alternative
+      connections and retained environment state; merely changing the default
+      connection is insufficient.
 - [ ] Independently review the CODEOWNERS bootstrap and the sole CI trigger
       addition for `codex/m0-phase-c-target`; recreate this draft under the distinct
       principal before owner approval. Owner alone decides any bootstrap merge.
-- [ ] Approve the exact two-branch settings table/payload after complete before-state
-      reconciliation. Preserve all existing required checks and stronger rules.
+- [x] Exact two-branch settings table/payload at `94c03cb` conditionally approved.
+- [ ] Satisfy all prerequisites and reconcile complete before-state; owner applies
+      settings, preserves stronger rules/checks and provides full readback.
 - [ ] Approve owner creation of `codex/m0-phase-c-target` from the reviewed Phase C
       implementation SHA recorded in the PR (full SHA must be pinned at approval).
       It must include CODEOWNERS and the target CI trigger. Record creation SHA;
@@ -162,6 +174,19 @@ The owner must approve each item explicitly; blank boxes are not approvals.
 - [ ] Approve retention of failing probe branches/closed PR history as evidence;
       cleanup by closing PRs, with target/probe branch deletion left to owner after
       evidence review. No deliberate-defect merge, even into the disposable target.
+
+Actual initial disposable-target SHA: **Unassigned — target not created**.
+Commit `94c03cb3c1e108660d29954bb277b15552143acb` identifies the conditionally
+approved settings proposal, not an existing target or authorization to create it
+at that SHA. The owner must pin the reviewed source SHA and supply the actual
+created ref SHA before execution. Source PRs are only
+`codex/m0-phase-c-probe/<id>` → `codex/m0-phase-c-target`; force-push/deletion
+attempts are only against that exact disposable target, using the separated
+implementation credentials and separately confirmed precise scope. No main
+mutation probe or main merge is included. C15b remains pending without a valid,
+independently reviewed PR and a separately authorized **owner** merge to the
+disposable target under all active protections. Never advance it by direct push,
+temporary rule changes, or any bypass.
 
 Before main protection acceptance, CODEOWNERS must be present on main through an
 owner-controlled, independently reviewed bootstrap. Do not temporarily weaken
@@ -179,7 +204,9 @@ Use ready PR UI/GraphQL reviewDecision and mergeStateStatus or equivalent owner
 evidence; REST blocked is useful but must be attributed to the intended control.
 Unknown/pending results, drafts, unrelated CI failures and unsatisfied extra gates
 cannot prove a specific protection. The owner observes merge eligibility without
-merging; no potentially successful merge call is permitted.
+merging; the implementation agent never calls merge. C15b alone needs a separate
+owner-authorized merge of an independently reviewed valid PR to advance the
+disposable target; without that authorization it remains pending.
 
 For policy/approval probes, first obtain green unmodified checks and prove the
 missing human/code-owner approval is the blocker. For defective CI probes, record

@@ -15,7 +15,8 @@ with SQLite persistence and automated unit and browser tests.
 - Within an assigned task, implement changes, install necessary project dependencies,
   run checks, commit, push a feature branch, and open or update a draft pull request.
 - Leave merges, releases, deployments, purchases, paid credits, and new paid services to the owner.
-- Keep the repository and development environment private. Do not broaden repository or service access.
+- The repository is intentionally public; preserve its visibility. Keep the Codex Cloud
+  development environment private. Do not broaden repository or service permissions.
 - Use synthetic development data. Never commit credentials, database files, or environment secrets.
 - These instructions guide behavior; actual access controls must be enforced in the environment and GitHub.
 
