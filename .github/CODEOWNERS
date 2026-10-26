@@ -1,0 +1,7 @@
+# Proposed human policy owner and fallback for every existing or future file.
+# Includes CODEOWNERS itself, CI, tests, scripts, standards and dependency policy.
+# One matching owner approval is required only after target-branch protection
+# enables code-owner review. This file alone does not enforce review.
+# Bootstrap must be independently reviewed; Joshbomb75 cannot approve a PR
+# authenticated as Joshbomb75. Implementation credentials must be separate.
+* @Joshbomb75

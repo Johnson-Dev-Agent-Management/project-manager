@@ -1,7 +1,7 @@
 name: Foundational CI
 on:
   pull_request:
-    branches: [main]
+    branches: [main, codex/m0-phase-c-target]
   push:
     branches: [main]
   workflow_dispatch:
