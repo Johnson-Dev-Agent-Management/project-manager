@@ -1,262 +1,169 @@
-# Branch enforcement — Phase C owner checklist
+# Branch enforcement — Phase C configuration package
 
-Status: **Settings conditionally owner-approved; not applied. Milestone 0 remains incomplete.**
-See the [acceptance report](milestones/milestone-0-phase-c-report.md) and
-[probe ledger](milestones/milestone-0-phase-c-probes.md). This is a reviewable
-configuration package, not authorization to change settings or run destructive
-probes. One implementation agent; no autonomous merging or additional AI review.
+Status: **Main configuration authorized; blocked by connection capabilities.
+No settings applied. Phase C and Milestone 0 remain incomplete.**
+See the [report](milestones/milestone-0-phase-c-report.md) and
+[fresh readback](milestones/evidence/phase-c/audit-readback.json).
+Earlier instructions delegating routine settings entry to the owner are superseded.
 
-## Identity prerequisite
+## Authorization and identities
 
-The selected **Codex GitHub** connection now authenticates as `codexcodemachine`
-(ID `348095294`) with collaborator **Write**, `push: true`, `admin: false` and
-`maintain: false`. Organization-membership lookup reports no memberships.
-However, the tool account selectors still expose **Primary / Joshbomb75**;
-that route was not invoked. Owner-credential exclusion remains **not satisfied**.
-Cloud `gh api user` returns Forbidden; authenticated Git push, workflow-file
-write and replacement PR authorship remain Unverified. See the [resumed-session
-readback](milestones/evidence/phase-c/identity-readback.json).
+The current assignment authorizes `Joshbomb75` (ID `71676474`) for the listed
+administration of **main**. The agent must perform configuration/readback when a
+supported owner route exists. It does not authorize reviews, approvals, merges,
+mutation/destructive probes, account creation, collaborator/organization changes,
+visibility changes, purchases, or broader credential permissions. Preserve public
+source and private cloud development. Never inspect or retain secret values.
 
-PR #15 remains authenticated as `Joshbomb75`, the human owner's account.
-The owner confirms that this account created the earlier AI PRs and that they
-human-approved and merged Phases A/B. An AI-authored label declares implementation
-authorship, not authentication independence. GitHub cannot count the PR author's
-own approval. A separate chat, Git author name, bot comment, or credential for the
-same account does not solve this.
+Use `codexcodemachine` (ID `348095294`) for implementation publication and future
+PR authorship. API identity, collaborator Write, push=true, admin=false,
+maintain=false and reported empty organization memberships are verified. Role
+does not inventory credential scope or prove absence of bypass. Owner access
+here is intentional administration access and does not establish C2. Verify full
+separation in a fresh implementation context without owner-capable routes;
+selecting a different account here is insufficient. See [account isolation](automation-account-setup.md).
 
-Owner-selected human policy reviewer and designated merger: **Joshbomb75**.
-Owner-selected implementation approach: a **dedicated GitHub automation account**,
-outside collaborator with **Write on this repository only**, no organization
-membership, Admin/Maintain role, bypass or access to personal owner credentials.
-The account is `codexcodemachine`; API identity and role are verified, while
-Git/workflow capability and full separation remain pending. Preserve its ability to propose
-workflow changes and run/read CI; verify workflow-file credential permissions
-without granting administration. See [manual setup and capability verification](automation-account-setup.md).
+PR #15 remains owner-authored. After isolation and bounded feature-branch
+capability verification, recreate the preparation draft as codexcodemachine,
+verify its actual author/AI attribution and retain #15 until the replacement is
+confirmed. Joshbomb75 must provide genuine independent human review. The agent
+must never submit that review or weaken bootstrap protections.
 
-The repository is intentionally **public**; no visibility correction is needed.
-Keep the cloud development environment private. Public-only outside collaboration
-is expected not to add a GitHub seat, but actual billing must be checked by the
-owner before invitation. No account, invitation, permission or cost action is
-delegated to the agent.
+## Exact main configuration and rationale
 
-Do not provision, install, purchase, revoke, or change permissions implicitly.
-Use the supported environment/connection configuration to switch both Git and
-connector credentials. Never paste credentials into chat, commits or evidence.
-Remove owner-capable credentials from agent reach, including alternative connector
-connections. Verify Git push and API identities independently on an ordinary
-feature branch. Public fetch success proves read connectivity only. Record actual
-PR author, push actor, repository role, credential scope, app permissions, and
-absence of administration/bypass. A role response is not a token-scope inventory.
+The [classic payload](milestones/evidence/phase-c/proposed-protection.json) remains
+unchanged from the proposal at `94c03cb3c1e108660d29954bb277b15552143acb`.
+An equivalent active ruleset is acceptable only if every required control can be
+expressed and read back. **Apply to main only in this assignment.** No additional
+branch targets, tags, merge queues or organization-wide changes.
 
-This preparation draft may be owner-authored under existing authentication. It
-must be recreated under the approved implementation principal before `Joshbomb75`
-can provide an independent bootstrap approval. The owner specifically requires
-recreation under the automation account, not approval using the same owner
-identity. Both credential separation and independent approval must be resolved.
-No approval is to be submitted by the implementation
-agent, even if an API would accept it.
+| Control                     | Intended value                                                                                                        | Rationale                                                     |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| Pull requests               | Required; no user/team/app PR bypass allowances                                                                       | Prevent direct acceptance of implementation work              |
+| Required checks             | frontend, backend, windows-smoke, e2e, policy, supply-chain, quality-gate; each bound to GitHub Actions App **15368** | Retain every validation lane and the aggregate                |
+| Existing checks/controls    | Union required checks and preserve stronger settings                                                                  | Prevent accidental relaxation                                 |
+| Up-to-date branches         | strict=true                                                                                                           | Validate against the current protected base                   |
+| Independent review          | One approval plus code-owner review                                                                                   | Require the designated human policy owner                     |
+| Stale approvals             | Dismiss on new commits                                                                                                | Prevent old review authorizing changed work                   |
+| Most recent reviewable push | Require approval by someone other than latest pusher                                                                  | Separate final push and approval                              |
+| Review dismissal            | Joshbomb75 only; no team/app allowance                                                                                | Exclude implementation control of dismissal                   |
+| Conversations               | Resolution required                                                                                                   | Retain unresolved review blockers                             |
+| Administrators              | enforce_admins=true; no implementation bypass                                                                         | Retain normal PR/check/review requirements for administrators |
+| Protected updates           | Joshbomb75 only; empty team/app lists; all PR/check/review requirements retained                                      | Reserve acceptance to the human merger                        |
+| Force pushes/deletion       | Both disabled                                                                                                         | Protect accepted history and branch existence                 |
+| Repository auto-merge       | Keep allow_auto_merge=false                                                                                           | Preserve deliberate owner merging                             |
 
-## Exact proposed configuration
+App 15368 identifies a producer, not an independently trusted workflow definition.
+Editable Actions code can emit misleading green results; independent policy
+review remains essential. Keep quality-gate required: it accepts only explicit
+success from all six dependencies and rejects skipped/cancelled outcomes. Green
+CI alone does not establish required-check enforcement. Administrators can edit
+rules, so their credentials must be excluded from the later implementation context.
 
-Use classic branch protection for the two exact branch names **main** and
-**codex/m0-phase-c-target**, with identical settings below. No wildcard targets,
-tag rules, organization changes, visibility changes, or additional repositories.
-If existing rules are discovered, export and preserve them and union their checks
-with this list. Do not replace protections from a partial/403 read. Reconcile
-overlapping rules with the owner before applying a different configuration.
+Preserve proposed **`* @Joshbomb75`** in `.github/CODEOWNERS`: it covers every
+existing/future file, including CODEOWNERS itself, CI, tests and standards. No
+implementation principal is an alternative owner. The actual main tree currently
+contains **no CODEOWNERS**. The proposal is not effective policy ownership.
+GitHub CODEOWNERS validation is unavailable through this connector. Verify the
+file, GitHub validation, owner eligibility and review requests on the actual base
+after independently reviewed bootstrap. Never weaken review controls to accommodate
+an owner-authored bootstrap PR.
 
-| Setting                                         | Proposed value                                                                                        |
-| ----------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| Require a pull request                          | Enabled; no PR bypass users, teams or apps                                                            |
-| Required approving reviews                      | 1 independent human approval                                                                          |
-| Require code-owner review                       | Enabled; `.github/CODEOWNERS` on the target names only `@Joshbomb75` for `*`                          |
-| Dismiss stale approvals on new commits          | Enabled                                                                                               |
-| Require approval of most recent reviewable push | Enabled; approver must differ from latest pusher                                                      |
-| Restrict review dismissal                       | `Joshbomb75` only, no teams/apps; do not dismiss blocking review for a probe                          |
-| Required conversations resolved                 | Enabled                                                                                               |
-| Required status checks                          | All seven below, plus every existing required check                                                   |
-| Expected check source                           | GitHub Actions App ID **15368** for each of these seven checks                                        |
-| Require branch up to date                       | Enabled (`strict: true`)                                                                              |
-| Include administrators / disallow bypass        | Enabled (`enforce_admins: true`); no implementation bypass                                            |
-| Restrict who can push                           | `Joshbomb75` only; empty team/app lists; PR/check/review requirements still apply                     |
-| Allow force pushes / deletions                  | Both disabled                                                                                         |
-| Auto-merge                                      | Keep repository `allow_auto_merge: false`; no merge queues or autonomous merger                       |
-| Other controls                                  | Preserve existing stronger settings; no permission, visibility, signature, or merge-method relaxation |
+## Administration capability and safe application
 
-Required names, exactly: **frontend**, **backend**, **windows-smoke**, **e2e**,
-**policy**, **supply-chain**, **quality-gate**. Source ID 15368 is observed on the
-successful Phase B main run. Neither Dependabot nor the metadata attribution job
-is a replacement. `quality-gate` additionally rejects any non-success dependency.
-GitHub may consider a skipped check successful; the separate aggregate job must
-therefore remain required and must explicitly fail the skipped-dependency probe.
+Fresh owner identity and Admin repository role do **not** establish app permission.
+The managed connector explicitly excludes administration access; one fresh
+detailed protection GET returns **403 Resource not accessible by integration**.
+It exposes no protection/ruleset/repository-settings write operation. Effective
+branch-rule and CODEOWNERS-error URLs are unsupported. Listed rulesets including
+parents are `[]`; main reports protected=false and checks off. These establish
+absence of reported active protection, not a complete settings export.
 
-Check names and source identify the App, not a trustworthy workflow definition.
-An implementation can change a GitHub Actions workflow to emit misleading green
-results. Required independent human policy review is essential; no claim of
-centrally enforced workflow provenance is made. Admins can still edit protection
-configuration; their credentials must remain outside agent reach.
+The current private cloud runtime has no ready outbound identities, secret
+bindings or runtime variables. A bounded `gh api user` attempt through the normal
+proxy returns Forbidden; `api.github.com` is absent from the enforced allowlist.
+GH_TOKEN exists, but its value/identity/scope were never inspected. No denied
+endpoint is repeatedly retried; no alternate host/proxy bypass is used. Public
+Git fetch proves read connectivity only.
 
-The following owner-run API payload is exact for the proposed baseline. It is
-committed as [proposed-protection.json](milestones/evidence/phase-c/proposed-protection.json).
-It is **not a safe replacement** if the owner export discovers additional controls
-or required checks: revise and approve the union first.
+The minimum missing setup is a **supported owner administration route** that
+authenticates Joshbomb75, reads complete classic protection and inherited/effective
+rules, and writes/reads back every listed setting for this repository. Reconnecting
+the same managed owner connector does not add its excluded capability. A supported
+CLI route would also need authorized API networking and a ready, already-authorized
+owner binding; none is configured here. Do not mint tokens, expand credential
+permissions, change installations or use the owner's personal computer/browser.
+If the platform cannot provide a route within those limits, report the exact gap
+for a separately reviewed setup decision. Do not delegate individual settings entry.
 
-## Owner application and readback
+When a supported route is available, the agent must:
 
-The available connector has read/PR/Git-data tools but no protection-setting
-mutation tool. Its detailed protection read returns 403; cloud `gh api user`
-is denied by network policy. Do not broaden agent administration access to apply
-this package. The owner can use GitHub Settings → Branches → Add/Edit branch
-protection rule, select each exact name, and enter the table above. Set all seven
-check sources explicitly to GitHub Actions, rather than Any source. GitHub may
-require a recent pilot run before listing checks. If the UI/plan cannot express
-any setting, stop and record that control **Unverified**, without substituting a
-weaker configuration.
+1. Verify live account/ID and repository Admin role before using the connection.
+2. Obtain complete existing classic protection and repository/inherited rulesets,
+   including all rule details, targets, enforcement and bypass actors. A 403 is
+   inaccessible, not absence; a 404 establishes absence only with confirmed
+   authorized access. Retain UTC observation times and main SHA.
+3. Compare every control with the table/payload, preserve stronger values and
+   union existing checks with the seven App-bound checks. Do not replace settings
+   from partial/inaccessible readback. Record any expression gap without substituting
+   weaker controls.
+4. Apply reconciled **main-only** settings using the verified owner route. Keep
+   auto-merge disabled. Do not change access, other targets or merge methods.
+5. Read back effective configuration and compare every row. Retain UTC times,
+   classic/ruleset IDs, branch SHA, required names/source IDs, strictness, all review
+   and dismissal settings, update restrictions, force/deletion controls, admin
+   enforcement and all bypass lists. A successful write is insufficient; unavailable
+   fields remain Unverified.
 
-Alternatively, on an owner-controlled machine/session with `gh`, outside the
-agent environment (these are owner instructions, not agent execution):
+## Disposable target and future probes
 
-```bash
-repo=Johnson-Dev-Agent-Management/project-manager
-# Export BEFORE applying. 404 is absence only with confirmed authorized access;
-# 403 is inaccessible. Retain rulesets and org inheritance as well.
-gh api "repos/$repo/branches/main/protection" > main-protection-before.json
-gh api "repos/$repo/rulesets?includes_parents=true" > rulesets-before.json
-# After explicit approval and only after reconciling the full before-state:
-gh api --method PUT "repos/$repo/branches/main/protection" \
-  --input docs/milestones/evidence/phase-c/proposed-protection.json
-gh api --method PUT "repos/$repo/branches/codex%2Fm0-phase-c-target/protection" \
-  --input docs/milestones/evidence/phase-c/proposed-protection.json
-# Capture both full responses; a successful PUT alone is not verification.
-gh api "repos/$repo/branches/main/protection" > main-protection-after.json
-gh api "repos/$repo/branches/codex%2Fm0-phase-c-target/protection" \
-  > target-protection-after.json
-gh api "repos/$repo/rulesets?includes_parents=true" > rulesets-after.json
-```
+The only permitted future target is **codex/m0-phase-c-target**. The complete
+branch listing contains no such branch; its actual initial SHA is **Unassigned**.
+Do not create/advance it or configure its protections in this assignment. Reviewed
+source SHA, creation, precise scope and equivalent protections require separate
+authorization. Its source must contain CODEOWNERS and the existing target CI
+trigger; record the actual initial SHA when creation is authorized.
 
-Do not run the PUTs unless the target exists and this exact scope is approved.
-Export/read errors must be resolved before mutation. Keep responses free of
-credentials; share only configuration evidence. The agent must compare readback
-against every row and record retrieval time, rule IDs (if any), branch/base SHA,
-check names/source, bypass lists, review and push settings. A screenshot may
-supplement authorized JSON readback; inaccessible fields stay **Unverified**.
-Also verify CODEOWNERS on each base and its GitHub validation/errors, owner Write
-access, real review requests, and restrictions for the actual implementation actor.
+The [serial probe ledger](milestones/milestone-0-phase-c-probes.md) is preparation
+only. No mutation/destructive probe runs here. Future ready PRs use only
+`codex/m0-phase-c-probe/<id>` → `codex/m0-phase-c-target`. C15b requires a valid,
+independently reviewed advance PR and a separately authorized **owner merge under
+all target protections**. Never substitute direct push, rule relaxation or bypass;
+never merge a deliberate defect.
 
-## Approval checklist and bootstrap order
+Every future case records exact head/base/tested merge SHAs, isolated mutation,
+expected diagnostic, individual/aggregate conclusions, review and remote push
+actors, effective settings, merge-block reason, unchanged refs where applicable,
+and retained evidence. Drafts, conflicts, unrelated failures, pending runs, missing
+approval, generic credential/network denials and failed leases may mask the intended
+control. Attribute detection and enforcement separately; masked cases stay Unverified.
 
-The owner conditionally approved the exact settings proposed at commit
-`94c03cb3c1e108660d29954bb277b15552143acb`. The JSON payload is unchanged.
-The owner, not the agent, will apply the settings and supply readback. Conditional
-approval does not establish enforcement or authorize immediate execution. All
-existing stronger protections must be preserved. No separate account creation,
-invitation, access change, cost, merge or destructive probe is delegated.
+## Recovery, exceptions and completion
 
-The owner must approve outstanding actions explicitly; blank boxes are not approvals.
+For failed CI, retain diagnostics, fix on the feature branch and validate the new
+SHA. Never replace required checks with manual success or call unavailable
+advisories clean. Retain sanitized summaries, hashes and immutable links before
+seven-day expiry; never retain credentials or raw secret findings.
 
-- [x] A/B accepted; intentionally public repository visibility confirmed by owner.
-- [x] Owner chose automation outside collaborator, Write on this repository only;
-      `Joshbomb75` remains human reviewer/merger. Selected API identity is now
-      `codexcodemachine`, with Write and no Admin/Maintain role verified.
-- [ ] Owner checks billing, manually creates/invites/connects the account, and
-      verifies minimum credential access including workflow-file changes and CI.
-      Owner reports account creation/invitation/connection complete; billing,
-      actual Git push actor, workflow-file write and end-to-end CI access remain
-      unverified. Do not create or invite the account again.
-- [ ] Verify reviewer/admin credentials are unavailable to the implementation
-      agent through Git and **every** API/connector route, including alternative
-      connections and retained environment state; merely changing the default
-      connection is insufficient. **Still blocked:** Primary / Joshbomb75 remains
-      exposed in tool account selectors. No owner-route call was made.
-- [ ] Independently review the CODEOWNERS bootstrap and the sole CI trigger
-      addition for `codex/m0-phase-c-target`; recreate this draft under the distinct
-      principal before owner approval. Owner alone decides any bootstrap merge.
-- [x] Exact two-branch settings table/payload at `94c03cb` conditionally approved.
-- [ ] Satisfy all prerequisites and reconcile complete before-state; owner applies
-      settings, preserves stronger rules/checks and provides full readback.
-- [ ] Approve owner creation of `codex/m0-phase-c-target` from the reviewed Phase C
-      implementation SHA recorded in the PR (full SHA must be pinned at approval).
-      It must include CODEOWNERS and the target CI trigger. Record creation SHA;
-      do not add unreviewed policy differences to make probes pass.
-- [ ] Approve only the disposable target probes in the ledger: ordinary PRs from
-      `codex/m0-phase-c-probe/<id>` targeting `codex/m0-phase-c-target`, never main;
-      direct fast-forward update, non-fast-forward update and deletion attempts
-      against that exact target only, with the separated implementation credentials.
-      Intended result for all three ref attempts: rejection. No merge API attempts.
-- [ ] Approve target-only cancel/skip, policy tamper, synthetic-secret and status-source
-      probes. Source spoof uses an existing explicitly identified non-Actions
-      principal only if allowed; no permission escalation or credential sharing.
-- [ ] Approve retention of failing probe branches/closed PR history as evidence;
-      cleanup by closing PRs, with target/probe branch deletion left to owner after
-      evidence review. No deliberate-defect merge, even into the disposable target.
+If a future prohibited target operation succeeds, stop, retain sanitized commands,
+responses and before/after refs, notify the owner and leave main untouched. The
+owner investigates/restores the pinned known-good target. The agent must not
+force-reset/recreate it to conceal the result. Resume only after reviewed correction
+and renewed precise authorization where needed.
 
-Actual initial disposable-target SHA: **Unassigned — target not created**.
-Commit `94c03cb3c1e108660d29954bb277b15552143acb` identifies the conditionally
-approved settings proposal, not an existing target or authorization to create it
-at that SHA. The owner must pin the reviewed source SHA and supply the actual
-created ref SHA before execution. Source PRs are only
-`codex/m0-phase-c-probe/<id>` → `codex/m0-phase-c-target`; force-push/deletion
-attempts are only against that exact disposable target, using the separated
-implementation credentials and separately confirmed precise scope. No main
-mutation probe or main merge is included. C15b remains pending without a valid,
-independently reviewed PR and a separately authorized **owner** merge to the
-disposable target under all active protections. Never advance it by direct push,
-temporary rule changes, or any bypass.
+For compromised credentials, stop. The owner revokes/rotates them outside the
+agent context, inspects changed refs/rules/audit evidence, re-establishes isolation
+and repeats affected checks. Never collect tokens as evidence. Use GitHub's owner
+recovery/support for lost owner access; no standing agent emergency bypass.
 
-Before main protection acceptance, CODEOWNERS must be present on main through an
-owner-controlled, independently reviewed bootstrap. Do not temporarily weaken
-review settings to merge an owner-authored bootstrap. A protected branch without
-CODEOWNERS cannot prove policy ownership. The disposable target can be prepared
-and protected first, then verified, before the owner decides any main merge.
+Exceptions follow [engineering standards](engineering.md): exact rule/scope,
+rationale, independent reviewer/accountable owner, approval evidence, expiry and
+removal/retest plan. Register: **none**. Missing evidence and unsatisfied controls
+are blockers, not exceptions or accepted results.
 
-## Verification, recovery and limits
-
-Follow the ledger serially using one implementation agent and existing CI budgets.
-For each non-draft probe capture full PR head/base/tested merge SHAs, job links and
-conclusions, reviews and latest-push actor, required review/check state, and effective
-protection readback. `mergeable: true` alone means conflict-free, not authorized.
-Use ready PR UI/GraphQL reviewDecision and mergeStateStatus or equivalent owner
-evidence; REST blocked is useful but must be attributed to the intended control.
-Unknown/pending results, drafts, unrelated CI failures and unsatisfied extra gates
-cannot prove a specific protection. The owner observes merge eligibility without
-merging; the implementation agent never calls merge. C15b alone needs a separate
-owner-authorized merge of an independently reviewed valid PR to advance the
-disposable target; without that authorization it remains pending.
-
-For policy/approval probes, first obtain green unmodified checks and prove the
-missing human/code-owner approval is the blocker. For defective CI probes, record
-the relevant job's actual failing assertion/diagnostic as well as the aggregate
-failure. Never make controls weaker to obtain a desired observation. Close the
-defect PR afterward; repairing its head is not evidence that the defective SHA
-was blocked. For approval/base freshness, use separate valid disposable PRs;
-if another blocker masks freshness, record the probe **Unverified**.
-
-If CI fails, diagnose retained logs/artifacts, fix on the feature branch, and rerun
-required checks at the new SHA. Never replace a required check with a manual success.
-If advisory data is unavailable, leave the security gate failing/incomplete.
-Artifacts expire in seven days: retain redacted diagnostics and immutable links
-before expiry. Do not store real credentials or raw secret findings.
-
-If a prohibited target ref operation unexpectedly succeeds, stop probes immediately,
-record sanitized command/response and before/after SHAs, notify the owner, and
-leave main untouched. The owner investigates identity/rules and restores the
-disposable target from the pinned known-good SHA; the agent does not force-reset
-or recreate it to hide the result. Repeat relevant probes only after reviewed
-correction and a new exact approval if the scope changes.
-
-If credentials are compromised, stop, have the owner revoke/rotate them outside
-the agent session, inspect the GitHub audit trail and changed refs/rules, then
-re-establish separation and repeat affected verification. Do not collect tokens
-as incident evidence. If owner access is lost, use GitHub's owner recovery/support
-path. No standing agent bypass or emergency credential is permitted.
-
-Exceptions follow [engineering standards](engineering.md): exact rule and scope,
-rationale, named independent reviewer/accountable owner, approval evidence, expiry,
-and removal/retest plan. Current register: **none**. An exception cannot justify
-claiming an untested or bypassable requirement passed. No silent disabling of
-checks, relaxed floors, visibility change, or budget increase is authorized.
-
-Final C6 requires owner acceptance and, only if the owner authorizes and performs
-a merge, a successful CI push run for that exact resulting main SHA. Refresh the
-cloud checkout from that SHA. No M0 completion claim until C1–C6, identity
-separation, and the full required matrix are verified.
+Recommend owner merge only after automation-authored replacement, genuine independent
+bootstrap/policy review, exact-head CI and complete configuration readback. This
+assignment authorizes no merge. M0 completion additionally requires C1–C6 and the
+independently observed full probe matrix, owner acceptance and any separately
+authorized merge. The exact resulting main SHA must pass all seven checks; recheck
+protections and base CODEOWNERS, retain evidence and refresh the cloud baseline.

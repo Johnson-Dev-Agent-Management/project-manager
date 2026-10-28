@@ -10,7 +10,7 @@ Current ownership/visibility: **Johnson-Dev-Agent-Management/project-manager is
 intentionally public**, confirmed by the owner during Phase C. The cloud
 development environment remains private. Historical personal/private repository
 references below describe the bootstrap, not the current intended setup.
-See [manual automation-account setup](automation-account-setup.md) for the chosen
+See [automation-account capabilities](automation-account-setup.md) for the chosen
 outside-collaborator identity and the still-pending connection/separation checks.
 
 ## Baseline verification

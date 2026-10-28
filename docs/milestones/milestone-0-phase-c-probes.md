@@ -1,10 +1,12 @@
 # Phase C verification ledger
 
-Status: **Not run; all Phase C protection outcomes Unverified.**
-Two-branch settings at `94c03cb3c1e108660d29954bb277b15552143acb` are conditionally
-approved, but no disposable target exists and its actual initial SHA is unassigned.
-Identity separation, recreated implementation PR, exact pinned probe scope and
-owner-provided configuration readback are prerequisites. Do not interpret this planned
+Status: **Not run; all Phase C probe outcomes Unverified.**
+The current assignment authorizes main administration only. Equivalent target
+settings, reviewed source SHA, creation and precise probe scope still require
+separate authorization. No disposable target exists; its initial SHA is unassigned.
+Fresh isolated implementation credentials, recreated implementation PR, exact
+pinned probe scope and complete effective configuration readback are prerequisites.
+Do not interpret this planned
 matrix, historical Phase A/B failures, or draft-PR CI as successful enforcement.
 See [owner approval and recovery](../branch-enforcement.md).
 
@@ -19,16 +21,26 @@ or force-push/delete main. No disposable branch/rule exists by assumption.
 
 Before execution, fill these fields with owner approval evidence:
 
-- Settings approval: owner task reply to PR #15's checklist, conditional on all
-  prerequisites; exact proposal `94c03cb3c1e108660d29954bb277b15552143acb`.
+- Main settings approval: current owner assignment, exact controls documented in
+  [the configuration package](../branch-enforcement.md). Main administration is
+  authorized but blocked by connection capabilities; this does not authorize
+  target creation, target configuration or any mutation/destructive probe.
+- Target settings/creation approval: **Pending**, including reviewed source SHA
+  and precise scope. Historical two-branch proposal `94c03cb` is not that approval.
 - Exact probe operations and destructive execution authorization: **Pending**;
   no broad settings approval is treated as a destructive-probe go-ahead.
 - Approved Phase C source SHA / initial target SHA: **Unassigned / Unassigned**.
 - Target protection readback and observed time: **Unverified**.
-- Actual Git push actor / API principal / PR author: **Unverified**.
+- API principal: **codexcodemachine, ID 348095294, verified**; collaborator Write,
+  admin=false, maintain=false, reported organization memberships []. Full credential
+  scope/bypass remains Unverified. Actual authenticated Git push actor and replacement
+  PR author: **Unverified**; existing #15 remains Joshbomb75-authored.
 - Independent human reviewer / owner merger: owner-confirmed **Joshbomb75**;
-  automation outside-collaborator account username/connection still pending.
-- Credential separation and absence of bypass/admin evidence: **Unverified**.
+  implementation API connection **Codex GitHub / codexcodemachine** is present.
+- Credential separation in a fresh implementation context and absence of
+  owner-capable routes/bypass: **Unverified**. Owner administration in this task
+  does not establish C2. Git push/workflow-comment/draft-PR capability verification
+  remains Not run until supported isolation prerequisites hold.
 
 For every row, Actual is **Not run**, head/base/tested merge SHAs are **—**,
 CI/PR/mergeability links are **—**, and enforcement outcome is **Unverified**.
@@ -94,10 +106,13 @@ attribution remains separately Unverified.
 ## Per-case evidence record (copy for each execution)
 
 ```text
-Case ID and outcome: Passed / Failed / Unverified
+Case ID:
+Defect/capability detection outcome: Satisfied / Unsatisfied / Unverified
+Protection enforcement outcome: Satisfied / Unsatisfied / Unverified
 Owner approval reference and scope:
 Observed at (UTC):
 Implementation push/API identities and credential-scope evidence:
+Independently observable remote push actor and evidence source:
 Independent observer/reviewer:
 PR URL and draft=false evidence (or N/A for ref-only operations):
 Target name and effective protection evidence:
@@ -108,7 +123,10 @@ Tested merge/workflow SHA:
 Expected result:
 Actual result and sanitized error/assertion:
 CI run/job links and individual conclusions:
+Aggregate quality-gate conclusion and expected diagnostic:
+Approval actor/commit and most recent reviewable-push actor:
 ReviewDecision/mergeStateStatus or equivalent UI evidence:
+Exact merge-block reason, observation time and unchanged-ref evidence:
 Intended protection versus other blockers:
 Diagnostics retained, artifact expiry and durable evidence path:
 Cleanup (PR closed, no merge; branch disposition):

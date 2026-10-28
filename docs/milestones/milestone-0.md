@@ -85,13 +85,17 @@ Unresolved identity questions must be documented. The owner may explicitly
 authorize limited CI preparation while they are being resolved, but successful
 Phase A/B checks alone must not be described as an enforceable pipeline.
 
-During Phase C the owner conditionally approved the exact two-branch settings
-proposed at `94c03cb3c1e108660d29954bb277b15552143acb`. Settings remain unapplied;
-the owner will apply them and provide readback only after identity separation,
-independent bootstrap PR authorship/review, and pinned target/scope prerequisites.
-See [manual automation-account setup](../automation-account-setup.md) and the
-[current owner checklist](../branch-enforcement.md). Account creation, invitations,
-permissions, billing and merges are owner actions, not delegated to the agent.
+The current Phase C audit-remediation assignment authorizes the agent to perform
+the listed **main** administration using Joshbomb75, after complete existing
+protection/inherited-ruleset readback. Preserve stronger controls and union checks.
+The proposal at `94c03cb3c1e108660d29954bb277b15552143acb` remains the baseline,
+but target creation/configuration, reviewed source SHA and precise probe scope
+require separate authorization. No probes or merges are authorized here.
+See [account isolation/capabilities](../automation-account-setup.md) and the
+[configuration package](../branch-enforcement.md). Owner access in this administration
+task does not establish C2; verify a fresh isolated implementation context before
+capability probes/replacement PR. Account creation, invitations, membership/role
+changes, credential expansion, purchases and merges remain outside this assignment.
 
 ## Phase A — Foundational CI
 
@@ -272,8 +276,9 @@ PR authorship, independent approval, and credential separation.
 4. Confirm the expected check source and unique names after successful pilot runs.
    Add policy and supply-chain checks without removing existing required coverage.
 5. Capture effective settings and exercise the verification matrix below using
-   actual implementation credentials. Administrative read limitations require
-   owner-provided configuration evidence, not guessed settings.
+   actual implementation credentials. Administrative read limitations require a
+   supported complete administration readback route, not guessed settings or a
+   replacement from partial evidence.
 6. Review results, perform only the owner-approved merge, verify the subsequent
    main run, and refresh the cloud environment baseline.
 
