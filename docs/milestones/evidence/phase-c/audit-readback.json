@@ -1,0 +1,251 @@
+{
+  "observed_at_utc": "2026-10-28 03:38:53 UTC",
+  "repository": "Johnson-Dev-Agent-Management/project-manager",
+  "method": "Selected non-secret API/runtime fields. Not a complete settings, credential-scope or bypass export. Historical reports independently rechecked.",
+  "authorization": {
+    "owner_administration": "Joshbomb75 authorized for listed main settings only",
+    "implementation": "codexcodemachine only",
+    "reviews_approvals_merges": "prohibited",
+    "target_creation_configuration_and_mutation_probes": "not authorized",
+    "credential_expansion": "prohibited"
+  },
+  "identities": {
+    "owner": {
+      "login": "Joshbomb75",
+      "id": 71676474,
+      "live_profile_verified": true,
+      "collaborator_permission": "admin",
+      "repository_permissions": {
+        "admin": true,
+        "maintain": true,
+        "pull": true,
+        "push": true,
+        "triage": true
+      }
+    },
+    "implementation": {
+      "login": "codexcodemachine",
+      "id": 348095294,
+      "live_profile_verified": true,
+      "collaborator_permission": "write",
+      "repository_permissions": {
+        "admin": false,
+        "maintain": false,
+        "pull": true,
+        "push": true,
+        "triage": true
+      },
+      "reported_org_memberships": {
+        "orgs": []
+      },
+      "complete_scope_and_bypass": "Unverified"
+    },
+    "owner_route_exclusion_in_this_administration_context": "Not established; owner route intentionally authorized and invoked. C2 requires a separate fresh isolated implementation context."
+  },
+  "installations": {
+    "owner": {
+      "allow_all_repositories_for_testing": false,
+      "installations": [
+        {
+          "id": 169120354,
+          "account_login": "Joshbomb75",
+          "account_id": 71676474,
+          "account_type": "User",
+          "account_avatar_url": "https://avatars.githubusercontent.com/u/71676474?v=4",
+          "html_url": "https://github.com/settings/installations/169120354",
+          "events": [
+            "check_run",
+            "check_suite",
+            "commit_comment",
+            "issues",
+            "issue_comment",
+            "pull_request",
+            "pull_request_review",
+            "pull_request_review_comment",
+            "pull_request_review_thread",
+            "repository",
+            "status",
+            "sub_issues"
+          ],
+          "repository_selection": "all",
+          "viewer_can_administer": null
+        },
+        {
+          "id": 172621871,
+          "account_login": "Johnson-Dev-Agent-Management",
+          "account_id": 342865800,
+          "account_type": "Organization",
+          "account_avatar_url": "https://avatars.githubusercontent.com/u/342865800?v=4",
+          "html_url": "https://github.com/organizations/Johnson-Dev-Agent-Management/settings/installations/172621871",
+          "events": [
+            "check_run",
+            "check_suite",
+            "commit_comment",
+            "issues",
+            "issue_comment",
+            "pull_request",
+            "pull_request_review",
+            "pull_request_review_comment",
+            "pull_request_review_thread",
+            "repository",
+            "status",
+            "sub_issues"
+          ],
+          "repository_selection": "all",
+          "viewer_can_administer": null
+        }
+      ]
+    },
+    "implementation": {
+      "allow_all_repositories_for_testing": false,
+      "installations": [
+        {
+          "id": 172621871,
+          "account_login": "Johnson-Dev-Agent-Management",
+          "account_id": 342865800,
+          "account_type": "Organization",
+          "account_avatar_url": "https://avatars.githubusercontent.com/u/342865800?v=4",
+          "html_url": "https://github.com/organizations/Johnson-Dev-Agent-Management/settings/installations/172621871",
+          "events": [
+            "check_run",
+            "check_suite",
+            "commit_comment",
+            "issues",
+            "issue_comment",
+            "pull_request",
+            "pull_request_review",
+            "pull_request_review_comment",
+            "pull_request_review_thread",
+            "repository",
+            "status",
+            "sub_issues"
+          ],
+          "repository_selection": "all",
+          "viewer_can_administer": null
+        },
+        {
+          "id": 175319904,
+          "account_login": "codexcodemachine",
+          "account_id": 348095294,
+          "account_type": "User",
+          "account_avatar_url": "https://avatars.githubusercontent.com/u/348095294?v=4",
+          "html_url": "https://github.com/settings/installations/175319904",
+          "events": [
+            "check_run",
+            "check_suite",
+            "commit_comment",
+            "issues",
+            "issue_comment",
+            "pull_request",
+            "pull_request_review",
+            "pull_request_review_comment",
+            "pull_request_review_thread",
+            "repository",
+            "status",
+            "sub_issues"
+          ],
+          "repository_selection": "all",
+          "viewer_can_administer": null
+        }
+      ]
+    },
+    "limit": "Installation repository selection is not effective credential scope; viewer_can_administer null."
+  },
+  "main": {
+    "sha": "0a923d420c3e7c22b339c193e7ce8e14e73d03b6",
+    "protected": false,
+    "protection_summary": {
+      "enabled": false,
+      "required_status_checks": {
+        "enforcement_level": "off",
+        "contexts": [],
+        "checks": []
+      }
+    },
+    "complete_detailed_protection": {
+      "error": "GitHub API error 403: {\"message\":\"Resource not accessible by integration\",\"documentation_url\":\"https://docs.github.com/rest/branches/branch-protection#get-branch-protection\",\"status\":\"403\"}",
+      "error_code": "FORBIDDEN",
+      "error_data": {
+        "message": "Resource not accessible by integration",
+        "documentation_url": "https://docs.github.com/rest/branches/branch-protection#get-branch-protection",
+        "status": "403"
+      }
+    },
+    "listed_rulesets_including_parents": [],
+    "effective_rules": {
+      "error": "HTTPError: 400: GitHub Fetch URL is not an allowed public GitHub repository or search endpoint. (Response: None)",
+      "error_code": "INVALID_ARGUMENT"
+    },
+    "rule_ids": "Unverified; detailed classic protection inaccessible, listed rulesets empty",
+    "required_checks_review_settings_update_restrictions_and_bypass": "Detailed configuration Unverified; branch summary reports enforcement off",
+    "codeowners": {
+      "complete_tree_truncated": false,
+      "matching_paths": [],
+      "github_validation": {
+        "error": "HTTPError: 400: GitHub Fetch URL is not an allowed public GitHub repository or search endpoint. (Response: None)",
+        "error_code": "INVALID_ARGUMENT"
+      }
+    },
+    "allow_auto_merge": false,
+    "visibility": "public"
+  },
+  "pr15": {
+    "head_sha": "caeda8fcacbd801f0e32913a87b1f5b8673a41fd",
+    "base_sha": "0a923d420c3e7c22b339c193e7ce8e14e73d03b6",
+    "tested_merge_sha": "d3bb37207f1562e52a69bcb2f3e549e50a0d962f",
+    "author": "Joshbomb75",
+    "state": "open",
+    "draft": true,
+    "reviews": {
+      "reviews": []
+    },
+    "labels": [
+      {
+        "name": "AI-authored",
+        "description": "Changes primarily implemented by an AI coding agent."
+      }
+    ],
+    "replacement": "Not created: isolated implementation context and bounded capability prerequisites not verified"
+  },
+  "target": {
+    "name": "codex/m0-phase-c-target",
+    "present_in_complete_branch_listing": false,
+    "listed_branch_count": 16,
+    "page_size": 100,
+    "reviewed_source_sha": "Unassigned",
+    "actual_initial_sha": "Unassigned",
+    "creation_configuration_probes": "Not authorized; not performed"
+  },
+  "cloud": {
+    "readiness_current": true,
+    "network_policy_state": "enforced",
+    "outbound_identities": [],
+    "secret_bindings": [],
+    "runtime_variables": [],
+    "api_github_com_in_allowlist": false,
+    "cli_identity_result": "Forbidden via normal supported proxy; account/ID unknown; no retry loop",
+    "GH_TOKEN": "Present; value never read/printed; scope/identity unknown",
+    "public_git_fetch": "Succeeded; no authenticated push actor established",
+    "standard_helpers_and_credential_file_presence": "Bounded presence checks; no helper found, no standard hosts.yml/.git-credentials/.ssh found; contents not read",
+    "authenticated_git_push_workflow_write_and_remote_push_actor": "Unverified; not tested here"
+  },
+  "administration_capability": {
+    "managed_connector_administration": "Excluded",
+    "settings_write_operation": "Unavailable",
+    "complete_readback": "Unavailable",
+    "effective_rules_and_codeowners_errors": "Unsupported endpoint families",
+    "cli": "No ready identity binding; API network denied",
+    "minimum_supported_setup": "Owner administration route with live Joshbomb75 identity, existing authorized access, complete classic/inherited/effective protection read plus exact settings write/readback; a CLI route also requires authorized API networking and ready owner binding. No credential expansion or new tokens."
+  },
+  "outcomes": {
+    "C1": "Unsatisfied",
+    "C2": "Unverified",
+    "C3": "Unsatisfied",
+    "C4": "Unverified",
+    "C5": "Satisfied: documented procedures",
+    "C6": "Unverified"
+  },
+  "settings_applied": false,
+  "probes_run": false,
+  "merge_performed": false
+}

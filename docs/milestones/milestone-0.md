@@ -24,19 +24,19 @@ Planning baseline: main at
 [653ade674f81f90598f4dd92894705834ca007ed](https://github.com/Johnson-Dev-Agent-Management/project-manager/tree/653ade674f81f90598f4dd92894705834ca007ed).
 Reinspect current main at the beginning of each phase.
 
-| Area              | Baseline and implications                                                                                                                                                                                                 |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Ownership         | The repository is private and organization-owned. The owner reports a GitHub Team subscription; billing and effective settings require owner verification.                                                                |
-| Bootstrap         | The cloud scaffold is merged. Use current main, not the historical codex/cloud-bootstrap branch.                                                                                                                          |
-| Frontend          | React, strict TypeScript, Vite, ESLint, Vitest, React Testing Library, jest-dom, and jsdom already exist. Preserve the frameworks.                                                                                        |
-| Backend           | ASP.NET Core targeting .NET 10, EF Core, SQLite, xUnit, and WebApplicationFactory already exist. Existing backend tests are integration tests.                                                                            |
-| Toolchain         | Node and .NET SDK versions are pinned in .nvmrc and global.json. npm and NuGet locks are committed. Record and consistently use the tested npm version as well.                                                           |
-| Behavior          | Creation/listing, trimming, invalid-name rejection, and persistence are implemented. Playwright exercises creation, validation, reload, and API restart in two phases.                                                    |
-| Commands          | scripts/setup.sh, check.sh, dev.sh, and e2e.sh exist. Windows shell handling has been added, but non-Windows paths still assume /workspace.                                                                               |
-| Attribution       | A PR template, metadata-only attribution workflow, attribution documentation, and Python attribution tests exist. The label is spelled AI-authored.                                                                       |
-| CI and protection | At planning inspection, only the attribution workflow existed; the Actions API returned zero runs, main was unprotected, and the rulesets API returned an empty list. This does not establish whether Actions is enabled. |
-| Coverage          | No measured, accepted coverage baseline or enforced coverage targets have been established.                                                                                                                               |
-| Production        | Authentication, authorization, deployment, and migration-based schema management remain outside this milestone.                                                                                                           |
+| Area              | Baseline and implications                                                                                                                                                                                                                              |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Ownership         | The repository is intentionally public and organization-owned (owner confirmed during Phase C). Keep the cloud development environment private. The owner reports GitHub Team; actual billing and effective settings still require owner verification. |
+| Bootstrap         | The cloud scaffold is merged. Use current main, not the historical codex/cloud-bootstrap branch.                                                                                                                                                       |
+| Frontend          | React, strict TypeScript, Vite, ESLint, Vitest, React Testing Library, jest-dom, and jsdom already exist. Preserve the frameworks.                                                                                                                     |
+| Backend           | ASP.NET Core targeting .NET 10, EF Core, SQLite, xUnit, and WebApplicationFactory already exist. Existing backend tests are integration tests.                                                                                                         |
+| Toolchain         | Node and .NET SDK versions are pinned in .nvmrc and global.json. npm and NuGet locks are committed. Record and consistently use the tested npm version as well.                                                                                        |
+| Behavior          | Creation/listing, trimming, invalid-name rejection, and persistence are implemented. Playwright exercises creation, validation, reload, and API restart in two phases.                                                                                 |
+| Commands          | scripts/setup.sh, check.sh, dev.sh, and e2e.sh exist. Windows shell handling has been added, but non-Windows paths still assume /workspace.                                                                                                            |
+| Attribution       | A PR template, metadata-only attribution workflow, attribution documentation, and Python attribution tests exist. The label is spelled AI-authored.                                                                                                    |
+| CI and protection | At planning inspection, only the attribution workflow existed; the Actions API returned zero runs, main was unprotected, and the rulesets API returned an empty list. This does not establish whether Actions is enabled.                              |
+| Coverage          | No measured, accepted coverage baseline or enforced coverage targets have been established.                                                                                                                                                            |
+| Production        | Authentication, authorization, deployment, and migration-based schema management remain outside this milestone.                                                                                                                                        |
 
 Earlier cloud inspection passed three frontend tests, four backend integration
 cases, and both browser phases. Those historical results are not acceptance
@@ -64,16 +64,16 @@ merging, deployment infrastructure, or a broad architectural rewrite in M0.
 
 ## Owner decisions and configuration boundaries
 
-| Decision/action                      | Recommended direction                                                                                                                    | Timing and evidence                                                                                     |
-| ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| GitHub plan and ownership            | Keep the organization repository private; verify Team entitlement for required protections.                                              | Confirm before Phase C acceptance. Record effective settings, not just the subscription name.           |
-| Implementation and review identities | Use distinct authenticated identities. A restricted machine user is a candidate; a GitHub App is an alternative if supported end to end. | Choose the contribution path before implementation PRs; prove independence before claiming enforcement. |
-| Credential separation                | Scope implementation access to this repository, without administration, rule bypass, or access to the reviewer's credentials.            | Verify cloud Git and connector/API identities separately. A different Git author name is insufficient.  |
-| Account/installation cost            | Machine-user private-repository access may require an additional paid seat. Apps require supported token management.                     | Owner approves any expense or installation change. Neither route is assumed configured.                 |
-| Actions and budget                   | Permit required workflows on hosted runners, use restricted token defaults, and approve a spending/usage limit.                          | Before Phase A CI execution; do not broaden settings or buy credits implicitly.                         |
-| Policy owner                         | Designate a human reviewer for CI, tests, thresholds, standards, and associated scripts.                                                 | Identify before implementation; enforce in Phase C.                                                     |
-| Merge controls                       | Owner-controlled merging, required checks/reviews, no implementation-agent bypass.                                                       | Activate and verify in Phase C.                                                                         |
-| Visibility                           | Preserve privacy. Publication is a separate owner decision.                                                                              | Never make public as an implicit workaround for billing or permissions.                                 |
+| Decision/action                      | Recommended direction                                                                                                                                                                                         | Timing and evidence                                                                                                                |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| GitHub plan and ownership            | Preserve the intentionally public organization repository and private cloud environment; verify effective protection eligibility.                                                                             | Confirm before Phase C acceptance. Record effective settings, not just the subscription name.                                      |
+| Implementation and review identities | Owner chose a dedicated automation account as an outside collaborator, Write on this repository only, no organization membership; Joshbomb75 reviews and merges.                                              | Verify native Codex Git and API/PR use, workflow-file access and credential separation before proceeding.                          |
+| Credential separation                | Scope implementation access to this repository, without administration, rule bypass, or access to the reviewer's credentials.                                                                                 | Verify cloud Git and connector/API identities separately. A different Git author name is insufficient.                             |
+| Account/installation cost            | Public-repository-only outside collaboration is expected not to consume an additional paid GitHub seat; owner checks actual billing before inviting. No additional ChatGPT plan or seat is assumed necessary. | Owner performs account/connection setup manually; any expense requires separate approval.                                          |
+| Actions and budget                   | Permit required workflows on hosted runners, use restricted token defaults, and approve a spending/usage limit.                                                                                               | Before Phase A CI execution; do not broaden settings or buy credits implicitly.                                                    |
+| Policy owner                         | Designate a human reviewer for CI, tests, thresholds, standards, and associated scripts.                                                                                                                      | Identify before implementation; enforce in Phase C.                                                                                |
+| Merge controls                       | Owner-controlled merging, required checks/reviews, no implementation-agent bypass.                                                                                                                            | Activate and verify in Phase C.                                                                                                    |
+| Visibility                           | Public source visibility is intentional; cloud environment remains private.                                                                                                                                   | No visibility change is needed or authorized. Public code does not authorize public development services or access to credentials. |
 
 Attribution and authentication are separate. AI-authored identifies the declared
 implementer; it cannot prove a separate PR author, an independent approval, or
@@ -84,6 +84,19 @@ authorized distinct contribution identity; do not bypass approval rules.
 Unresolved identity questions must be documented. The owner may explicitly
 authorize limited CI preparation while they are being resolved, but successful
 Phase A/B checks alone must not be described as an enforceable pipeline.
+
+The current Phase C continuation permits **only codexcodemachine** for agent
+GitHub operations. The owner performs the already-approved main configuration in
+their own session, using the [ordered handoff](milestone-0-phase-c-owner-handoff.md).
+Preserve stronger settings and union required checks after complete existing
+classic/inherited/effective readback. Earlier owner-account administration
+permission is superseded for this continuation; the agent must not invoke it.
+The proposal at `94c03cb3c1e108660d29954bb277b15552143acb` remains the baseline.
+Target reviewed source SHA, creation/protection, precise probes and every merge
+require separate authorization. Verify a fresh isolated implementation context
+before ordinary-branch capability checks/replacement PR; account selection alone
+does not establish C2. No roles, membership, credential-permission, cost or visibility
+changes are authorized. See [account isolation](../automation-account-setup.md).
 
 ## Phase A — Foundational CI
 
@@ -264,8 +277,9 @@ PR authorship, independent approval, and credential separation.
 4. Confirm the expected check source and unique names after successful pilot runs.
    Add policy and supply-chain checks without removing existing required coverage.
 5. Capture effective settings and exercise the verification matrix below using
-   actual implementation credentials. Administrative read limitations require
-   owner-provided configuration evidence, not guessed settings.
+   actual implementation credentials. Administrative read limitations require a
+   supported complete administration readback route, not guessed settings or a
+   replacement from partial evidence.
 6. Review results, perform only the owner-approved merge, verify the subsequent
    main run, and refresh the cloud environment baseline.
 
@@ -283,34 +297,40 @@ must not be assumed available on the current plan.
 
 ### Deliberate-defect verification matrix
 
-Use disposable PRs and an owner-approved disposable branch/private test repository
+Use disposable PRs and an owner-approved disposable branch/test repository
 with equivalent protections. Never merge defective changes or force-push/delete
 main. Draft status alone is not proof that gates prevent merging.
 
-| Probe                                                        | Expected independently observed result                                                                    |
-| ------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------- |
-| Valid application change with appropriate tests              | All checks pass; eligible after independent approval.                                                     |
-| Documentation-only change                                    | All required checks appear and complete.                                                                  |
-| TypeScript error; C# compiler/analyzer violation             | Respective job and aggregate gate fail.                                                                   |
-| Failed frontend/backend assertion                            | Tests and aggregate gate fail.                                                                            |
-| Remove blank-name validation                                 | Backend and browser behavioral tests detect the regression.                                               |
-| Break UI submission or restart persistence                   | Real browser/database tests fail, even if mocked tests pass.                                              |
-| Manifest/lock mismatch                                       | Locked restore fails.                                                                                     |
-| Reduce coverage below approved floor                         | Coverage check fails.                                                                                     |
-| Focus/skip tests, remove discovery, or omit reports          | Integrity checks fail; no empty green run.                                                                |
-| API startup/readiness failure                                | Bounded failure with diagnostics and cleanup.                                                             |
-| Cancel or skip a required job/workflow                       | Merge remains blocked; missing evidence is not success.                                                   |
-| Replace tests/checks with a no-op or lower thresholds        | Required policy review blocks acceptance; a green modified workflow is insufficient.                      |
-| Change/remove CODEOWNERS                                     | Base-branch review requirements still apply.                                                              |
-| Spoof required status from an unauthorized source            | Expected-source restriction prevents acceptance.                                                          |
-| Push after approval or advance main                          | Fresh approval/base validation is required as configured.                                                 |
-| Direct push, force push, or deletion with agent credentials  | Rejected on the disposable protected target.                                                              |
-| Synthetic secret fixture or controlled vulnerable dependency | Security check detects it; never use a real secret or execute a vulnerable package solely for this probe. |
-| Advisory-service failure                                     | Security result is incomplete/failing, not clean.                                                         |
+| Probe                                                                       | Expected independently observed result                                                                    |
+| --------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| Valid application change with appropriate tests                             | All checks pass; eligible after independent approval.                                                     |
+| Documentation-only change                                                   | All required checks appear and complete.                                                                  |
+| TypeScript error; C# compiler/analyzer violation                            | Respective job and aggregate gate fail.                                                                   |
+| Failed frontend/backend assertion                                           | Tests and aggregate gate fail.                                                                            |
+| Remove blank-name validation                                                | Backend and browser behavioral tests detect the regression.                                               |
+| Break UI submission or restart persistence                                  | Real browser/database tests fail, even if mocked tests pass.                                              |
+| Manifest/lock mismatch                                                      | Locked restore fails.                                                                                     |
+| Reduce coverage below approved floor                                        | Coverage check fails.                                                                                     |
+| Focus/skip tests, remove discovery, or omit reports                         | Integrity checks fail; no empty green run.                                                                |
+| API startup/readiness failure                                               | Bounded failure with diagnostics and cleanup.                                                             |
+| Cancel or skip a required job/workflow                                      | Merge remains blocked; missing evidence is not success.                                                   |
+| Replace tests/checks with a no-op or lower thresholds                       | Required policy review blocks acceptance; a green modified workflow is insufficient.                      |
+| Change/remove CODEOWNERS                                                    | Base-branch review requirements still apply.                                                              |
+| Spoof required status from an unauthorized source                           | Expected-source restriction prevents acceptance.                                                          |
+| Push after approval or advance disposable target via authorized owner merge | Fresh approval/base validation is required as configured.                                                 |
+| Direct push, force push, or deletion with agent credentials                 | Rejected on the disposable protected target.                                                              |
+| Synthetic secret fixture or controlled vulnerable dependency                | Security check detects it; never use a real secret or execute a vulnerable package solely for this probe. |
+| Advisory-service failure                                                    | Security result is incomplete/failing, not clean.                                                         |
 
 Record expected/actual outcome, commit SHA, check conclusions, mergeability, and
 evidence links for each probe. Repeat relevant probes after changes to workflows,
 permissions, protection settings, or credentials.
+
+Phase C's base-advance probe uses only `codex/m0-phase-c-target`, advanced through
+a valid, independently reviewed PR and a separately authorized owner merge under
+all active protections. It never advances main for testing, directly pushes the
+target, or bypasses protections. Without that separate merge authorization C15b
+remains pending; no deliberate defect is merged into any branch.
 
 ### Phase C acceptance criteria
 

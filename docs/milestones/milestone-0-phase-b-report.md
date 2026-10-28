@@ -1,5 +1,9 @@
 # Milestone 0, Phase B acceptance report
 
+Phase C owner clarification: repository visibility is intentionally **public**;
+no visibility change is needed. Historical visibility concerns below are resolved
+as a planning correction; credential separation and enforcement remain unresolved.
+
 Status: **Historical automated evidence recorded; P2 Python discovery follow-up
 below. Independent human acceptance remains Not run. Local standalone scanner
 execution is incomplete.**

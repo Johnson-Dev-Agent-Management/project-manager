@@ -1,0 +1,223 @@
+{
+  "observed_at_utc": "2026-10-26 01:57:34 UTC",
+  "repository": "Johnson-Dev-Agent-Management/project-manager",
+  "method": "Selected fields from read-only GitHub connector responses; errors retained as limitations. Not an export of complete GitHub settings.",
+  "main": {
+    "sha": "0a923d420c3e7c22b339c193e7ce8e14e73d03b6",
+    "protected": false,
+    "protection_summary": {
+      "enabled": false,
+      "required_status_checks": {
+        "enforcement_level": "off",
+        "contexts": [],
+        "checks": []
+      }
+    }
+  },
+  "branch_protection_read": {
+    "error": "GitHub API error 403: {\"message\":\"Resource not accessible by integration\",\"documentation_url\":\"https://docs.github.com/rest/branches/branch-protection#get-branch-protection\",\"status\":\"403\"}",
+    "error_code": "FORBIDDEN",
+    "error_data": {
+      "message": "Resource not accessible by integration",
+      "documentation_url": "https://docs.github.com/rest/branches/branch-protection#get-branch-protection",
+      "status": "403"
+    }
+  },
+  "listed_rulesets_including_parents": [],
+  "effective_rules_read": {
+    "error": "HTTPError: 400: GitHub Fetch URL is not an allowed public GitHub repository or search endpoint. (Response: None)",
+    "error_code": "INVALID_ARGUMENT"
+  },
+  "repository_metadata": {
+    "visibility": "public",
+    "permissions": {
+      "admin": true,
+      "maintain": true,
+      "pull": true,
+      "push": true,
+      "triage": true
+    },
+    "allow_auto_merge": false
+  },
+  "connector_identity": {
+    "login": "Joshbomb75",
+    "id": 71676474
+  },
+  "collaborator_permission": {
+    "username": "Joshbomb75",
+    "permission": "admin"
+  },
+  "cloud_cli_identity": {
+    "command": "gh api user --jq '{login,id}'",
+    "result": "Forbidden",
+    "authenticated_git_push_actor": "Unverified",
+    "credential_scopes": "Unverified"
+  },
+  "phase_b": {
+    "pr": 7,
+    "author": "Joshbomb75",
+    "merger": "Joshbomb75",
+    "head_sha": "2f437b82c57a43bc50175251a15625c95081c388",
+    "merged": true,
+    "merged_at": "2026-10-25T18:51:30Z",
+    "merge_commit_sha": "0a923d420c3e7c22b339c193e7ce8e14e73d03b6",
+    "github_reviews": [],
+    "owner_acceptance": "Owner confirmed human acceptance of Phases A/B in this task using the same account; not separate authenticated GitHub approval."
+  },
+  "phase_b_pr_jobs": [
+    {
+      "name": "policy",
+      "conclusion": "success",
+      "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40169819484/job/121098210281"
+    },
+    {
+      "name": "frontend",
+      "conclusion": "success",
+      "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40169819484/job/121098210357"
+    },
+    {
+      "name": "supply-chain",
+      "conclusion": "success",
+      "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40169819484/job/121098210365"
+    },
+    {
+      "name": "backend",
+      "conclusion": "success",
+      "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40169819484/job/121098210386"
+    },
+    {
+      "name": "windows-smoke",
+      "conclusion": "success",
+      "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40169819484/job/121098210481"
+    },
+    {
+      "name": "e2e",
+      "conclusion": "success",
+      "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40169819484/job/121098363063"
+    },
+    {
+      "name": "quality-gate",
+      "conclusion": "success",
+      "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40169819484/job/121098681853"
+    }
+  ],
+  "phase_b_main_jobs": [
+    {
+      "name": "backend",
+      "conclusion": "success",
+      "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40223238331/job/121259144124"
+    },
+    {
+      "name": "supply-chain",
+      "conclusion": "success",
+      "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40223238331/job/121259144282"
+    },
+    {
+      "name": "windows-smoke",
+      "conclusion": "success",
+      "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40223238331/job/121259144328"
+    },
+    {
+      "name": "policy",
+      "conclusion": "success",
+      "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40223238331/job/121259144362"
+    },
+    {
+      "name": "frontend",
+      "conclusion": "success",
+      "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40223238331/job/121259144364"
+    },
+    {
+      "name": "e2e",
+      "conclusion": "success",
+      "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40223238331/job/121259379410"
+    },
+    {
+      "name": "quality-gate",
+      "conclusion": "success",
+      "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40223238331/job/121259943973"
+    }
+  ],
+  "main_check_runs": [
+    {
+      "name": "quality-gate",
+      "app_id": 15368,
+      "app_slug": "github-actions",
+      "conclusion": "success",
+      "head_sha": "0a923d420c3e7c22b339c193e7ce8e14e73d03b6",
+      "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40223238331/job/121259943973"
+    },
+    {
+      "name": "e2e",
+      "app_id": 15368,
+      "app_slug": "github-actions",
+      "conclusion": "success",
+      "head_sha": "0a923d420c3e7c22b339c193e7ce8e14e73d03b6",
+      "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40223238331/job/121259379410"
+    },
+    {
+      "name": "Dependabot",
+      "app_id": 15368,
+      "app_slug": "github-actions",
+      "conclusion": "success",
+      "head_sha": "0a923d420c3e7c22b339c193e7ce8e14e73d03b6",
+      "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40223246673/job/121259171806"
+    },
+    {
+      "name": "Dependabot",
+      "app_id": 15368,
+      "app_slug": "github-actions",
+      "conclusion": "success",
+      "head_sha": "0a923d420c3e7c22b339c193e7ce8e14e73d03b6",
+      "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40223246759/job/121259171678"
+    },
+    {
+      "name": "Dependabot",
+      "app_id": 15368,
+      "app_slug": "github-actions",
+      "conclusion": "success",
+      "head_sha": "0a923d420c3e7c22b339c193e7ce8e14e73d03b6",
+      "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40223246792/job/121259171569"
+    },
+    {
+      "name": "frontend",
+      "app_id": 15368,
+      "app_slug": "github-actions",
+      "conclusion": "success",
+      "head_sha": "0a923d420c3e7c22b339c193e7ce8e14e73d03b6",
+      "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40223238331/job/121259144364"
+    },
+    {
+      "name": "policy",
+      "app_id": 15368,
+      "app_slug": "github-actions",
+      "conclusion": "success",
+      "head_sha": "0a923d420c3e7c22b339c193e7ce8e14e73d03b6",
+      "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40223238331/job/121259144362"
+    },
+    {
+      "name": "windows-smoke",
+      "app_id": 15368,
+      "app_slug": "github-actions",
+      "conclusion": "success",
+      "head_sha": "0a923d420c3e7c22b339c193e7ce8e14e73d03b6",
+      "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40223238331/job/121259144328"
+    },
+    {
+      "name": "supply-chain",
+      "app_id": 15368,
+      "app_slug": "github-actions",
+      "conclusion": "success",
+      "head_sha": "0a923d420c3e7c22b339c193e7ce8e14e73d03b6",
+      "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40223238331/job/121259144282"
+    },
+    {
+      "name": "backend",
+      "app_id": 15368,
+      "app_slug": "github-actions",
+      "conclusion": "success",
+      "head_sha": "0a923d420c3e7c22b339c193e7ce8e14e73d03b6",
+      "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40223238331/job/121259144124"
+    }
+  ]
+}

@@ -1,5 +1,12 @@
 # CI operation — Milestone 0, Phase B
 
+Phase C preparation adds PR execution for the exact disposable base
+`codex/m0-phase-c-target`, with all existing jobs unchanged. Protection settings
+are proposed separately in the [owner checklist](branch-enforcement.md);
+[the Phase C report](milestones/milestone-0-phase-c-report.md) distinguishes CI
+success from still-unverified enforcement. No target probes are authorized until
+the owner approves the exact scope and identity prerequisites are verified.
+
 Run in an authorized cloud checkout. Exact Node 24.22.0, npm 11.9.0, and
 .NET SDK 10.0.402 remain pinned. Setup uses npm ci and locked NuGet restore;
 Linux/macOS may install runtimes under ignored `.tools`. Native Windows uses
