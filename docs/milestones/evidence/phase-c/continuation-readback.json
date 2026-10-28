@@ -1,0 +1,219 @@
+{
+  "observed_at_utc": "2026-10-28 04:24:44 UTC",
+  "repository": "Johnson-Dev-Agent-Management/project-manager",
+  "assignment": "Continue preparation using codexcodemachine only; owner-only UI/CLI handoff requested; no permission changes, merges or newly authorized probes",
+  "api_identity": {
+    "login": "codexcodemachine",
+    "id": 348095294
+  },
+  "repository_permissions": {
+    "admin": false,
+    "maintain": false,
+    "pull": true,
+    "push": true,
+    "triage": true
+  },
+  "collaborator_role": "write",
+  "reported_memberships": {
+    "orgs": []
+  },
+  "installation_metadata": {
+    "allow_all_repositories_for_testing": false,
+    "installations": [
+      {
+        "id": 172621871,
+        "account_login": "Johnson-Dev-Agent-Management",
+        "account_id": 342865800,
+        "account_type": "Organization",
+        "account_avatar_url": "https://avatars.githubusercontent.com/u/342865800?v=4",
+        "html_url": "https://github.com/organizations/Johnson-Dev-Agent-Management/settings/installations/172621871",
+        "events": [
+          "check_run",
+          "check_suite",
+          "commit_comment",
+          "issues",
+          "issue_comment",
+          "pull_request",
+          "pull_request_review",
+          "pull_request_review_comment",
+          "pull_request_review_thread",
+          "repository",
+          "status",
+          "sub_issues"
+        ],
+        "repository_selection": "all",
+        "viewer_can_administer": null
+      },
+      {
+        "id": 175319904,
+        "account_login": "codexcodemachine",
+        "account_id": 348095294,
+        "account_type": "User",
+        "account_avatar_url": "https://avatars.githubusercontent.com/u/348095294?v=4",
+        "html_url": "https://github.com/settings/installations/175319904",
+        "events": [
+          "check_run",
+          "check_suite",
+          "commit_comment",
+          "issues",
+          "issue_comment",
+          "pull_request",
+          "pull_request_review",
+          "pull_request_review_comment",
+          "pull_request_review_thread",
+          "repository",
+          "status",
+          "sub_issues"
+        ],
+        "repository_selection": "all",
+        "viewer_can_administer": null
+      }
+    ]
+  },
+  "owner_route": {
+    "advertised_account": "Joshbomb75",
+    "advertised_id": 71676474,
+    "still_selectable": true,
+    "invoked_in_continuation": false,
+    "separation": "Unverified; account selection is not isolated implementation configuration"
+  },
+  "git_identity": {
+    "status": "Unverified",
+    "verified_codexcodemachine_transport": "Unavailable",
+    "unknown_GH_TOKEN": "Presence only; value/identity/scope not inspected or invoked",
+    "helpers": "No configured helper/askpass/extraheader keys found",
+    "standard_credentials": "No hosts.yml, .git-credentials or .ssh present in standard user locations",
+    "git_network_operations_in_continuation": false,
+    "reason": "Only codexcodemachine permitted; unidentified Git/CLI credentials not used; connector publication is separate from Git transport identity"
+  },
+  "cloud": {
+    "observations_current": true,
+    "network_policy": "enforced restricted",
+    "ready_outbound_identities": [],
+    "runtime_variables": [],
+    "secret_bindings": [],
+    "api_github_com_in_allowlist": false
+  },
+  "main": {
+    "sha": "0a923d420c3e7c22b339c193e7ce8e14e73d03b6",
+    "protected": false,
+    "protection_summary": {
+      "enabled": false,
+      "required_status_checks": {
+        "enforcement_level": "off",
+        "contexts": [],
+        "checks": []
+      }
+    },
+    "listed_rulesets_including_parents": [],
+    "complete_protection_rule_ids_reviews_update_restrictions_bypass": "Unverified: unsupported administration route; no repeat denied GET",
+    "codeowners": "Absent in unchanged main tree; GitHub validation unavailable through connector",
+    "allow_auto_merge": false,
+    "visibility": "public"
+  },
+  "preparation": {
+    "pr": 15,
+    "head": "3c1abc138a95f98e3f9946cf4b0c4d8fde5e588b",
+    "base": "0a923d420c3e7c22b339c193e7ce8e14e73d03b6",
+    "tested_merge": "1daadb66b0fd5f6512f4eb847bcb7520ad2a40eb",
+    "branch": "codex/m0-phase-c",
+    "author": "Joshbomb75",
+    "draft": true,
+    "state": "open",
+    "reviews": {
+      "reviews": []
+    },
+    "checks": [
+      {
+        "name": "label",
+        "app_id": 15368,
+        "sha": "3c1abc138a95f98e3f9946cf4b0c4d8fde5e588b",
+        "conclusion": "success",
+        "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40628674905/job/122619646115"
+      },
+      {
+        "name": "quality-gate",
+        "app_id": 15368,
+        "sha": "3c1abc138a95f98e3f9946cf4b0c4d8fde5e588b",
+        "conclusion": "success",
+        "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40628124981/job/122618801639"
+      },
+      {
+        "name": "e2e",
+        "app_id": 15368,
+        "sha": "3c1abc138a95f98e3f9946cf4b0c4d8fde5e588b",
+        "conclusion": "success",
+        "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40628124981/job/122618127443"
+      },
+      {
+        "name": "windows-smoke",
+        "app_id": 15368,
+        "sha": "3c1abc138a95f98e3f9946cf4b0c4d8fde5e588b",
+        "conclusion": "success",
+        "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40628124981/job/122617860310"
+      },
+      {
+        "name": "frontend",
+        "app_id": 15368,
+        "sha": "3c1abc138a95f98e3f9946cf4b0c4d8fde5e588b",
+        "conclusion": "success",
+        "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40628124981/job/122617860276"
+      },
+      {
+        "name": "policy",
+        "app_id": 15368,
+        "sha": "3c1abc138a95f98e3f9946cf4b0c4d8fde5e588b",
+        "conclusion": "success",
+        "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40628124981/job/122617860247"
+      },
+      {
+        "name": "backend",
+        "app_id": 15368,
+        "sha": "3c1abc138a95f98e3f9946cf4b0c4d8fde5e588b",
+        "conclusion": "success",
+        "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40628124981/job/122617860221"
+      },
+      {
+        "name": "supply-chain",
+        "app_id": 15368,
+        "sha": "3c1abc138a95f98e3f9946cf4b0c4d8fde5e588b",
+        "conclusion": "success",
+        "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40628124981/job/122617859997"
+      }
+    ],
+    "ci_scope": "Start-of-continuation head only; final new head CI recorded in PR handoff after validation"
+  },
+  "target": {
+    "name": "codex/m0-phase-c-target",
+    "present": false,
+    "branch_listing_count": 16,
+    "page_size": 100,
+    "reviewed_source_sha": null,
+    "actual_initial_sha": null,
+    "creation_protection_scope_authorization": "Not provided"
+  },
+  "probes": {
+    "executed": [],
+    "all_31_plan_rows_and_grouped_subcases": "Unverified; not run; isolated implementation and authorized target/source/scope prerequisites missing",
+    "control_attribution": "No credential/network failure, draft status, failed lease or unrelated blocker counted as enforcement"
+  },
+  "administration": {
+    "agent_owner_use": "Prohibited in current continuation",
+    "connector_write_capability": "No protection/ruleset/settings write operation",
+    "historical_detailed_get": "403 Resource not accessible by integration; historical owner call not repeated",
+    "owner_main_configuration": "Already approved; return complete before/after readback; preserve stronger values and union checks"
+  },
+  "acceptance": {
+    "C1": "Failed",
+    "C2": "Unverified",
+    "C3": "Failed",
+    "C4": "Unverified",
+    "C5": "Passed: documented procedures",
+    "C6": "Unverified"
+  },
+  "settings_mutated": false,
+  "permissions_changed": false,
+  "target_created_or_advanced": false,
+  "reviews_approvals_merges": false,
+  "costs_incurred": false
+}

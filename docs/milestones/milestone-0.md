@@ -85,17 +85,18 @@ Unresolved identity questions must be documented. The owner may explicitly
 authorize limited CI preparation while they are being resolved, but successful
 Phase A/B checks alone must not be described as an enforceable pipeline.
 
-The current Phase C audit-remediation assignment authorizes the agent to perform
-the listed **main** administration using Joshbomb75, after complete existing
-protection/inherited-ruleset readback. Preserve stronger controls and union checks.
-The proposal at `94c03cb3c1e108660d29954bb277b15552143acb` remains the baseline,
-but target creation/configuration, reviewed source SHA and precise probe scope
-require separate authorization. No probes or merges are authorized here.
-See [account isolation/capabilities](../automation-account-setup.md) and the
-[configuration package](../branch-enforcement.md). Owner access in this administration
-task does not establish C2; verify a fresh isolated implementation context before
-capability probes/replacement PR. Account creation, invitations, membership/role
-changes, credential expansion, purchases and merges remain outside this assignment.
+The current Phase C continuation permits **only codexcodemachine** for agent
+GitHub operations. The owner performs the already-approved main configuration in
+their own session, using the [ordered handoff](milestone-0-phase-c-owner-handoff.md).
+Preserve stronger settings and union required checks after complete existing
+classic/inherited/effective readback. Earlier owner-account administration
+permission is superseded for this continuation; the agent must not invoke it.
+The proposal at `94c03cb3c1e108660d29954bb277b15552143acb` remains the baseline.
+Target reviewed source SHA, creation/protection, precise probes and every merge
+require separate authorization. Verify a fresh isolated implementation context
+before ordinary-branch capability checks/replacement PR; account selection alone
+does not establish C2. No roles, membership, credential-permission, cost or visibility
+changes are authorized. See [account isolation](../automation-account-setup.md).
 
 ## Phase A — Foundational CI
 

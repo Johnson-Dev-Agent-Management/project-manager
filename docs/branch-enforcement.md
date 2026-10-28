@@ -1,25 +1,28 @@
 # Branch enforcement — Phase C configuration package
 
-Status: **Main configuration authorized; blocked by connection capabilities.
-No settings applied. Phase C and Milestone 0 remain incomplete.**
+Status: **Ready for owner action; no settings applied. Phase C and Milestone 0
+remain incomplete.**
 See the [report](milestones/milestone-0-phase-c-report.md) and
 [fresh readback](milestones/evidence/phase-c/audit-readback.json).
-Earlier instructions delegating routine settings entry to the owner are superseded.
+The latest continuation requires **only codexcodemachine** for agent GitHub
+operations and explicitly requests owner UI/CLI instructions. Use the single
+[ordered owner handoff](milestones/milestone-0-phase-c-owner-handoff.md). Earlier
+owner-account administration authorization does not permit owner use in this continuation.
 
 ## Authorization and identities
 
-The current assignment authorizes `Joshbomb75` (ID `71676474`) for the listed
-administration of **main**. The agent must perform configuration/readback when a
-supported owner route exists. It does not authorize reviews, approvals, merges,
-mutation/destructive probes, account creation, collaborator/organization changes,
-visibility changes, purchases, or broader credential permissions. Preserve public
-source and private cloud development. Never inspect or retain secret values.
+The owner performs the already-approved main configuration in their separate session.
+The agent uses only `codexcodemachine` and continues repository preparation,
+validation and PR updates without owner credentials. No reviews, approvals, merges,
+mutation/destructive probes, accounts, collaborator/organization changes, visibility
+changes, purchases or broader credential permissions are authorized. Preserve public
+source and private cloud development; never inspect or retain secret values.
 
 Use `codexcodemachine` (ID `348095294`) for implementation publication and future
 PR authorship. API identity, collaborator Write, push=true, admin=false,
 maintain=false and reported empty organization memberships are verified. Role
-does not inventory credential scope or prove absence of bypass. Owner access
-here is intentional administration access and does not establish C2. Verify full
+does not inventory credential scope or prove absence of bypass. Owner-account selection is still advertised in tool metadata but is not invoked
+in this continuation. This separation gap does not establish C2. Verify full
 separation in a fresh implementation context without owner-capable routes;
 selecting a different account here is insufficient. See [account isolation](automation-account-setup.md).
 
@@ -71,18 +74,20 @@ an owner-authored bootstrap PR.
 
 ## Administration capability and safe application
 
-Fresh owner identity and Admin repository role do **not** establish app permission.
-The managed connector explicitly excludes administration access; one fresh
-detailed protection GET returns **403 Resource not accessible by integration**.
+Historical owner identity and Admin role readback do **not** establish app permission.
+The owner connection is not invoked again in the current continuation.
+The managed connector explicitly excludes administration access; the earlier
+detailed protection GET returned **403 Resource not accessible by integration**.
 It exposes no protection/ruleset/repository-settings write operation. Effective
 branch-rule and CODEOWNERS-error URLs are unsupported. Listed rulesets including
 parents are `[]`; main reports protected=false and checks off. These establish
 absence of reported active protection, not a complete settings export.
 
 The current private cloud runtime has no ready outbound identities, secret
-bindings or runtime variables. A bounded `gh api user` attempt through the normal
-proxy returns Forbidden; `api.github.com` is absent from the enforced allowlist.
-GH_TOKEN exists, but its value/identity/scope were never inspected. No denied
+bindings or runtime variables. The earlier bounded `gh api user` attempt through the normal
+proxy returned Forbidden; `api.github.com` is absent from the enforced allowlist.
+GH_TOKEN exists, but its value/identity/scope were never inspected. It is not
+invoked here because it is not verified as belonging to codexcodemachine. No denied
 endpoint is repeatedly retried; no alternate host/proxy bypass is used. Public
 Git fetch proves read connectivity only.
 
@@ -93,10 +98,11 @@ the same managed owner connector does not add its excluded capability. A support
 CLI route would also need authorized API networking and a ready, already-authorized
 owner binding; none is configured here. Do not mint tokens, expand credential
 permissions, change installations or use the owner's personal computer/browser.
-If the platform cannot provide a route within those limits, report the exact gap
-for a separately reviewed setup decision. Do not delegate individual settings entry.
+The latest assignment routes owner-only work to the separate owner session using
+the exact UI/CLI steps and readback in the handoff. The agent must not use an owner
+route even if one later becomes available without a new authorization.
 
-When a supported route is available, the agent must:
+The owner-session application and agent verification sequence is:
 
 1. Verify live account/ID and repository Admin role before using the connection.
 2. Obtain complete existing classic protection and repository/inherited rulesets,
@@ -107,7 +113,7 @@ When a supported route is available, the agent must:
    union existing checks with the seven App-bound checks. Do not replace settings
    from partial/inaccessible readback. Record any expression gap without substituting
    weaker controls.
-4. Apply reconciled **main-only** settings using the verified owner route. Keep
+4. The owner applies reconciled **main-only** settings in their separate session. Keep
    auto-merge disabled. Do not change access, other targets or merge methods.
 5. Read back effective configuration and compare every row. Retain UTC times,
    classic/ruleset IDs, branch SHA, required names/source IDs, strictness, all review

@@ -7,27 +7,28 @@ visibility and private cloud development.
 
 ## Current observations
 
-The [fresh readback](milestones/evidence/phase-c/audit-readback.json) supersedes
-the dated [earlier identity snapshot](milestones/evidence/phase-c/identity-readback.json)
-for this assignment; historical evidence remains retained with its original date.
+Use the [continuation readback](milestones/evidence/phase-c/continuation-readback.json)
+and [ordered owner handoff](milestones/milestone-0-phase-c-owner-handoff.md) for the
+current assignment. Earlier snapshots remain historical. The agent now uses only
+codexcodemachine; no owner connection or unidentified Git/CLI credential is invoked.
 
-| Item                          | Direct observation                                                                                        | Limit                                                                                             |
-| ----------------------------- | --------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| Implementation API identity   | Codex GitHub authenticates codexcodemachine, ID 348095294                                                 | Does not identify Git transport credentials                                                       |
-| Repository authorization      | Collaborator write; push=true, admin=false, maintain=false                                                | Role does not inventory complete scope/bypass exposure                                            |
-| Organization membership       | API reports []                                                                                            | Repository-only grants, outside-collaborator status and billing are not independently established |
-| Owner administration identity | GitHub authenticates Joshbomb75, ID 71676474, collaborator Admin                                          | Authorized here; connector still excludes administration capability                               |
-| Installation metadata         | Both connections list the organization installation; repository_selection=all, viewer_can_administer=null | Installation selection is not effective token scope                                               |
-| Owner route                   | Live/callable in this administration task                                                                 | This task does not establish C2                                                                   |
-| Cloud readiness               | No ready outbound identities, secret bindings or runtime variables                                        | GH_TOKEN is present; value/identity/scope unknown and never inspected                             |
-| Git/API transport             | Public Git fetch succeeds; cloud gh api user returns Forbidden                                            | API host absent from enforced allowlist; authenticated Git push actor unknown                     |
-| Current PR                    | #15 remains open/draft and Joshbomb75-authored; AI label description verified                             | Updating its branch/body cannot change authenticated author                                       |
+| Item                          | Direct observation                                                                                                  | Limit                                                                                             |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| Implementation API identity   | Codex GitHub authenticates codexcodemachine, ID 348095294                                                           | Does not identify Git transport credentials                                                       |
+| Repository authorization      | Collaborator write; push=true, admin=false, maintain=false                                                          | Role does not inventory complete scope/bypass exposure                                            |
+| Organization membership       | API reports []                                                                                                      | Repository-only grants, outside-collaborator status and billing are not independently established |
+| Owner administration identity | Previously verified Joshbomb75 / 71676474 / Admin; current selector still advertised                                | Not invoked or authorized for agent use in this continuation                                      |
+| Installation metadata         | The automation connection lists the organization installation; repository_selection=all, viewer_can_administer=null | Installation selection is not effective token scope                                               |
+| Owner route                   | Owner account remains selectable in connector metadata; not invoked here                                            | This task does not establish C2                                                                   |
+| Cloud readiness               | No ready outbound identities, secret bindings or runtime variables                                                  | GH_TOKEN is present; value/identity/scope unknown and never inspected                             |
+| Git/API transport             | Historical public fetch/CLI denial; no verified codexcodemachine Git transport                                      | API host absent from enforced allowlist; authenticated Git push actor unknown                     |
+| Current PR                    | #15 remains open/draft and Joshbomb75-authored; AI label description verified                                       | Updating its branch/body cannot change authenticated author                                       |
 
 The automation connector can read exact-head check/job metadata and decoded logs;
 frontend and supply-chain artifact archives were downloaded and matched their
 API digests. Those are observed reads of existing CI, not isolated workflow-write
 capability or new CI execution by the implementation identity. No feature-branch
-capability probe runs in this administration context.
+capability probe runs before the isolation prerequisites hold.
 
 Non-secret inventory is bounded: standard helper configuration and credential-file
 presence were checked without reading credential files, environment values or
@@ -36,11 +37,11 @@ absence of every owner-capable route. Never inspect secret values to diagnose it
 
 ## Supported setup still required
 
-The owner authorizes administration here. The agent should configure main itself
-once supported complete read/write/readback is available; the [configuration
-package](branch-enforcement.md) records the exact missing capability. Account
-Admin status is insufficient; reconnecting the same managed connector does not
-add excluded administration operations.
+Only codexcodemachine is authorized for agent GitHub operations in this
+continuation. The owner performs main administration in their separate session;
+the [handoff](milestones/milestone-0-phase-c-owner-handoff.md) contains exact UI/CLI
+steps and readback. Account Admin status does not add connector capabilities;
+reconnecting the same managed connector cannot supply excluded administration.
 
 Verify C2 in a **fresh isolated implementation context** using supported platform
 configuration. Only approved codexcodemachine routes may be reachable there.
@@ -109,5 +110,5 @@ defect probes or administration bypass.
    content/authorship/attribution. **Keep #15 open until confirmed.** Joshbomb75
    provides genuine independent review; no agent review or approval.
 
-This administration assignment does not establish credential separation. Successful
+This continuation does not establish credential separation. Successful
 API reads, documentation publication and green CI cannot establish C2 or Phase C.

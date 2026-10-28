@@ -1,7 +1,8 @@
 # Phase C verification ledger
 
 Status: **Not run; all Phase C probe outcomes Unverified.**
-The current assignment authorizes main administration only. Equivalent target
+The agent now uses only codexcodemachine; owner-only main administration is
+handed off to the owner session. Main settings remain approved. Equivalent target
 settings, reviewed source SHA, creation and precise probe scope still require
 separate authorization. No disposable target exists; its initial SHA is unassigned.
 Fresh isolated implementation credentials, recreated implementation PR, exact
@@ -22,8 +23,8 @@ or force-push/delete main. No disposable branch/rule exists by assumption.
 Before execution, fill these fields with owner approval evidence:
 
 - Main settings approval: current owner assignment, exact controls documented in
-  [the configuration package](../branch-enforcement.md). Main administration is
-  authorized but blocked by connection capabilities; this does not authorize
+  [the configuration package](../branch-enforcement.md). Main owner-session administration is
+  approved; the agent cannot perform administration through the current connector; this does not authorize
   target creation, target configuration or any mutation/destructive probe.
 - Target settings/creation approval: **Pending**, including reviewed source SHA
   and precise scope. Historical two-branch proposal `94c03cb` is not that approval.
@@ -38,8 +39,8 @@ Before execution, fill these fields with owner approval evidence:
 - Independent human reviewer / owner merger: owner-confirmed **Joshbomb75**;
   implementation API connection **Codex GitHub / codexcodemachine** is present.
 - Credential separation in a fresh implementation context and absence of
-  owner-capable routes/bypass: **Unverified**. Owner administration in this task
-  does not establish C2. Git push/workflow-comment/draft-PR capability verification
+  owner-capable routes/bypass: **Unverified**. Owner account selection remains advertised but is not invoked
+  in this continuation; this does not establish C2. Git push/workflow-comment/draft-PR capability verification
   remains Not run until supported isolation prerequisites hold.
 
 For every row, Actual is **Not run**, head/base/tested merge SHAs are **—**,
@@ -103,12 +104,58 @@ Never approve a known defect to make an attempted merge probe possible. CI
 failure plus gate evidence can establish defect detection while merge-block
 attribution remains separately Unverified.
 
+## Probe acceptance status
+
+All cases and every grouped subcase below are **Unverified**, with no executed
+head/base/tested SHA or enforcement result. Current preparation CI is not a
+disposable-target probe. Complete identity isolation, approved target creation/
+equivalent configuration and independent readback before requesting exact-scope
+execution authorization. None of that authorization is implied by this handoff.
+
+| Probe | Status     | Reason / next action                                                                                                                                                    |
+| ----- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| C01   | Unverified | Target/source/scope and isolation prerequisites missing; complete them and authorize this isolated case before execution                                                |
+| C02   | Unverified | Target/source/scope and isolation prerequisites missing; complete them and authorize this isolated case before execution                                                |
+| C03a  | Unverified | Target/source/scope and isolation prerequisites missing; complete them and authorize this isolated case before execution                                                |
+| C03b  | Unverified | Target/source/scope and isolation prerequisites missing; complete them and authorize this isolated case before execution                                                |
+| C04a  | Unverified | Target/source/scope and isolation prerequisites missing; complete them and authorize this isolated case before execution                                                |
+| C04b  | Unverified | Target/source/scope and isolation prerequisites missing; complete them and authorize this isolated case before execution                                                |
+| C05   | Unverified | Target/source/scope and isolation prerequisites missing; complete them and authorize this isolated case before execution                                                |
+| C06a  | Unverified | Target/source/scope and isolation prerequisites missing; complete them and authorize this isolated case before execution                                                |
+| C06b  | Unverified | Target/source/scope and isolation prerequisites missing; complete them and authorize this isolated case before execution                                                |
+| C07a  | Unverified | Target/source/scope and isolation prerequisites missing; complete them and authorize this isolated case before execution                                                |
+| C07b  | Unverified | Target/source/scope and isolation prerequisites missing; complete them and authorize this isolated case before execution                                                |
+| C08a  | Unverified | Target/source/scope and isolation prerequisites missing; complete them and authorize this isolated case before execution                                                |
+| C08b  | Unverified | Target/source/scope and isolation prerequisites missing; complete them and authorize this isolated case before execution                                                |
+| C09a  | Unverified | Target/source/scope and isolation prerequisites missing; complete them and authorize this isolated case before execution                                                |
+| C09b  | Unverified | Target/source/scope and isolation prerequisites missing; complete them and authorize this isolated case before execution                                                |
+| C09c  | Unverified | Target/source/scope and isolation prerequisites missing; complete them and authorize this isolated case before execution                                                |
+| C10   | Unverified | Target/source/scope and isolation prerequisites missing; complete them and authorize this isolated case before execution                                                |
+| C11a  | Unverified | Cancellation scope/actor not authorized; identify a supported actor and exact target-only cancellation after prerequisites                                              |
+| C11b  | Unverified | Target/source/scope and isolation prerequisites missing; complete them and authorize this isolated case before execution                                                |
+| C12a  | Unverified | Target/source/scope and isolation prerequisites missing; complete them and authorize this isolated case before execution                                                |
+| C12b  | Unverified | Target/source/scope and isolation prerequisites missing; complete them and authorize this isolated case before execution                                                |
+| C13a  | Unverified | Target/source/scope and isolation prerequisites missing; complete them and authorize this isolated case before execution                                                |
+| C13b  | Unverified | Target/source/scope and isolation prerequisites missing; complete them and authorize this isolated case before execution                                                |
+| C14   | Unverified | No approved source-spoof actor/scope; identify an existing permitted source and independently observable source-binding test after prerequisites                        |
+| C15a  | Unverified | Target/source/scope and isolation prerequisites missing; complete them and authorize this isolated case before execution                                                |
+| C15b  | Unverified | No target or owner-merge authorization; approve a reviewed valid advance PR and separate owner merge after all prerequisites                                            |
+| C16a  | Unverified | Protected-ref mutation/destructive scope not authorized; pin known-good destination/expected-old SHA and authorize exact target-only operation after isolation/readback |
+| C16b  | Unverified | Protected-ref mutation/destructive scope not authorized; pin known-good destination/expected-old SHA and authorize exact target-only operation after isolation/readback |
+| C16c  | Unverified | Protected-ref mutation/destructive scope not authorized; pin known-good destination/expected-old SHA and authorize exact target-only operation after isolation/readback |
+| C17   | Unverified | Target/source/scope and isolation prerequisites missing; complete them and authorize this isolated case before execution                                                |
+| C18   | Unverified | Target/source/scope and isolation prerequisites missing; complete them and authorize this isolated case before execution                                                |
+
+Per-case detection and enforcement must be reported separately. A failed test
+may prove detection while its merge blocker remains masked; network/credential
+denials and failed leases do not prove branch enforcement.
+
 ## Per-case evidence record (copy for each execution)
 
 ```text
 Case ID:
-Defect/capability detection outcome: Satisfied / Unsatisfied / Unverified
-Protection enforcement outcome: Satisfied / Unsatisfied / Unverified
+Defect/capability detection outcome: Passed / Failed / Unverified
+Protection enforcement outcome: Passed / Failed / Unverified
 Owner approval reference and scope:
 Observed at (UTC):
 Implementation push/API identities and credential-scope evidence:
