@@ -1,8 +1,9 @@
-import { useLayoutEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { errorMessage, jsonRequest, request, type ProjectTask } from './api';
 import TaskMeta from '../today/TaskMeta';
 
 const statuses: ProjectTask['status'][] = ['To do', 'In progress', 'Done'];
+type MoveFocus = { id: number; origin: Element | null };
 
 export default function ProjectBoard({
   tasks,
@@ -26,13 +27,25 @@ export default function ProjectBoard({
   const [feedback, setFeedback] = useState('');
   const [error, setError] = useState('');
   const pending = useRef(new Set<number>());
-  const focusAfterMove = useRef<{ id: number; origin: Element | null } | null>(null);
+  const focusOwner = useRef<MoveFocus | null>(null);
+  const focusAfterMove = useRef<MoveFocus | null>(null);
   const board = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const relinquishFocus = (event: FocusEvent) => {
+      // Disabling a selector can blur it to body. A later real focus destination
+      // revokes this request's claim permanently, even if that control also blurs.
+      if (event.target !== document.body) focusOwner.current = null;
+    };
+    document.addEventListener('focusin', relinquishFocus);
+    return () => document.removeEventListener('focusin', relinquishFocus);
+  }, []);
   useLayoutEffect(() => {
     const focus = focusAfterMove.current;
     if (!focus) return;
     focusAfterMove.current = null;
-    // Do not steal focus if the user has continued working (including quick capture).
+    if (focusOwner.current !== focus) return;
+    focusOwner.current = null;
+    // Body is a valid fallback only for the request that still owns focus.
     if (document.activeElement === focus.origin || document.activeElement === document.body)
       board.current?.querySelector<HTMLSelectElement>(`#board-status-${focus.id}`)?.focus();
   }, [feedback, error]);
@@ -40,7 +53,8 @@ export default function ProjectBoard({
   async function move(task: ProjectTask, status: ProjectTask['status']) {
     if (task.status === status || busyIds.includes(task.id) || pending.current.has(task.id)) return;
     pending.current.add(task.id);
-    const origin = document.activeElement;
+    const focus = { id: task.id, origin: document.activeElement };
+    focusOwner.current = focus;
     onSavingChange(task.id, true);
     setError('');
     setFeedback(`Moving “${task.title}” to ${status}…`);
@@ -60,7 +74,8 @@ export default function ProjectBoard({
     } finally {
       pending.current.delete(task.id);
       onSavingChange(task.id, false);
-      focusAfterMove.current = { id: task.id, origin };
+      // An older completion must not replace the current owner's queued restore.
+      if (focusOwner.current === focus) focusAfterMove.current = focus;
     }
   }
 

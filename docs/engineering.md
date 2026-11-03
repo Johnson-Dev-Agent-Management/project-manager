@@ -136,6 +136,10 @@ quick capture and new-task drafts remain independently usable. The retained List
 forms synchronize externally saved status without resetting other draft fields.
 Native drag-and-drop supplements a labeled native select, with live feedback,
 focus restoration and stacked columns on narrow screens; no dependency is added.
+Each move has its own focus claim, revoked when focus moves to another control.
+A blurred disabled selector does not let an earlier response reclaim focus from a
+later move. Delayed-response browser regressions use real Tab/arrow keys in both
+response orders; unit tests also account for jsdom retaining disabled focus.
 
 `ProjectBoard.test.tsx` covers grouping/order/counts, creation, both move paths,
 no-op/cancelled/external drops, pending/failure/retry, drafts and quick-capture focus.
