@@ -116,9 +116,10 @@ auto-merge configuration is added. Tool archive pins need explicit reviewed upda
 
 **Current exception register:** the [M0 closeout report](milestones/milestone-0-closeout-report.md)
 records the ten historical artifact-hash fingerprints authorized for activation
-by the owner's bounded-closeout instruction. Independent human PR review remains
-pending; this does not claim a completed human review. The review/renewal deadline
-is 2026-11-10T00:00:00Z. No vulnerability blocking threshold is waived. Any proposed exception must identify the
+by the owner's bounded-closeout instruction and subsequently included in
+[Joshbomb75's approval of PR #16](https://github.com/Johnson-Dev-Agent-Management/project-manager/pull/16#pullrequestreview-5747224859).
+The review/renewal deadline is **November 9, 2026 at 4 p.m. Pacific**
+(`2026-11-10T00:00:00Z`), tracked in [issue #17](https://github.com/Johnson-Dev-Agent-Management/project-manager/issues/17). No vulnerability blocking threshold is waived. Any proposed exception must identify the
 exact rule/advisory and affected paths/package versions, rationale and risk,
 named human reviewer, accountable owner, approval evidence, expiry date, and
 removal/retest plan. Until approved it is a blocking proposal, never an operative

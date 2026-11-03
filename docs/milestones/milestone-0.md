@@ -15,7 +15,13 @@ identity prerequisites in historical Phase C reports, probe ledgers and account
 setup instructions. Phase A/B checks and their coverage/security requirements
 remain intact. See the [closeout report](milestone-0-closeout-report.md) for current
 evidence and the [owner handoff](milestone-0-phase-c-owner-handoff.md) for remaining
-actions. M0 remains incomplete until those criteria are accepted.
+actions. PR #16 is owner-approved and merged; all seven jobs pass on resulting
+main `0e6b05f350b5f2a5b90b07414e8e113093d80360`. The implementation is ready for
+supervised feature development. The owner subsequently supplied the current
+protection export, confirming the required review/up-to-date settings and
+code-owner review configuration. **M0 is complete for the revised supervised
+scope**; the report retains the evidence source and limits. Credential-isolation
+certification and exhaustive adversarial probes remain deferred.
 
 The owner retains merges, releases, deployments, purchases, visibility changes,
 and GitHub permission/configuration changes. Implementation uses the existing
