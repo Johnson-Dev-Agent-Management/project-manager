@@ -25,6 +25,13 @@ runs the complete `check.sh` suite, including Python setup regressions. It also
 checks the development-server lifecycle with temporary storage and both production
 browser phases via `e2e.sh`. Artifact environment paths use native Windows format;
 Git enforces LF text checkouts even when `core.autocrlf=true`.
+Cleanup regressions in the Python suite run the real development/smoke scripts
+with controlled Perl services that ignore SIGTERM (MSYS Perl is included in Git
+for Windows). They cover normal shutdown, failure/EXIT cleanup, released ports,
+unrelated-listener preservation, and storage retention without acknowledgment.
+The service grace remains five seconds; only the smoke supervisor has a separate
+ten-second budget so it cannot race the services' normal escalation. Temporary
+storage is removed only after `dev.sh` acknowledges that its children are reaped.
 The shared Actions setup publishes the selected private tool paths to later steps
 and records actual selected versions; it no longer installs npm globally.
 There is no required `/workspace` location or dependency on personal credentials.

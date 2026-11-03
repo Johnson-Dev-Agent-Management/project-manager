@@ -2,7 +2,14 @@
 # shellcheck source=common.sh
 source "$(dirname "$0")/common.sh"
 pids=()
-cleanup() { trap - EXIT INT TERM; stop_processes "${pids[@]}"; }
+cleanup() {
+  trap - EXIT INT TERM
+  stop_processes "${pids[@]}"
+  # A smoke run may remove its storage only after all owned services are reaped.
+  if [[ -n ${PROJECT_DEV_CLEANUP_FILE:-} ]]; then
+    : > "$PROJECT_DEV_CLEANUP_FILE"
+  fi
+}
 trap 'cleanup' EXIT
 trap 'exit 130' INT
 trap 'exit 143' TERM

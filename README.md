@@ -42,6 +42,9 @@ Development starts the API on **http://127.0.0.1:5000** and Vite on
 including a Windows path with spaces. Occupied ports fail before startup; Ctrl+C
 stops owned processes with bounded cleanup. `bash scripts/dev-smoke.sh` verifies
 startup, the API proxy, synthetic create/list, and shutdown using temporary storage.
+Services retain their five-second shutdown grace. The smoke supervisor allows ten
+seconds for `dev.sh` to finish child cleanup and requires its acknowledgment before
+deleting temporary storage; missing acknowledgment fails the run and preserves it.
 To check readiness:
 
 ```bash
@@ -91,7 +94,9 @@ Read [AGENTS.md](AGENTS.md), [engineering standards](docs/engineering.md),
 [Milestone 0 plan](docs/milestones/milestone-0.md) provides historical context.
 `check.sh` runs lint, complete authored TypeScript/config checking, frontend build,
 Vitest V8 coverage, .NET build, xUnit/SQLite/Coverlet, report integrity checks, and
-Python attribution/policy regression tests. `policy.sh` runs Prettier, .NET format,
+Python attribution/policy regression tests. Its shell cleanup regressions require
+Perl (included in Git for Windows and the hosted Linux runners) to exercise
+services that ignore SIGTERM on both platforms. `policy.sh` runs Prettier, .NET format,
 ShellCheck, actionlint, and policy tests. `security.sh` runs fresh npm/NuGet advisory
 checks and redacted Gitleaks scans. Unavailable advisory data is a failing result.
 
