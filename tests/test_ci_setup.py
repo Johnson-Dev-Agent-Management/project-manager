@@ -87,6 +87,36 @@ else:
                     self.assertIn(f'v{node}\n{npm}\n', result.stdout)
                 self.assertEqual((root / 'calls.txt').read_text().splitlines(), ['install', 'ci', 'restore', 'ci', 'restore'])
 
+    def test_prepared_runtime_works_without_host_node_on_path(self):
+        with tempfile.TemporaryDirectory() as directory:
+            checkout = Path(directory) / 'checkout'
+            checkout.mkdir()
+            root, env, node, npm = self.fixture(checkout, 'Linux', matching_host=True)
+            host = root / 'host'
+            prepared = root.parent / '.node/node_modules/.bin'
+            prepared.mkdir(parents=True)
+            for name in ('node', 'npm'):
+                shutil.move(host / name, prepared / name)
+            # Supply only shell utilities and fixture commands; never inherit a host Node.
+            for name in ('dirname', 'mkdir', 'chmod'):
+                (host / name).symlink_to(shutil.which(name))
+            bash = shutil.which('bash')
+            env['PATH'] = str(host)
+            env.pop('BASH_ENV', None)
+            self.assertIsNone(shutil.which('node', path=env['PATH']))
+            self.assertIsNone(shutil.which('npm', path=env['PATH']))
+            result = subprocess.run(
+                [bash, 'scripts/setup.sh'],
+                cwd=root, env=env, capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertIn(f'v{node}\n{npm}\n', result.stdout)
+            self.assertEqual((root / 'calls.txt').read_text().splitlines(), ['ci', 'restore'])
+            selected = subprocess.run(
+                [bash, '-c', 'source scripts/common.sh\nprintf "%s\\n" "$(command -v node)" "$project_node_package"'],
+                cwd=root, env=env, capture_output=True, text=True)
+            self.assertEqual(selected.returncode, 0, selected.stdout + selected.stderr)
+            self.assertEqual(selected.stdout, f'{prepared / "node"}\nnode-linux-x64\n')
+
     def test_forced_bootstrap_works_with_matching_host(self):
         with tempfile.TemporaryDirectory() as directory:
             root, env, _, _ = self.fixture(directory, 'MINGW64_NT-10.0', matching_host=True)
