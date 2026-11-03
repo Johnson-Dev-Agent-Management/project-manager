@@ -51,7 +51,8 @@ on PATH, Python 3, and curl. Use the same setup/check/dev commands; setup select
 the project Node/npm tools automatically. It reports missing .NET SDKs instead of
 running a Unix SDK installer. Native cache paths and `cygpath -am` SQLite paths
 (including spaces) are preserved. Hosted Windows tests a fresh workspace Node/npm
-bootstrap, repeated setup, and `bash scripts/build.sh`.
+bootstrap, repeated setup, `bash scripts/build.sh`, and the full `bash scripts/check.sh`
+suite, including Python setup regressions.
 `PROJECT_BOOTSTRAP_NODE=true bash scripts/setup.sh` explicitly installs workspace
 tools even when host versions match. `PROJECT_NODE_DIR` can select an isolated
 tool directory; use the same override for subsequent project commands.

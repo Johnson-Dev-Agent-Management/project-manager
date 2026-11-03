@@ -20,7 +20,8 @@ when host versions differ. Native Windows uses Git Bash and the pinned native
 Node/npm can bootstrap setup without matching the project pins first.
 `PROJECT_BOOTSTRAP_NODE=true` forces a workspace installation, and
 `PROJECT_NODE_DIR` selects an isolated directory. The Windows job uses a fresh
-runner-temp directory to exercise native bootstrap, then repeats setup/build.
+runner-temp directory to exercise native bootstrap, then repeats setup/build and
+runs the complete `check.sh` suite, including Python setup regressions.
 The shared Actions setup publishes the selected private tool paths to later steps
 and records actual selected versions; it no longer installs npm globally.
 There is no required `/workspace` location or dependency on personal credentials.
@@ -37,7 +38,7 @@ Use focused tests while iterating and the following division of work for handoff
 | Security                       | Run `security.sh` when available, especially for dependency/security changes; record unavailable downloads or advisory data accurately.                           | Fresh advisory retrieval and both secret scans in `supply-chain` are required.        |
 | Browser E2E                    | Run `e2e.sh` for application behavior/integration changes when supported. For documentation-only changes, hosted E2E suffices.                                    | Ten consecutive full runs without retries remain required in `e2e`.                   |
 | Repeated browser qualification | Run `e2e-qualify.sh` locally for browser/harness reliability changes or diagnosing flakes; routine work need not duplicate the hosted ten runs.                   | Always runs; this is an ongoing requirement, not a retired milestone exercise.        |
-| Windows compatibility          | Use the hosted smoke job; no execution on the owner's machine is authorized.                                                                                      | Native setup, repeated setup and build remain required.                               |
+| Windows compatibility          | Use the hosted smoke job; no execution on the owner's machine is authorized.                                                                                      | Native setup, repeated setup, build, and the complete `check.sh` suite are required.  |
 
 Record local commands as Passed, Failed, or Not run, with exact limitations. A
 blocked cloud tool does not require permission/network changes or repeated download
@@ -117,7 +118,7 @@ failed attempts are not replaced by successful retries.
 ## Runners, tools, evidence, and costs
 
 Linux stays on ubuntu-24.04; Windows stays on windows-2025 with Git Bash repeated
-setup and build only. Validation timeouts remain ten minutes, gate two minutes.
+setup, build, and the complete `check.sh` suite. Validation timeouts remain ten minutes, gate two minutes.
 Superseded runs are cancelled. Tokens are contents:read; checkout credentials are
 not persisted. Supply-chain checkout fetches full history for secret scanning.
 The privileged metadata-only attribution workflow is unchanged and never runs

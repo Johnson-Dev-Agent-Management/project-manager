@@ -2,6 +2,7 @@
 import json
 import os
 from pathlib import Path
+import shlex
 import shutil
 import subprocess
 import sys
@@ -89,7 +90,7 @@ else:
 
     def test_prepared_runtime_works_without_host_node_on_path(self):
         with tempfile.TemporaryDirectory() as directory:
-            checkout = Path(directory) / 'checkout'
+            checkout = Path(directory) / 'checkout with spaces'
             checkout.mkdir()
             root, env, node, npm = self.fixture(checkout, 'Linux', matching_host=True)
             host = root / 'host'
@@ -97,14 +98,27 @@ else:
             prepared.mkdir(parents=True)
             for name in ('node', 'npm'):
                 shutil.move(host / name, prepared / name)
-            # Supply only shell utilities and fixture commands; never inherit a host Node.
+            # Invoke utilities in place: relocated Git Bash executables/symlinks
+            # can lose their MSYS DLLs. Wrappers also need no Windows symlink privilege.
             for name in ('dirname', 'mkdir', 'chmod'):
-                (host / name).symlink_to(shutil.which(name))
+                utility = shutil.which(name)
+                self.assertIsNotNone(utility, f'Missing shell utility: {name}')
+                wrapper = host / name
+                wrapper.write_text(
+                    f'#!/bin/sh\nexec {shlex.quote(Path(utility).as_posix())} "$@"\n',
+                    newline='\n')
+                wrapper.chmod(0o755)
             bash = shutil.which('bash')
+            prepared_shell_path = subprocess.check_output(
+                [bash, '-c', 'pwd'], cwd=prepared, text=True).strip()
+            # Supply only shell utilities and fixture commands; never inherit a host Node.
             env['PATH'] = str(host)
             env.pop('BASH_ENV', None)
-            self.assertIsNone(shutil.which('node', path=env['PATH']))
-            self.assertIsNone(shutil.which('npm', path=env['PATH']))
+            for name in ('node', 'npm'):
+                absent = subprocess.run(
+                    [bash, '-c', f'command -v {name}'],
+                    cwd=root, env=env, capture_output=True, text=True)
+                self.assertEqual(absent.returncode, 1, absent.stdout + absent.stderr)
             result = subprocess.run(
                 [bash, 'scripts/setup.sh'],
                 cwd=root, env=env, capture_output=True, text=True)
@@ -115,7 +129,7 @@ else:
                 [bash, '-c', 'source scripts/common.sh\nprintf "%s\\n" "$(command -v node)" "$project_node_package"'],
                 cwd=root, env=env, capture_output=True, text=True)
             self.assertEqual(selected.returncode, 0, selected.stdout + selected.stderr)
-            self.assertEqual(selected.stdout, f'{prepared / "node"}\nnode-linux-x64\n')
+            self.assertEqual(selected.stdout, f'{prepared_shell_path}/node\nnode-linux-x64\n')
 
     def test_forced_bootstrap_works_with_matching_host(self):
         with tempfile.TemporaryDirectory() as directory:
