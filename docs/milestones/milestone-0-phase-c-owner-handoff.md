@@ -1,51 +1,44 @@
-# Milestone 0 — bounded closeout owner handoff
+# Milestone 0 — remaining housekeeping
 
-The owner approved this narrower scope in chat on November 2, 2026
-(America/Los_Angeles), then instructed the agent to proceed. This handoff replaces
-the old identity-isolation, protected-target and 31-probe prerequisite sequence.
-See the [current report](milestone-0-closeout-report.md) and
-[revised acceptance criteria](milestone-0.md#revised-phase-c-acceptance-criteria).
+The owner-approved implementation is merged through [PR #16](https://github.com/Johnson-Dev-Agent-Management/project-manager/pull/16).
+Joshbomb75's approval covers head `2b069f54e6bae5333c0e679c1778cc16e914018f`;
+all seven checks pass on resulting main `0e6b05f350b5f2a5b90b07414e8e113093d80360`
+([post-merge run](https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/41577510318)). PR #15 is closed.
+See the [current report](milestone-0-closeout-report.md) for evidence and limits.
+Do not repeat the completed approval, bootstrap merge or startup-regression work.
 
-## 1. Confirm existing main settings once
+## 1. Protection verification — completed
 
-No repeated settings write is requested. From GitHub's main protection settings,
-provide a current capture/export confirming PRs, up-to-date validation, human and
-code-owner review, stale/latest-push approval behavior, conversation resolution,
-force/deletion blocking and existing stronger restrictions. The connector already
-reports all seven required checks from GitHub Actions App 15368; detailed reads
-return 403. If using an existing owner-authenticated CLI, this read-only command
-produces the classic protection configuration (do not include credentials):
+The owner supplied the current main-protection API response. The
+[normalized export](evidence/phase-c/main-protection-owner-readback.json) confirms
+strict/up-to-date checks; one approving human review; Code Owners; stale/latest-push
+approval; conversation resolution; administrator enforcement; blocked force pushes
+and deletion; and owner-only push/review-dismissal lists. All seven required
+checks are bound to GitHub Actions App 15368, also corroborated by connector readback.
+CODEOWNERS is on the merged base and names Joshbomb75 for all files.
 
-```bash
-gh api repos/Johnson-Dev-Agent-Management/project-manager/branches/main/protection
-```
+The connector's detailed read remains HTTP 403; the evidence source is the owner,
+not a direct connector fetch. The export omits the bypass-allowances field, which
+is not invented. No settings change or further account-isolation probe is needed
+for the agreed supervised scope. **M0 closeout verification is complete.**
 
-If rulesets supply the controls, include the active rulesets instead. Preserve
-stronger settings and do not weaken review to accommodate the owner-authored #15.
-No new account, credential, paid service or disposable protected target is needed.
+## 2. Keep the scanner review date
 
-## 2. Review the bot-authored closeout PR
+[Issue #17](https://github.com/Johnson-Dev-Agent-Management/project-manager/issues/17) is assigned to Joshbomb75 and tracks review by
+**November 9, 2026 at 4 p.m. Pacific** (`2026-11-10T00:00:00Z`). It records the
+exact ten historical false positives, removal/renewal decision and retesting steps.
+This housekeeping does not extend the deadline or broaden any exclusion. The
+issue is a tracking record; it does not configure a scheduled notification.
 
-The replacement preserves #15's changes, including the Node 26/npm 12 Windows
-setup correction, and adds the explicitly revised M0 scope and ten exact historical
-Gitleaks fingerprints. Check the final head's seven job results, CODEOWNERS
-bootstrap, scanner classification/expiry and moderate-advisory triage in the report.
-The owner can approve the bot-authored PR; the agent must not supply that review.
-Keep #15 until replacement content is confirmed, then retire it as superseded.
+## 3. Start feature work from current main
 
-## 3. Merge and validate main
+This private cloud checkout was refreshed from merged main; the saved cloud image
+was not republished. New sessions should fetch current main, run setup/checks, and
+implement a bounded feature with observable acceptance criteria and meaningful
+regression tests. Preserve the seven required checks, coverage floors and human
+policy review. Open a draft PR and leave merging to the owner.
 
-After actual approval and green required checks, the owner performs any merge.
-Verify all seven jobs on the resulting main SHA, main's protections and actual
-base CODEOWNERS eligibility/review behavior. Refresh the private cloud baseline.
-Record owner acceptance in the closeout report/PR before calling M0 complete.
-The next assignment can then build a product feature with its acceptance criteria
-and regression tests. Deployment remains a later feature.
-
-## Known limits
-
-No claim of complete owner/agent credential isolation, bypass resistance,
-exhaustive deliberate-defect testing, or automatic delivery is made. Those are
-explicitly deferred, not failed requirements that must be completed before M0.
-Detailed protection confirmation and post-merge validation remain real closeout
-requirements. Current CI success alone does not satisfy them.
+Account-isolation certification, exhaustive adversarial probes, automatic merging
+and deployment remain deferred. No additional infrastructure implementation phase is required before assigning
+a product feature. The scanner review is ongoing maintenance, not unfinished M0
+implementation.

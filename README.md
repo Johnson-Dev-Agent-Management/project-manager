@@ -81,8 +81,14 @@ checks and redacted Gitleaks scans. Unavailable advisory data is a failing resul
 Each production codebase independently enforces **80% lines / 70% branches** after
 baseline review and behavioral test improvements. Untested production files remain
 included. Standards, tests, thresholds, workflows, and exceptions require
-independent human review. There are no operative exceptions. Phase C enforcement
-and independent identity separation are not established by passing checks.
+independent human review. Milestone 0 is complete for supervised development; its implementation is approved and merged;
+all seven required jobs pass on the resulting main commit. CODEOWNERS names
+Joshbomb75 for all files. Ten exact historical artifact-hash exclusions are active,
+with review due **November 9, 2026 at 4 p.m. Pacific**, tracked in
+[issue #17](https://github.com/Johnson-Dev-Agent-Management/project-manager/issues/17).
+The owner-provided protection export confirms required reviews and up-to-date
+checks; full credential isolation remains deferred. See the [current closeout report](docs/milestones/milestone-0-closeout-report.md)
+for verified controls, remaining evidence and the exception register.
 
 ```bash
 # Build frontend production output and publish Release API, then test both phases:
@@ -99,8 +105,9 @@ any system Chromium fallback explicitly. There are no browser retries.
 
 Actual commands, counts, coverage before/after, tested commits, security results,
 screenshots, CI links, and unresolved risks are in the
-[Phase B acceptance report](docs/milestones/milestone-0-phase-b-report.md).
-[Phase A evidence](docs/milestones/milestone-0-phase-a-report.md) is historical.
+[M0 closeout report](docs/milestones/milestone-0-closeout-report.md).
+[Phase A](docs/milestones/milestone-0-phase-a-report.md) and
+[Phase B](docs/milestones/milestone-0-phase-b-report.md) reports are historical snapshots.
 See [cloud setup](docs/cloud-setup.md) for historical environment context.
 
 ## Pull request attribution

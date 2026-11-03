@@ -11,7 +11,8 @@ intentionally public**, confirmed by the owner during Phase C. The cloud
 development environment remains private. Historical personal/private repository
 references below describe the bootstrap, not the current intended setup.
 See [automation-account capabilities](automation-account-setup.md) for the chosen
-outside-collaborator identity and the still-pending connection/separation checks.
+outside-collaborator identity and optional connection/separation hardening,
+which is deferred from M0.
 
 Current runtime follow-up: `.nvmrc` now pins **Node 26.13.0 LTS** and `.npm-version`
 pins **npm 12.2.1**. The checkout's setup automatically installs/selects versioned
@@ -21,7 +22,22 @@ older versions below are not current configuration instructions. This change
 does not republish the private cloud environment; follow the current README/CI
 commands and verify any separately refreshed environment before claiming success.
 
-## Baseline verification
+## Current feature-development baseline
+
+Start each feature branch from current `origin/main`, not the old bootstrap or
+Phase C branches. PR #16 merged as `0e6b05f350b5f2a5b90b07414e8e113093d80360`;
+its seven post-merge CI jobs passed. This housekeeping task refreshed its private
+checkout from that commit. The saved environment image/configuration was not
+republished; the project setup scripts remain the supported way to select the
+pinned runtime. `common.sh` now finds the prepared cloud Node before querying
+platform/architecture, even when no host Node is on PATH.
+
+Run `bash scripts/setup.sh` and `bash scripts/check.sh` from the checkout. Then
+assign one feature with observable acceptance criteria, meaningful tests, and a
+draft PR for owner review. See the [current report](milestones/milestone-0-closeout-report.md).
+The older environment publication steps below are historical, not new M0 blockers.
+
+## Historical baseline verification
 
 The private `project-manager-dev` environment was published and verified in a
 fresh cloud task on 2026-10-07. The task fetched `codex/cloud-bootstrap` at
@@ -86,7 +102,7 @@ cd /workspace/project-manager
 bash scripts/setup.sh
 ```
 
-## Persistent runtime configuration
+## Historical persistent runtime configuration
 
 `.nvmrc` is the source of the exact project Node version. The install script above
 runs `scripts/setup.sh`, which installs `node@24.22.0` under `/workspace/.node`
@@ -140,7 +156,7 @@ Authentication and authorization must be implemented before shared/public use or
 
 Choose **New chat > Cloud > project-manager-dev**, then assign a bounded task:
 
-> In Joshbomb75/project-manager, implement [feature] from latest main.
+> In Johnson-Dev-Agent-Management/project-manager, implement [feature] from latest main.
 > Follow AGENTS.md. Acceptance criteria: [observable outcomes].
 > Run relevant tests and bash scripts/check.sh, then push a feature branch and
 > open a draft PR with test results. Do not merge or deploy. Use included usage only.

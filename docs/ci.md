@@ -1,12 +1,14 @@
-# CI operation — Milestone 0, Phase B
+# CI operation — supervised development
 
 The owner approved the [bounded Phase C closeout](milestones/milestone-0.md#phase-c--bounded-ci-closeout).
 All seven jobs and their thresholds remain required. The historical disposable
 base trigger remains available, but target creation/protection or exhaustive probes
 are not needed for closeout. See the [current report](milestones/milestone-0-closeout-report.md)
 and [owner checklist](branch-enforcement.md). The ten exact historical scanner
-fingerprints are the sole active false-positive exclusion; independent merge
-review and its documented review/renewal deadline remain required.
+fingerprints are the sole active false-positive exclusion, approved in PR #16.
+Their existing review/renewal deadline remains tracked in [issue #17](https://github.com/Johnson-Dev-Agent-Management/project-manager/issues/17).
+All seven jobs pass on merged main `0e6b05f350b5f2a5b90b07414e8e113093d80360`
+([post-merge run](https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/41577510318)).
 
 Run in an authorized cloud checkout. Exact Node 26.13.0 LTS, npm 12.2.1, and
 .NET SDK 10.0.402 remain pinned. Setup uses npm ci and locked NuGet restore;
@@ -46,7 +48,8 @@ bash scripts/e2e-qualify.sh
 [Engineering standards](engineering.md) specifies contracts, behavioral mapping,
 80% line / 70% branch floors per codebase, coverage scope, security triage, exact
 analysis policy, and the current exception register. The [Phase A report](milestones/milestone-0-phase-a-report.md)
-is historical evidence; Phase B report records current outcomes.
+is historical evidence; the current closeout report records the approved merge
+and post-merge outcomes.
 
 ## Workflows and production browser testing
 
