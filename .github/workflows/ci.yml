@@ -35,7 +35,7 @@ jobs:
         with:
           cache: ${{ inputs.cold-cache != true }}
       - name: Frontend checks
-        run: bash scripts/check.sh frontend 2>&1 | tee .artifacts/check.log
+        run: python3 tests/fixtures/with_dev_ports_occupied.py bash scripts/check.sh frontend 2>&1 | tee .artifacts/check.log
       - name: Package production frontend
         run: bash scripts/production-build.sh web
       - name: Upload production frontend
@@ -102,7 +102,7 @@ jobs:
           PROJECT_BOOTSTRAP_NODE=true bash scripts/setup.sh 2>&1 | tee .artifacts/setup-bootstrap.log
           bash scripts/setup.sh 2>&1 | tee .artifacts/setup-rerun.log
           bash scripts/build.sh 2>&1 | tee .artifacts/build.log
-          bash scripts/check.sh 2>&1 | tee .artifacts/check.log
+          python3 tests/fixtures/with_dev_ports_occupied.py bash scripts/check.sh 2>&1 | tee .artifacts/check.log
           echo 'Windows Git Bash: native workspace bootstrap, repeated setup, builds, and full checks Passed' >> "$GITHUB_STEP_SUMMARY"
       - name: Development and production scripts in Git Bash
         run: |

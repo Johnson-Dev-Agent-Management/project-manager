@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # shellcheck source=common.sh
 source "$(dirname "$0")/common.sh"
+configure_dev_ports
 # Isolated synthetic storage; never touch the normal development database.
-python3 scripts/e2e-ports.py 5000 5173
+python3 scripts/e2e-ports.py "$PROJECT_DEV_API_PORT" "$PROJECT_DEV_WEB_PORT"
 mkdir -p .artifacts/dev-smoke
 log_dir=$(mktemp -d "$ROOT/.artifacts/dev-smoke/run-XXXXXX")
 test_dir=$(mktemp -d "${TMPDIR:-/tmp}/project dev-XXXXXX")
@@ -36,7 +37,7 @@ PROJECT_DEV_DATA_DIR="$test_dir" PROJECT_DEV_CLEANUP_FILE="$test_dir/cleanup-com
 dev_pid=$!
 dev_started=true
 deadline=$((SECONDS + 60))
-until curl --connect-timeout 1 --max-time 1 -fsS http://127.0.0.1:5173/api/health > "$log_dir/health.json" 2>/dev/null; do
+until curl --connect-timeout 1 --max-time 1 -fsS "http://127.0.0.1:$PROJECT_DEV_WEB_PORT/api/health" > "$log_dir/health.json" 2>/dev/null; do
   if ! kill -0 "$dev_pid" 2>/dev/null || ((SECONDS >= deadline)); then
     cat "$log_dir/services.log" >&2
     exit 1
@@ -45,9 +46,10 @@ until curl --connect-timeout 1 --max-time 1 -fsS http://127.0.0.1:5173/api/healt
 done
 python3 - <<'PY'
 import json
+import os
 from urllib.request import Request, urlopen
 
-base = 'http://127.0.0.1:5173/api'
+base = f'http://127.0.0.1:{os.environ["PROJECT_DEV_WEB_PORT"]}/api'
 with urlopen(base + '/health', timeout=5) as response:
     assert json.load(response) == {'status': 'ok'}
 with urlopen(base + '/projects', timeout=5) as response:
@@ -64,5 +66,5 @@ PY
 [[ -f $test_dir/projects.db ]]
 stop_dev
 # No development listeners may survive shell shutdown.
-python3 scripts/e2e-ports.py 5000 5173
+python3 scripts/e2e-ports.py "$PROJECT_DEV_API_PORT" "$PROJECT_DEV_WEB_PORT"
 printf 'Passed: dev startup, proxy, create/list, spaced database path, and shutdown\n' | tee "$log_dir/result.txt"

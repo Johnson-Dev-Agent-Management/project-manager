@@ -45,7 +45,12 @@ startup, the API proxy, synthetic create/list, and shutdown using temporary stor
 Services retain their five-second shutdown grace. The smoke supervisor allows ten
 seconds for `dev.sh` to finish child cleanup and requires its acknowledgment before
 deleting temporary storage; missing acknowledgment fails the run and preserves it.
-To check readiness:
+Both development scripts accept `PROJECT_DEV_API_PORT` and `PROJECT_DEV_WEB_PORT`
+to override the default ports; values must be distinct integers from 1 to 65535.
+The selected API port also configures Vite's proxy. Occupied selected ports still
+fail before startup. Cleanup regression tests allocate their own ports, so
+`check.sh` (including `check.sh frontend`) can run while the normal app is running.
+To check readiness with the defaults:
 
 ```bash
 curl -fsS http://127.0.0.1:5000/api/health

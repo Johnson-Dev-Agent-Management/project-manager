@@ -29,6 +29,16 @@ Cleanup regressions in the Python suite run the real development/smoke scripts
 with controlled Perl services that ignore SIGTERM (MSYS Perl is included in Git
 for Windows). They cover normal shutdown, failure/EXIT cleanup, released ports,
 unrelated-listener preservation, and storage retention without acknowledgment.
+Each case allocates distinct OS-selected ports and passes them through the real
+startup arguments, API proxy, preflight, readiness, HTTP assertions, storage
+removal probes, and release checks. `PROJECT_DEV_API_PORT` and
+`PROJECT_DEV_WEB_PORT` configure both development scripts; their normal defaults
+remain 5000 and 5173. Selected occupied ports still fail before startup.
+Frontend and Windows CI wrap their checks with
+`python3 tests/fixtures/with_dev_ports_occupied.py bash scripts/check.sh [frontend]`:
+this holds unrelated listeners on both default ports throughout the checks and
+verifies both remain usable afterward. This explicit CI harness requires idle
+default ports; routine `check.sh` never claims them and can run alongside the app.
 The service grace remains five seconds; only the smoke supervisor has a separate
 ten-second budget so it cannot race the services' normal escalation. Temporary
 storage is removed only after `dev.sh` acknowledges that its children are reaped.

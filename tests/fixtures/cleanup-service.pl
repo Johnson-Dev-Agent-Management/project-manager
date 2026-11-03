@@ -9,7 +9,21 @@ use File::Basename qw(dirname);
 # Python/Node processes terminated through MSYS. Keep this fixture alive on TERM.
 my $kind = shift @ARGV;
 my $root = $ENV{CLEANUP_TEST_ROOT};
-my $port = $kind eq 'api' ? 5000 : 5173;
+my $option = $kind eq 'api' ? '--urls' : '--port';
+my $value;
+while (@ARGV) {
+    my $argument = shift @ARGV;
+    $value = shift @ARGV if $argument eq $option;
+}
+die "missing $option" unless defined $value;
+my $port = $value;
+if ($kind eq 'api') {
+    ($port) = $value =~ m{^http://127\.0\.0\.1:(\d+)$};
+} else {
+    die 'wrong API proxy target' unless $ENV{API_URL} eq "http://127.0.0.1:$ENV{PROJECT_DEV_API_PORT}";
+}
+my $expected = $kind eq 'api' ? $ENV{PROJECT_DEV_API_PORT} : $ENV{PROJECT_DEV_WEB_PORT};
+die 'wrong service port' unless defined $port && $port eq $expected;
 my ($database) = $ENV{ConnectionStrings__Projects} =~ /^Data Source=(.*)$/;
 my $listener = IO::Socket::INET->new(
     LocalAddr => '127.0.0.1', LocalPort => $port,
@@ -27,7 +41,7 @@ if ($ENV{CLEANUP_TEST_NO_ACK}) {
     mkdir(dirname($database) . '/cleanup-complete');
 }
 open my $state, '>', "$root/$kind.json" or die $!;
-print {$state} encode_json({pid => $$, parent => $ENV{CLEANUP_TEST_PARENT}, database => $database});
+print {$state} encode_json({pid => $$, parent => $ENV{CLEANUP_TEST_PARENT}, database => $database, port => 0 + $port});
 close $state;
 my $ready = IO::Select->new($listener);
 my @projects;

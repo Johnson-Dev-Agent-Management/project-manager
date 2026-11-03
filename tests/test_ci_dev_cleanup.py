@@ -1,5 +1,6 @@
 """Exercise both real smoke shutdown paths with TERM-resistant owned services."""
 import json
+from contextlib import ExitStack
 import os
 from pathlib import Path
 import shlex
@@ -32,7 +33,16 @@ class DevelopmentCleanupTests(unittest.TestCase):
                               check=False).returncode == 0
 
     def exercise_shutdown(self, failure, acknowledge=True):
-        with tempfile.TemporaryDirectory(prefix='cleanup fixture ') as directory, socket.socket() as unrelated:
+        with tempfile.TemporaryDirectory(prefix='cleanup fixture ') as directory, socket.socket() as unrelated, ExitStack() as reservations:
+            # Reserve distinct OS-selected ports until just before startup. The
+            # real scripts still reject any listener that wins the rebind race.
+            ports = []
+            while len(ports) < 2:
+                reserved = reservations.enter_context(socket.socket())
+                reserved.bind(('127.0.0.1', 0))
+                port = reserved.getsockname()[1]
+                if port not in (5000, 5173):
+                    ports.append(port)
             root = Path(directory)
             (root / 'scripts').mkdir()
             for name in ('common.sh', 'dev.sh', 'dev-smoke.sh', 'e2e-ports.py'):
@@ -45,11 +55,11 @@ class DevelopmentCleanupTests(unittest.TestCase):
             service = f'exec {shlex.quote(self.perl)} {shlex.quote((root / "service.pl").as_posix())}'
             parent = 'export CLEANUP_TEST_PARENT=$PPID\n'
             self.write_command(host / 'dotnet',
-                               '[[ ${1:-} == build ]] && exit 0\n' + parent + service + ' api\n')
+                               '[[ ${1:-} == build ]] && exit 0\n' + parent + service + ' api "$@"\n')
             self.write_command(host / 'node',
                                'if [[ ${1:-} == -p ]]; then\n'
                                f'  [[ $2 == process.platform ]] && echo {"win32" if os.name == "nt" else "linux"} || echo x64\n'
-                               '  exit 0\nfi\n' + parent + service + ' web\n')
+                               '  exit 0\nfi\n' + parent + service + ' web "$@"\n')
             # Model a slightly slower supervisor scheduler without changing the
             # production five-second grace. Equal nested budgets fail reliably.
             self.write_command(host / 'sleep',
@@ -58,7 +68,7 @@ class DevelopmentCleanupTests(unittest.TestCase):
             monitor = root / 'before-remove.py'
             monitor.write_text('''import os, pathlib, socket
 root = pathlib.Path(os.environ['CLEANUP_TEST_ROOT'])
-for port in (5000, 5173):
+for port in (int(os.environ['PROJECT_DEV_API_PORT']), int(os.environ['PROJECT_DEV_WEB_PORT'])):
     try:
         with socket.create_connection(('127.0.0.1', port), timeout=0.2):
             (root / 'removed-while-listening').touch()
@@ -71,11 +81,13 @@ for port in (5000, 5173):
             env = {**os.environ, 'PATH': os.pathsep.join((str(host), os.environ['PATH'])),
                    'PROJECT_TOOLS_DIR': str(root / 'tools'), 'PROJECT_CACHE_DIR': str(root / 'cache'),
                    'CLEANUP_TEST_ROOT': str(root), 'CLEANUP_TEST_FAILURE': '1' if failure else '',
+                   'PROJECT_DEV_API_PORT': str(ports[0]), 'PROJECT_DEV_WEB_PORT': str(ports[1]),
                    'CLEANUP_TEST_NO_ACK': '' if acknowledge else '1'}
             for name in ('PROJECT_NODE_DIR', 'PROJECT_DEV_DATA_DIR', 'PROJECT_DEV_CLEANUP_FILE', 'BASH_ENV'):
                 env.pop(name, None)
             unrelated.bind(('127.0.0.1', 0))
             unrelated.listen(1)
+            reservations.close()
             started = time.monotonic()
             process = subprocess.Popen([self.bash, 'scripts/dev-smoke.sh'], cwd=root, env=env,
                                        stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
@@ -83,9 +95,10 @@ for port in (5000, 5173):
             try:
                 output, _ = process.communicate(timeout=18)
                 elapsed = time.monotonic() - started
-                for kind in ('api', 'web'):
+                for kind, port in zip(('api', 'web'), ports):
                     self.assertTrue((root / f'{kind}.json').is_file(), output)
                     states.append(json.loads((root / f'{kind}.json').read_text()))
+                    self.assertEqual(states[-1]['port'], port, output)
                     self.assertTrue((root / f'{kind}.term').exists(), f'{kind} did not ignore TERM: {output}')
                 self.assertLess(elapsed, 15, output)
                 self.assertEqual(process.returncode, 1 if failure or not acknowledge else 0, output)
@@ -96,7 +109,7 @@ for port in (5000, 5173):
                 if not acknowledge:
                     self.assertIn('retaining storage:', output)
                 self.assertFalse((root / 'removed-while-listening').exists(), output)
-                for port in (5000, 5173):
+                for port in ports:
                     with socket.socket() as released:
                         released.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
                         released.bind(('127.0.0.1', port))
