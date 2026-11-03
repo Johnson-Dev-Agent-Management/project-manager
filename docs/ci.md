@@ -42,6 +42,10 @@ default ports; routine `check.sh` never claims them and can run alongside the ap
 The service grace remains five seconds; only the smoke supervisor has a separate
 ten-second budget so it cannot race the services' normal escalation. Temporary
 storage is removed only after `dev.sh` acknowledges that its children are reaped.
+Both grace periods use elapsed-time deadlines, including Git Bash process-launch
+overhead, rather than counting polling sleeps. Cleanup regressions deliberately
+slow service polling and measure shutdown from the first observed SIGTERM;
+startup has a separate bounded wait for the smoke script's readiness phase.
 The shared Actions setup publishes the selected private tool paths to later steps
 and records actual selected versions; it no longer installs npm globally.
 There is no required `/workspace` location or dependency on personal credentials.

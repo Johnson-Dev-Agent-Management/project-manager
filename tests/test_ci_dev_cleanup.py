@@ -60,10 +60,11 @@ class DevelopmentCleanupTests(unittest.TestCase):
                                'if [[ ${1:-} == -p ]]; then\n'
                                f'  [[ $2 == process.platform ]] && echo {"win32" if os.name == "nt" else "linux"} || echo x64\n'
                                '  exit 0\nfi\n' + parent + service + ' web "$@"\n')
-            # Model a slightly slower supervisor scheduler without changing the
-            # production five-second grace. Equal nested budgets fail reliably.
+            # Model Git Bash process-launch overhead without changing the
+            # production grace. Counting sleeps instead of elapsed time makes
+            # the service grace overrun the supervisor's cleanup deadline.
             self.write_command(host / 'sleep',
-                               f'if [[ -n ${{PROJECT_DEV_DATA_DIR:-}} ]]; then {shlex.quote(self.sleep)} 0.02; fi\n'
+                               f'if [[ -n ${{PROJECT_DEV_DATA_DIR:-}} ]]; then {shlex.quote(self.sleep)} 0.2; fi\n'
                                f'exec {shlex.quote(self.sleep)} "$@"\n')
             monitor = root / 'before-remove.py'
             monitor.write_text('''import os, pathlib, socket
@@ -88,11 +89,22 @@ for port in (int(os.environ['PROJECT_DEV_API_PORT']), int(os.environ['PROJECT_DE
             unrelated.bind(('127.0.0.1', 0))
             unrelated.listen(1)
             reservations.close()
-            started = time.monotonic()
             process = subprocess.Popen([self.bash, 'scripts/dev-smoke.sh'], cwd=root, env=env,
                                        stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
             states = []
             try:
+                # Startup has its own 60-second readiness budget. Do not charge
+                # native Windows interpreter/process startup to shutdown time.
+                # Keep draining output and bound even a broken startup path.
+                startup_deadline = time.monotonic() + 90
+                while not any(root.glob('*.term')):
+                    try:
+                        process.communicate(timeout=0.1)
+                        break
+                    except subprocess.TimeoutExpired as error:
+                        if time.monotonic() >= startup_deadline:
+                            raise subprocess.TimeoutExpired(process.args, 90, output=error.output) from error
+                started = time.monotonic()
                 output, _ = process.communicate(timeout=18)
                 elapsed = time.monotonic() - started
                 for kind, port in zip(('api', 'web'), ports):
