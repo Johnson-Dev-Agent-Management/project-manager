@@ -1,14 +1,16 @@
 # CI operation — supervised development
 
-The owner approved the [bounded Phase C closeout](milestones/milestone-0.md#phase-c--bounded-ci-closeout).
-All seven jobs and their thresholds remain required. The historical disposable
-base trigger remains available, but target creation/protection or exhaustive probes
-are not needed for closeout. See the [current report](milestones/milestone-0-closeout-report.md)
-and [owner checklist](branch-enforcement.md). The ten exact historical scanner
+Use this document for routine validation; start from current main and follow
+[AGENTS.md](../AGENTS.md). All seven jobs and their thresholds remain required.
+M0 is complete for supervised development; its [closeout report](milestones/milestone-0-closeout-report.md)
+and [branch-control evidence](branch-enforcement.md) record the accepted foundation.
+The historical disposable-base trigger does not require creating a target or
+repeating closeout probes for feature work. The ten exact historical scanner
 fingerprints are the sole active false-positive exclusion, approved in PR #16.
 Their existing review/renewal deadline remains tracked in [issue #17](https://github.com/Johnson-Dev-Agent-Management/project-manager/issues/17).
-All seven jobs pass on merged main `0e6b05f350b5f2a5b90b07414e8e113093d80360`
-([post-merge run](https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/41577510318)).
+Historical M0 validation passed on `0e6b05f350b5f2a5b90b07414e8e113093d80360`
+([post-merge run](https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/41577510318));
+each new PR needs its own current-commit results.
 
 Run in an authorized cloud checkout. Exact Node 26.13.0 LTS, npm 12.2.1, and
 .NET SDK 10.0.402 remain pinned. Setup uses npm ci and locked NuGet restore;
@@ -22,6 +24,32 @@ runner-temp directory to exercise native bootstrap, then repeats setup/build.
 The shared Actions setup publishes the selected private tool paths to later steps
 and records actual selected versions; it no longer installs npm globally.
 There is no required `/workspace` location or dependency on personal credentials.
+
+## Local and hosted validation
+
+Here, local means the authorized cloud checkout, never the owner's computer.
+Use focused tests while iterating and the following division of work for handoff:
+
+| Validation                     | Cloud checkout                                                                                                                                                    | Hosted CI on every PR, including documentation                                        |
+| ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| Setup and application checks   | Run `setup.sh` for the checkout's pins/locks, relevant tests, and complete `check.sh` before handoff. Documentation-only work needs no invented behavioral tests. | Frontend/backend builds, tests, coverage floors and report integrity remain required. |
+| Formatting and policy          | Run `policy.sh` when available; check changed-file formatting even when a policy-tool download is blocked. Exercise affected policy checks for policy changes.    | Full `policy` job is required.                                                        |
+| Security                       | Run `security.sh` when available, especially for dependency/security changes; record unavailable downloads or advisory data accurately.                           | Fresh advisory retrieval and both secret scans in `supply-chain` are required.        |
+| Browser E2E                    | Run `e2e.sh` for application behavior/integration changes when supported. For documentation-only changes, hosted E2E suffices.                                    | Ten consecutive full runs without retries remain required in `e2e`.                   |
+| Repeated browser qualification | Run `e2e-qualify.sh` locally for browser/harness reliability changes or diagnosing flakes; routine work need not duplicate the hosted ten runs.                   | Always runs; this is an ongoing requirement, not a retired milestone exercise.        |
+| Windows compatibility          | Use the hosted smoke job; no execution on the owner's machine is authorized.                                                                                      | Native setup, repeated setup and build remain required.                               |
+
+Record local commands as Passed, Failed, or Not run, with exact limitations. A
+blocked cloud tool does not require permission/network changes or repeated download
+attempts: publish a draft with the limitation, then verify the equivalent hosted
+job at the current head. A successful equivalent hosted check can supply the missing
+validation evidence; it does not turn the local result into a pass. Investigate code
+failures rather than dismissing them as environment limitations. Until all required
+evidence is verified, report Draft prepared with pending/blocked validation, using
+the [handoff states](engineering.md#handoff-states).
+
+The complete command reference below is available for diagnosis and full local
+validation; it is not a requirement to repeat every hosted job in every checkout.
 
 ```bash
 bash scripts/setup.sh
@@ -59,8 +87,8 @@ and manual dispatch with `cold-cache`. No path filters. Stable check names:
 and **quality-gate**. E2E depends on frontend/backend. The always-running aggregate
 gate accepts only explicit success from all six dependencies, rejecting missing,
 failed, skipped, and cancelled jobs. Python tests exercise each dependency's
-failure outcomes. Current main reports all seven names required from GitHub Actions (App 15368);
-detailed review/up-to-date settings require owner readback.
+failure outcomes. All seven names are required from GitHub Actions (App 15368);
+the closeout report retains the owner-provided detailed review/up-to-date readback.
 
 Frontend/backend jobs publish separate production artifacts. E2E downloads only
 named artifacts from the **current workflow run**, with digest mismatch treated
@@ -104,19 +132,24 @@ All policy changes require independent human review.
 Dependency download caches retain Phase A's OS/lock/toolchain keys. Routine
 artifacts, including diagnostics from failed jobs and production outputs, retain
 seven days. Missing artifacts fail upload. GitHub step summaries record counts,
-coverage, and aggregate head/tested merge SHAs. The acceptance report retains
-summaries and immutable run/commit links beyond artifact expiry. Review screenshots
+coverage, and aggregate head/tested merge SHAs. The PR (or milestone acceptance report)
+retains conclusions and immutable run/commit links beyond artifact expiry. Review screenshots
 alongside tests, not as a replacement for assertions.
 
 No new paid service or browser matrix is introduced. Ten-run qualification is
-performed by the single E2E job; actual wall time and aggregate runner duration
-are measured from Actions metadata in the report. Security advisories and hosted
+performed by the single E2E job. Measure wall time and aggregate runner duration
+when changing CI or investigating cost/performance; routine PRs can link the run.
+Security advisories and hosted
 images can change between runs, so a historical green result is not a perpetual
 security guarantee. Main-push verification follows only an owner-performed merge.
 
-## Explicit protected-policy changes
+## Historical M0 policy changes
 
-Phase B adds behavioral tests, ordinary TS discovery and complete authored-config
+This section records implemented changes, not pending assignments. Current policy
+is described above and in engineering standards; new policy proposals still need
+explicit rationale and independent human review.
+
+Phase B added behavioral tests, ordinary TS discovery and complete authored-config
 checking; focus/skip/empty/missing-report safeguards; measured coverage floors
 without broader exclusions; recommended analyzers, type-aware lint, formatting,
 secret and dependency checks; reviewed update PR configuration; production artifact
@@ -124,9 +157,9 @@ provenance and ten-run E2E qualification; standards and acceptance evidence.
 
 The ESLint-10-compatible accessibility fork, obsolete no-floor regression test
 replacement with floor rejection tests, and repository-wide formatting are
-explicit proposals. Historical plan/report formatting changes carry no semantic
-changes. No existing behavioral assertion is removed; the old creation/list,
-validation, reload, and restart checks are retained and strengthened. The later closeout adds only the ten exact historical false-positive fingerprints.
-No coverage target, security severity threshold, assertion, discovery rule or retry
-policy is relaxed. Independent AI review, orchestration and automatic merging
+reviewed implementation changes. Historical plan/report formatting changes carried no semantic
+changes. The creation/list, validation, reload, and restart checks were retained
+and strengthened. The later closeout added the ten exact historical false-positive fingerprints.
+No coverage target, security severity threshold, discovery rule or retry
+policy was relaxed. Independent AI review, orchestration and automatic merging
 remain outside M0 scope.
