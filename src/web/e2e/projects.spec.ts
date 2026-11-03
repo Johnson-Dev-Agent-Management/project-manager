@@ -465,80 +465,93 @@ test('project board supports drag, keyboard and touch moves with saved counts an
   }
 });
 
-for (const firstResponse of ['A', 'B'] as const) {
-  test(`overlapping keyboard moves retain B's focus when ${firstResponse} responds first`, async ({
-    page,
-  }) => {
-    const tasks = ['A', 'B'].map((title, index) => ({
-      id: index + 1,
-      projectId: 999,
-      title,
-      notes: 'Keep notes',
-      status: 'To do',
-      priority: 'High',
-      dueDate: null,
-    }));
-    // Control response order without timers or changing the persistence scenario's data.
-    await page.route('**/api/projects/999?*', (route) =>
-      route.fulfill({
-        json: {
-          id: 999,
-          name: 'Keyboard focus',
-          description: null,
-          tasks,
-          selectedTaskIds: [],
-        },
-      }),
-    );
-    const responses = new Map<string, () => Promise<void>>();
-    await page.route('**/api/tasks/*/status', (route) => {
-      const taskId = Number(/\/tasks\/(\d+)\/status$/.exec(route.request().url())?.[1]);
-      const task = tasks[taskId - 1];
-      const { status } = route.request().postDataJSON() as { status: string };
-      responses.set(task.title, () => route.fulfill({ json: { ...task, status } }));
-    });
-    await page.goto('/#/projects/999');
-    await page.getByRole('button', { name: 'Board', exact: true }).click();
-    const a = page.getByLabel('Status for A', { exact: true });
-    const b = page.getByLabel('Status for B', { exact: true });
-    // Enter the board with Tab, then use real keyboard input on both native selectors.
-    await page.keyboard.press('Tab');
-    await expect(a).toBeFocused();
-    await page.keyboard.press('ArrowDown');
-    await expect(a).toBeDisabled();
-    await page.keyboard.press('Tab');
-    await expect(b).toBeFocused();
-    await page.keyboard.press('ArrowDown');
-    await expect(b).toBeDisabled();
-    // Chromium blurs a focused selector on disable; jsdom does not reliably do this.
-    await expect(page.locator('body')).toBeFocused();
-    await expect.poll(() => responses.size).toBe(2);
-    for (const title of firstResponse === 'A' ? ['A', 'B'] : ['B', 'A']) {
-      const respond = responses.get(title);
-      if (!respond) throw new Error(`Missing pending response for ${title}`);
-      await respond();
-      await expect(page.getByText(`Moved “${title}” to In progress.`)).toBeVisible();
-      if (title === 'A' && firstResponse === 'A') {
-        await expect(a).not.toBeFocused();
-        await expect(b).toBeDisabled();
-        await expect(page.locator('body')).toBeFocused();
-      } else {
-        await expect(b).toBeFocused();
+for (const duplicateTitles of [false, true]) {
+  for (const firstResponse of [1, 2] as const) {
+    test(`overlapping keyboard moves with ${duplicateTitles ? 'duplicate' : 'distinct'} titles retain B's focus when ${firstResponse === 1 ? 'A' : 'B'} responds first`, async ({
+      page,
+    }) => {
+      const tasks = ['A', duplicateTitles ? 'A' : 'B'].map((title, index) => ({
+        id: index + 1,
+        projectId: 999,
+        title,
+        notes: 'Keep notes',
+        status: 'To do',
+        priority: 'High',
+        dueDate: null,
+      }));
+      // Control response order without timers or changing the persistence scenario's data.
+      await page.route('**/api/projects/999?*', (route) =>
+        route.fulfill({
+          json: {
+            id: 999,
+            name: 'Keyboard focus',
+            description: null,
+            tasks,
+            selectedTaskIds: [],
+          },
+        }),
+      );
+      const responses = new Map<number, () => Promise<void>>();
+      await page.route('**/api/tasks/*/status', (route) => {
+        const taskId = Number(/\/tasks\/(\d+)\/status$/.exec(route.request().url())?.[1]);
+        const task = tasks[taskId - 1];
+        const { status } = route.request().postDataJSON() as { status: string };
+        responses.set(task.id, () => route.fulfill({ json: { ...task, status } }));
+      });
+      await page.goto('/#/projects/999');
+      await page.getByRole('button', { name: 'Board', exact: true }).click();
+      // IDs identify the same tasks after reparenting, even when labels are identical.
+      const a = page
+        .getByLabel('Status for A', { exact: true })
+        .and(page.locator('#board-status-1'));
+      const b = page
+        .getByLabel(`Status for ${tasks[1].title}`, { exact: true })
+        .and(page.locator('#board-status-2'));
+      // Enter the board with Tab, then use real keyboard input on both native selectors.
+      await page.keyboard.press('Tab');
+      await expect(a).toBeFocused();
+      await page.keyboard.press('ArrowDown');
+      await expect(a).toBeDisabled();
+      await page.keyboard.press('Tab');
+      await expect(b).toBeFocused();
+      await page.keyboard.press('ArrowDown');
+      await expect(b).toBeDisabled();
+      // Chromium blurs a focused selector on disable; jsdom does not reliably do this.
+      await expect(page.locator('body')).toBeFocused();
+      await expect.poll(() => responses.size).toBe(2);
+      for (const taskId of firstResponse === 1 ? [1, 2] : [2, 1]) {
+        const respond = responses.get(taskId);
+        if (!respond) throw new Error(`Missing pending response for task ${taskId}`);
+        await respond();
+        // Identical announcements cannot establish that this particular response rendered.
+        const moved = taskId === 1 ? a : b;
+        await expect(moved).toBeEnabled();
+        await expect(moved).toHaveValue('In progress');
+        await expect(
+          page.getByText(`Moved “${tasks[taskId - 1].title}” to In progress.`),
+        ).toBeVisible();
+        if (taskId === 1 && firstResponse === 1) {
+          await expect(a).not.toBeFocused();
+          await expect(b).toBeDisabled();
+          await expect(page.locator('body')).toBeFocused();
+        } else {
+          await expect(b).toBeFocused();
+        }
       }
-    }
-    await expect(a).toHaveValue('In progress');
-    await expect(b).toHaveValue('In progress');
-    // Continued keyboard input must address B, never the earlier task A.
-    responses.delete('B');
-    const nextRequest = page.waitForRequest('**/api/tasks/2/status');
-    await page.keyboard.press('End');
-    expect((await nextRequest).postDataJSON()).toEqual({ status: 'Done' });
-    await expect.poll(() => responses.has('B')).toBe(true);
-    const finishB = responses.get('B');
-    if (!finishB) throw new Error('Missing final B response');
-    await finishB();
-    await expect(b).toHaveValue('Done');
-    await expect(b).toBeFocused();
-    await expect(a).toHaveValue('In progress');
-  });
+      await expect(a).toHaveValue('In progress');
+      await expect(b).toHaveValue('In progress');
+      // Continued keyboard input must address B, never the earlier task A.
+      responses.delete(2);
+      const nextRequest = page.waitForRequest('**/api/tasks/2/status');
+      await page.keyboard.press('End');
+      expect((await nextRequest).postDataJSON()).toEqual({ status: 'Done' });
+      await expect.poll(() => responses.has(2)).toBe(true);
+      const finishB = responses.get(2);
+      if (!finishB) throw new Error('Missing final B response');
+      await finishB();
+      await expect(b).toHaveValue('Done');
+      await expect(b).toBeFocused();
+      await expect(a).toHaveValue('In progress');
+    });
+  }
 }

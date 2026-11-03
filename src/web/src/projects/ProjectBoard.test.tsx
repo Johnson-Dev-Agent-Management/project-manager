@@ -266,64 +266,78 @@ test('a saved board status survives later detail edits and Today selection seria
   expect(within(card()).getByRole('combobox')).toBeEnabled();
 });
 
-for (const blurDisabledSelect of [false, true]) {
-  test.each(['A', 'B'])(
-    `overlapping moves keep B's focus when %s responds first (disabled selector blurs: ${String(blurDisabledSelect)})`,
-    async (firstResponse) => {
-      const a = { ...task, title: 'A' };
-      const b = { ...task, id: 4, title: 'B' };
-      const responses = new Map<string, (value: unknown) => void>();
-      const fetchMock = vi
-        .fn()
-        .mockResolvedValueOnce(ok({ ...project, tasks: [a, b] }))
-        .mockImplementation(
-          (url: string) =>
-            new Promise((resolve) => {
-              responses.set(url, resolve);
-            }),
-        );
-      vi.stubGlobal('fetch', fetchMock);
-      const user = await openBoard();
-      const selectA = screen.getByRole('combobox', { name: 'Status for A' });
-      const selectB = () => screen.getByRole('combobox', { name: 'Status for B' });
-      await user.tab();
-      expect(selectA).toHaveFocus();
-      await user.selectOptions(selectA, 'In progress');
-      // user-event cannot retain Chromium's Tab starting point after disabling A.
-      // Focus its actual browser Tab destination here; Playwright uses real Tab.
-      selectB().focus();
-      expect(selectB()).toHaveFocus();
-      await user.selectOptions(selectB(), 'In progress');
-      expect(selectA).toBeDisabled();
-      expect(selectB()).toBeDisabled();
-      // jsdom retains focus on disabled controls. Also model Chromium's native blur;
-      // the browser suite exercises that behavior with real Tab/arrow key input.
-      if (blurDisabledSelect) {
-        // jsdom also makes blur() on a disabled selector a no-op. Move to body
-        // explicitly; the Chromium regression verifies the native disable path.
-        document.body.tabIndex = -1;
-        document.body.focus();
-        document.body.removeAttribute('tabindex');
-        expect(document.body).toHaveFocus();
-      }
-      for (const value of firstResponse === 'A' ? [a, b] : [b, a]) {
-        await act(async () => {
-          responses.get(`/api/tasks/${value.id}/status`)?.(ok({ ...value, status: 'In progress' }));
-          await Promise.resolve();
-        });
-        expect(screen.getByText(`Moved “${value.title}” to In progress.`)).toBeVisible();
-        if (value.id === a.id && firstResponse === 'A') {
-          expect(screen.getByRole('combobox', { name: 'Status for A' })).not.toHaveFocus();
-          expect(selectB()).toBeDisabled();
-          expect(blurDisabledSelect ? document.body : selectB()).toHaveFocus();
-        } else {
-          expect(selectB()).toHaveFocus();
+for (const duplicateTitles of [false, true]) {
+  for (const blurDisabledSelect of [false, true]) {
+    test.each(['A', 'B'])(
+      `overlapping moves with ${duplicateTitles ? 'duplicate' : 'distinct'} titles keep B's focus when %s responds first (disabled selector blurs: ${String(blurDisabledSelect)})`,
+      async (firstResponse) => {
+        const a = { ...task, title: 'A' };
+        const b = { ...task, id: 4, title: duplicateTitles ? 'A' : 'B' };
+        const responses = new Map<string, (value: unknown) => void>();
+        const fetchMock = vi
+          .fn()
+          .mockResolvedValueOnce(ok({ ...project, tasks: [a, b] }))
+          .mockImplementation(
+            (url: string) =>
+              new Promise((resolve) => {
+                responses.set(url, resolve);
+              }),
+          );
+        vi.stubGlobal('fetch', fetchMock);
+        const user = await openBoard();
+        // Titles need not be unique; follow each labeled control by its task ID.
+        const control = (value: ProjectTask) => {
+          const select = screen
+            .getAllByRole('combobox', { name: `Status for ${value.title}` })
+            .find((element) => element.id === `board-status-${value.id}`);
+          if (!select) throw new Error(`Missing status control for task ${value.id}`);
+          return select;
+        };
+        const selectA = control(a);
+        const selectB = () => control(b);
+        await user.tab();
+        expect(selectA).toHaveFocus();
+        await user.selectOptions(selectA, 'In progress');
+        // user-event cannot retain Chromium's Tab starting point after disabling A.
+        // Focus its actual browser Tab destination here; Playwright uses real Tab.
+        selectB().focus();
+        expect(selectB()).toHaveFocus();
+        await user.selectOptions(selectB(), 'In progress');
+        expect(selectA).toBeDisabled();
+        expect(selectB()).toBeDisabled();
+        // jsdom retains focus on disabled controls. Also model Chromium's native blur;
+        // the browser suite exercises that behavior with real Tab/arrow key input.
+        if (blurDisabledSelect) {
+          // jsdom also makes blur() on a disabled selector a no-op. Move to body
+          // explicitly; the Chromium regression verifies the native disable path.
+          document.body.tabIndex = -1;
+          document.body.focus();
+          document.body.removeAttribute('tabindex');
+          expect(document.body).toHaveFocus();
         }
-      }
-      expect(column('In progress').getAllByRole('listitem')).toHaveLength(2);
-      expect(fetchMock).toHaveBeenCalledTimes(3);
-    },
-  );
+        for (const value of firstResponse === 'A' ? [a, b] : [b, a]) {
+          await act(async () => {
+            responses.get(`/api/tasks/${value.id}/status`)?.(
+              ok({ ...value, status: 'In progress' }),
+            );
+            await Promise.resolve();
+          });
+          expect(control(value)).toBeEnabled();
+          expect(control(value)).toHaveValue('In progress');
+          expect(screen.getByText(`Moved “${value.title}” to In progress.`)).toBeVisible();
+          if (value.id === a.id && firstResponse === 'A') {
+            expect(control(a)).not.toHaveFocus();
+            expect(selectB()).toBeDisabled();
+            expect(blurDisabledSelect ? document.body : selectB()).toHaveFocus();
+          } else {
+            expect(selectB()).toHaveFocus();
+          }
+        }
+        expect(column('In progress').getAllByRole('listitem')).toHaveLength(2);
+        expect(fetchMock).toHaveBeenCalledTimes(3);
+      },
+    );
+  }
 }
 
 test.each(['Capture title', 'Task title', 'Project name'])(

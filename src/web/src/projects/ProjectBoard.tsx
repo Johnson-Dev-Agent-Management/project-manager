@@ -39,6 +39,8 @@ export default function ProjectBoard({
     document.addEventListener('focusin', relinquishFocus);
     return () => document.removeEventListener('focusin', relinquishFocus);
   }, []);
+  // Consume a queued restore after every commit, including saves whose announcement
+  // text is unchanged (different tasks may have the same title and target status).
   useLayoutEffect(() => {
     const focus = focusAfterMove.current;
     if (!focus) return;
@@ -48,7 +50,7 @@ export default function ProjectBoard({
     // Body is a valid fallback only for the request that still owns focus.
     if (document.activeElement === focus.origin || document.activeElement === document.body)
       board.current?.querySelector<HTMLSelectElement>(`#board-status-${focus.id}`)?.focus();
-  }, [feedback, error]);
+  });
 
   async function move(task: ProjectTask, status: ProjectTask['status']) {
     if (task.status === status || busyIds.includes(task.id) || pending.current.has(task.id)) return;
