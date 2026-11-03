@@ -127,8 +127,13 @@ Yesterday's selections remain stored for that date but **do not carry forward**.
 Unfinished tasks remain in their projects and surface again when due or overdue.
 Selection does not reschedule tasks. There is no history UI or automatic carryover.
 This is a personal, single-user workflow; accounts and shared access remain future
-work. Unsaved task forms stay in place on the normal midnight refresh; navigation
-or a full reload discards unsaved edits.
+work. Same-day Today refreshes retain each task's unsaved status, pending save and
+failure message even when it moves between sections. Confirmed Today changes remain
+visible if the follow-up refresh fails. Project and task drafts,
+including the new-task form, remain in place if the midnight refresh fails; use
+**Try again** to refresh without losing them. Selection controls stay disabled
+until the current day's selections are available. Delayed refreshes cannot undo
+successful project/task saves. Navigation or a full reload discards unsaved edits.
 
 Native Windows uses **Git Bash**, bootstrap Node/npm, the pinned native .NET SDK
 on PATH, Python 3, and curl. Use the same setup/check/dev commands; setup selects

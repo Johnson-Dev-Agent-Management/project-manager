@@ -1,44 +1,34 @@
-import { useEffect, useId, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { errorMessage, jsonRequest, request, type ProjectTask } from '../projects/api';
 import { useLocalDay } from './dates';
 import SelectionButton from './SelectionButton';
 import TaskMeta from './TaskMeta';
 
-type TodayTask = { task: ProjectTask; projectName: string };
-export type TodayPlan = { selected: TodayTask[]; due: TodayTask[]; completed: TodayTask[] };
+import { updatePlan, type TodayTask, type TodayPlan } from './plan';
+export type { TodayPlan } from './plan';
+
+type StatusEdit = { status: ProjectTask['status'] | null; saving: boolean; error: string };
+const untouched: StatusEdit = { status: null, saving: false, error: '' };
 
 function TodayRow({
   item,
   day,
   selected,
-  reload,
+  onSelectionSaved,
+  edit,
+  onStatusChange,
+  onSaveStatus,
 }: {
   item: TodayTask;
   day: string;
   selected: boolean;
-  reload: () => void;
+  onSelectionSaved: (selected: boolean) => void;
+  edit: StatusEdit;
+  onStatusChange: (status: ProjectTask['status']) => void;
+  onSaveStatus: () => void;
 }) {
   const id = useId();
   const { task, projectName } = item;
-  const [status, setStatus] = useState(task.status);
-  const [saving, setSaving] = useState(false);
-  const [error, setError] = useState('');
-  async function saveStatus() {
-    setSaving(true);
-    setError('');
-    try {
-      await request<ProjectTask>(
-        `/api/tasks/${task.id}/status`,
-        'Could not save status.',
-        jsonRequest('PUT', { status }),
-      );
-      reload();
-    } catch (reason) {
-      setError(errorMessage(reason, 'Could not save status.'));
-    } finally {
-      setSaving(false);
-    }
-  }
   return (
     <li className="today-task" aria-label={task.title}>
       <h3>{task.title}</h3>
@@ -48,73 +38,98 @@ function TodayRow({
       <form
         onSubmit={(event) => {
           event.preventDefault();
-          void saveStatus();
+          onSaveStatus();
         }}
       >
-        <fieldset disabled={saving}>
+        <fieldset disabled={edit.saving}>
           <legend>Change status</legend>
           <label htmlFor={id}>Status for {task.title}</label>
           <select
             id={id}
-            value={status}
-            onChange={(event) => setStatus(event.target.value as ProjectTask['status'])}
+            value={edit.status ?? task.status}
+            onChange={(event) => onStatusChange(event.target.value as ProjectTask['status'])}
           >
             <option>To do</option>
             <option>In progress</option>
             <option>Done</option>
           </select>
-          <button>{saving ? 'Saving status…' : 'Save status'}</button>
+          <button>{edit.saving ? 'Saving status…' : 'Save status'}</button>
         </fieldset>
-        {error && <p role="alert">{error}</p>}
+        {edit.error && <p role="alert">{edit.error}</p>}
       </form>
       <SelectionButton
         taskId={task.id}
         day={day}
         selected={selected}
-        onSaved={reload}
-        disabled={saving}
+        onSaved={onSelectionSaved}
+        disabled={edit.saving}
       />
     </li>
   );
 }
 
 function DailyPlan({ day }: { day: string }) {
+  // A task's editor belongs to the day, not a section or a particular server snapshot.
+  // Rows may move between sections while their drafts or requests are still active.
+  const [edits, setEdits] = useState<Record<number, StatusEdit>>({});
+  const requestVersion = useRef(0);
   const [plan, setPlan] = useState<TodayPlan | null>(null);
   const [error, setError] = useState('');
   const [attempt, setAttempt] = useState(0);
   const [loading, setLoading] = useState(true);
   const reload = () => {
+    requestVersion.current += 1;
     setLoading(true);
+    setError('');
     setAttempt((value) => value + 1);
   };
+  function updateEdit(taskId: number, change: Partial<StatusEdit>) {
+    setEdits((current) => ({
+      ...current,
+      [taskId]: { ...untouched, ...current[taskId], ...change },
+    }));
+  }
+  function selectionSaved(taskId: number, selected: boolean) {
+    setPlan((current) => current && updatePlan(current, day, taskId, { selected }));
+    reload();
+  }
+  async function saveStatus(task: ProjectTask) {
+    const status = edits[task.id]?.status ?? task.status;
+    updateEdit(task.id, { status, saving: true, error: '' });
+    try {
+      const result = await request<ProjectTask>(
+        `/api/tasks/${task.id}/status`,
+        'Could not save status.',
+        jsonRequest('PUT', { status }),
+      );
+      setPlan((current) => current && updatePlan(current, day, task.id, { task: result }));
+      updateEdit(task.id, { status: null, saving: false });
+      reload();
+    } catch (reason) {
+      updateEdit(task.id, { saving: false, error: errorMessage(reason, 'Could not save status.') });
+    }
+  }
   useEffect(() => {
     const controller = new AbortController();
+    const version = requestVersion.current;
+    const isCurrent = () => !controller.signal.aborted && version === requestVersion.current;
     void request<TodayPlan>(`/api/today/${day}`, 'Could not load today.', {
       signal: controller.signal,
     })
       .then((value) => {
-        if (!controller.signal.aborted) {
+        if (isCurrent()) {
           setPlan(value);
           setError('');
         }
       })
       .catch((reason: unknown) => {
-        if (!controller.signal.aborted) setError(errorMessage(reason, 'Could not load today.'));
+        if (isCurrent()) setError(errorMessage(reason, 'Could not load today.'));
       })
       .finally(() => {
-        if (!controller.signal.aborted) setLoading(false);
+        if (isCurrent()) setLoading(false);
       });
     return () => controller.abort();
   }, [day, attempt]);
-  if (loading) return <p role="status">Loading today…</p>;
-  if (error)
-    return (
-      <>
-        <p role="alert">{error}</p>
-        <button onClick={reload}>Try again</button>
-      </>
-    );
-  if (!plan) return null;
   const sections = [
     {
       key: 'selected',
@@ -128,26 +143,41 @@ function DailyPlan({ day }: { day: string }) {
       empty: 'Selected tasks you complete today will stay here. You can reopen them.',
     },
   ] as const;
-  return sections.map(({ key, title, empty }) => (
-    <section key={key} aria-labelledby={`${key}-heading`}>
-      <h2 id={`${key}-heading`}>{title}</h2>
-      {plan[key].length === 0 ? (
-        <p>{empty}</p>
-      ) : (
-        <ul className="task-list">
-          {plan[key].map((item) => (
-            <TodayRow
-              key={`${item.task.id}-${item.task.status}`}
-              item={item}
-              day={day}
-              selected={key !== 'due'}
-              reload={reload}
-            />
-          ))}
-        </ul>
+  return (
+    <>
+      {loading && <p role="status">{plan ? 'Refreshing today…' : 'Loading today…'}</p>}
+      {error && (
+        <div>
+          <p role="alert">{error}</p>
+          <button onClick={reload}>Try again</button>
+        </div>
       )}
-    </section>
-  ));
+      {plan &&
+        sections.map(({ key, title, empty }) => (
+          <section key={key} aria-labelledby={`${key}-heading`}>
+            <h2 id={`${key}-heading`}>{title}</h2>
+            {plan[key].length === 0 ? (
+              <p>{empty}</p>
+            ) : (
+              <ul className="task-list">
+                {plan[key].map((item) => (
+                  <TodayRow
+                    key={item.task.id}
+                    item={item}
+                    day={day}
+                    selected={key !== 'due'}
+                    onSelectionSaved={(selected) => selectionSaved(item.task.id, selected)}
+                    edit={edits[item.task.id] ?? untouched}
+                    onStatusChange={(status) => updateEdit(item.task.id, { status })}
+                    onSaveStatus={() => void saveStatus(item.task)}
+                  />
+                ))}
+              </ul>
+            )}
+          </section>
+        ))}
+    </>
+  );
 }
 
 export default function TodayPage() {

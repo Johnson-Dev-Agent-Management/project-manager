@@ -189,6 +189,20 @@ test('project pages and scoped tasks persist through UI reload and API restart',
   await expect(
     page.getByRole('region', { name: 'Completed today' }).getByRole('heading', { level: 3 }),
   ).toHaveText(['Draft outline revised']);
+  // Refreshing A's selection must leave B's unsaved status in place.
+  const otherDraft = selectedToday.getByLabel('Status for Other project task');
+  await otherDraft.selectOption('In progress');
+  const checkToday = selectedToday.getByRole('listitem', { name: 'Check outline' });
+  await checkToday.getByRole('button', { name: 'Remove from today' }).click();
+  const dueCheck = page
+    .getByRole('region', { name: 'Due now' })
+    .getByRole('listitem', { name: 'Check outline' });
+  await expect(dueCheck).toBeVisible();
+  await expect(otherDraft).toHaveValue('In progress');
+  await dueCheck.getByRole('button', { name: 'Add to today' }).click();
+  await expect(checkToday).toBeVisible();
+  await expect(otherDraft).toHaveValue('In progress');
+  await otherDraft.selectOption('To do');
   await page.screenshot({
     path: info.outputPath(`${process.env.E2E_PHASE ?? 'invalid'}-today.png`),
     fullPage: true,
