@@ -107,13 +107,18 @@ in the PR. NuGet warnings-as-errors currently blocks medium findings too until
 reviewed. Do not treat unavailable advisory data as clean.
 
 Gitleaks scans full checked-out history and a temporary copy of tracked working-tree
-files using upstream default rules and 100% redaction. No new allowlist is added.
+files using upstream default rules and 100% redaction. The only active false-positive exclusion is the ten exact historical fingerprints
+in `.gitleaksignore`; no broad path, rule or hash exemption is permitted.
 Never put real secrets or database files in a fixture, log, screenshot, or commit.
 Weekly Dependabot PRs cover npm, both NuGet projects, and Actions, with three open
 PRs per ecosystem. Updates require the same tests and human policy review; no
 auto-merge configuration is added. Tool archive pins need explicit reviewed updates.
 
-**Current exception register: none.** Any proposed exception must identify the
+**Current exception register:** the [M0 closeout report](milestones/milestone-0-closeout-report.md)
+records the ten historical artifact-hash fingerprints authorized for activation
+by the owner's bounded-closeout instruction. Independent human PR review remains
+pending; this does not claim a completed human review. The review/renewal deadline
+is 2026-11-10T00:00:00Z. No vulnerability blocking threshold is waived. Any proposed exception must identify the
 exact rule/advisory and affected paths/package versions, rationale and risk,
 named human reviewer, accountable owner, approval evidence, expiry date, and
 removal/retest plan. Until approved it is a blocking proposal, never an operative

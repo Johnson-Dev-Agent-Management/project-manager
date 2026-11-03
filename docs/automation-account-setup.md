@@ -1,5 +1,11 @@
 # Automation-account capabilities and isolation — Phase C
 
+> Full account-isolation certification is deferred from M0 by the owner.
+> This document remains optional future hardening guidance. Use the existing
+> bot connection for publication and genuine human review under the
+> [current milestone scope](milestones/milestone-0.md#phase-c--bounded-ci-closeout).
+> Do not make isolation work a prerequisite to the bounded closeout.
+
 Status: **API identity/Write verified; C2 owner-route exclusion Failed in this context.**
 The account already exists and is connected. Do not recreate/invite it, change
 roles/membership, spend money or broaden credentials. Preserve public repository

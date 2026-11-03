@@ -1,22 +1,28 @@
-# Milestone 0 — Trusted Development Foundation
+# Milestone 0 — Supervised development foundation
 
 ## Status and purpose
 
-The owner approved the architecture and implementation sequence, refined into
-Phases A, B, and C below. This document makes that agreement available to future
-agents. It is a plan, not evidence that any phase has been implemented or accepted.
+On November 2, 2026 (America/Los_Angeles), the owner approved a bounded,
+CI-focused closeout and instructed the agent to proceed. M0's goal is a reliable
+pipeline for supervised application development: required CI, meaningful tests,
+coverage floors, representative regression detection, and human policy review.
+Account-isolation certification and exhaustive adversarial enforcement probes are
+deferred. They are not prerequisites to a bot-authored closeout PR or M0 acceptance.
+This changes acceptance scope; it does not claim the deferred controls passed.
 
-The goal is reproducible, independently enforced development checks for the
-Project Dashboard application in Johnson-Dev-Agent-Management/project-manager.
-Milestone 0 remains supervised: automated validation and human approval establish
-the foundation for later autonomy.
+The current Phase C criteria below supersede earlier C1–C6 interpretations and
+identity prerequisites in historical Phase C reports, probe ledgers and account
+setup instructions. Phase A/B checks and their coverage/security requirements
+remain intact. See the [closeout report](milestone-0-closeout-report.md) for current
+evidence and the [owner handoff](milestone-0-phase-c-owner-handoff.md) for remaining
+actions. M0 remains incomplete until those criteria are accepted.
 
-This documentation change does not authorize implementation. Start only the
-explicitly assigned phase. The owner retains authorization for merges, releases,
-deployments, purchases, visibility changes, and GitHub permission/configuration
-changes. Preserve the current authentication arrangement unless the owner
-authorizes a change. A new chat must read this document and applicable AGENTS.md
-files rather than assume it inherits the planning conversation.
+The owner retains merges, releases, deployments, purchases, visibility changes,
+and GitHub permission/configuration changes. Implementation uses the existing
+codexcodemachine connection for publication; the agent never submits the human
+review or approval. No account/credential changes or bypasses are needed for this
+closeout. Preserve existing stronger protections. Product features begin in the
+next assigned task after closeout, not as part of this implementation.
 
 ## Repository assessment and evidence limits
 
@@ -67,8 +73,8 @@ merging, deployment infrastructure, or a broad architectural rewrite in M0.
 | Decision/action                      | Recommended direction                                                                                                                                                                                         | Timing and evidence                                                                                                                |
 | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
 | GitHub plan and ownership            | Preserve the intentionally public organization repository and private cloud environment; verify effective protection eligibility.                                                                             | Confirm before Phase C acceptance. Record effective settings, not just the subscription name.                                      |
-| Implementation and review identities | Owner chose a dedicated automation account as an outside collaborator, Write on this repository only, no organization membership; Joshbomb75 reviews and merges.                                              | Verify native Codex Git and API/PR use, workflow-file access and credential separation before proceeding.                          |
-| Credential separation                | Scope implementation access to this repository, without administration, rule bypass, or access to the reviewer's credentials.                                                                                 | Verify cloud Git and connector/API identities separately. A different Git author name is insufficient.                             |
+| Implementation and review identities | Owner chose a dedicated automation account as an outside collaborator, Write on this repository only, no organization membership; Joshbomb75 reviews and merges.                                              | Verify the bot API identity and actual PR author; retain genuine human review. Git-route/isolation certification is deferred.      |
+| Credential separation                | Full credential isolation is deferred; use the bot for publication and retain genuine human review.                                                                                                           | API identity identifies PR authorship; no complete credential-isolation claim is made.                                             |
 | Account/installation cost            | Public-repository-only outside collaboration is expected not to consume an additional paid GitHub seat; owner checks actual billing before inviting. No additional ChatGPT plan or seat is assumed necessary. | Owner performs account/connection setup manually; any expense requires separate approval.                                          |
 | Actions and budget                   | Permit required workflows on hosted runners, use restricted token defaults, and approve a spending/usage limit.                                                                                               | Before Phase A CI execution; do not broaden settings or buy credits implicitly.                                                    |
 | Policy owner                         | Designate a human reviewer for CI, tests, thresholds, standards, and associated scripts.                                                                                                                      | Identify before implementation; enforce in Phase C.                                                                                |
@@ -81,22 +87,17 @@ successful validation. A PR author cannot approve their own PR merely by switchi
 sessions. If a PR is owner-authored, use another qualified reviewer or an explicitly
 authorized distinct contribution identity; do not bypass approval rules.
 
-Unresolved identity questions must be documented. The owner may explicitly
-authorize limited CI preparation while they are being resolved, but successful
-Phase A/B checks alone must not be described as an enforceable pipeline.
+Document unresolved identity questions as deferred work. CI success alone does
+not prove server-side merge blocking; verify required checks and review settings
+under the revised Phase C criteria without requiring account-isolation certification.
 
-The current Phase C continuation permits **only codexcodemachine** for agent
-GitHub operations. The owner performs the already-approved main configuration in
-their own session, using the [ordered handoff](milestone-0-phase-c-owner-handoff.md).
-Preserve stronger settings and union required checks after complete existing
-classic/inherited/effective readback. Earlier owner-account administration
-permission is superseded for this continuation; the agent must not invoke it.
-The proposal at `94c03cb3c1e108660d29954bb277b15552143acb` remains the baseline.
-Target reviewed source SHA, creation/protection, precise probes and every merge
-require separate authorization. Verify a fresh isolated implementation context
-before ordinary-branch capability checks/replacement PR; account selection alone
-does not establish C2. No roles, membership, credential-permission, cost or visibility
-changes are authorized. See [account isolation](../automation-account-setup.md).
+Use **codexcodemachine** for implementation publication and PR authorship. The
+owner supplies genuine human review and any merge. Existing owner read-only
+verification remains permissible; merely exposing that connection is not an M0
+blocker under the revised scope. No fresh isolated context, Git capability probe,
+account removal or protected test target is required before the replacement PR.
+Follow the [current handoff](milestone-0-phase-c-owner-handoff.md); do not change
+roles, memberships, credential permissions, costs, visibility or protections.
 
 ## Phase A — Foundational CI
 
@@ -164,7 +165,7 @@ development.
 - A4: Frontend and backend line/branch coverage is measured and reported with
   scope/exclusions; no new numerical threshold is enforced.
 - A5: A controlled failed build/test makes the relevant job and aggregate gate
-  fail; diagnostics remain available. Full permission/merge probes belong to C.
+  fail; diagnostics remain available. The revised C scope uses representative detection evidence; full permission probes are deferred.
 - A6: Reports identify the exact commit and distinguish Passed, Failed, and Not run.
   Infrastructure limitations are recorded rather than presented as passing tests.
 
@@ -257,93 +258,68 @@ and regression coverage, relevant documentation, successful validation for the
 current commit, an honest acceptance report, and independent approval without
 unresolved blocking findings. Owner merging is a separate action.
 
-## Phase C — Branch enforcement and deliberate-defect verification
+## Phase C — Bounded CI closeout
 
-Depends on accepted A/B, authorization for C, and resolution of plan eligibility,
-PR authorship, independent approval, and credential separation.
+### Scope and ordered tasks
 
-### Owner configuration and validation
+1. Preserve PR #15's current implementation, including the Node/npm
+   setup correction, all seven CI jobs, independent 80% line/70% branch floors,
+   report/discovery safeguards, real SQLite tests and production-output E2E.
+2. Resolve only the ten historical artifact-hash false positives using their exact
+   commit/path/rule/line fingerprints. Verify against original artifact bytes,
+   retain full-history and tracked-tree scanning, and record authorization,
+   reviewer, expiry and retest instructions. Triage moderate npm findings;
+   retain blocking high/critical findings and unavailable advisory data.
+3. Use an existing bot connection to open a replacement draft PR, allowing the
+   owner to supply a genuine human review. Preserve #15 until replacement content
+   is confirmed. No Git push identity certification, connector removal or new
+   credential setup is required. API publication is an acceptable contribution path.
+4. Confirm main requires PRs, all seven checks from GitHub Actions (App 15368),
+   up-to-date validation, and human/code-owner review. Retain stale/latest-push
+   review, conversation resolution, force/deletion blocking and existing stronger
+   protections. Install `* @Joshbomb75` CODEOWNERS through the reviewed bootstrap;
+   verify its effect on the actual base after owner merge. If detailed readback is
+   unavailable, use one current owner export or GitHub settings capture.
+5. Run the representative exercises below; do not create/modify protected targets
+   or run destructive/bypass probes. Distinguish test detection, aggregate behavior
+   and GitHub enforcement evidence. Draft status or an unrelated failure is not
+   proof that the intended check blocks a merge.
+6. Obtain exact-head green CI and human review. After owner merge, verify all seven
+   checks on the resulting main commit and accept the concise closeout report.
+   Refresh the private cloud baseline for subsequent application work.
 
-1. Identify the implementation principal, human reviewer, and merger. Verify
-   actual cloud Git and API/connector authentication, repository scope, and absence
-   of implementation-agent administrative or bypass privileges.
-2. Configure an active main-branch ruleset or equivalent branch protection:
-   require PRs, the final named CI checks, up-to-date branches, independent approval,
-   CODEOWNERS review, stale-approval dismissal/latest-push review, and conversation
-   resolution. Block force pushes/deletion and disallow normal administrative bypass.
-3. Restrict protected-branch updates to the owner/designated merger where supported,
-   while retaining the quality/review requirements. No implementation identity gets
-   bypass. Keep auto-merge disabled.
-4. Confirm the expected check source and unique names after successful pilot runs.
-   Add policy and supply-chain checks without removing existing required coverage.
-5. Capture effective settings and exercise the verification matrix below using
-   actual implementation credentials. Administrative read limitations require a
-   supported complete administration readback route, not guessed settings or a
-   replacement from partial evidence.
-6. Review results, perform only the owner-approved merge, verify the subsequent
-   main run, and refresh the cloud environment baseline.
+### Representative regression evidence
 
-CODEOWNERS must be on the target branch to govern later PRs; its first introduction
-requires explicit bootstrap review. Multiple owners on one matching rule do not
-mean all must approve. Do not list the implementation identity as an alternative
-policy approver.
+| Exercise                                      | Required evidence                                                                                                                                                           |
+| --------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Failed frontend assertion                     | Real test invocation exits nonzero and identifies the failed assertion.                                                                                                     |
+| Application behavior regression               | Temporarily break validation or persistence; unchanged behavioral tests reject it. Restore source and revalidate.                                                           |
+| Coverage below floor                          | Existing fixtures verify line and branch thresholds independently for both report paths; no rounding up or omitted production files.                                        |
+| Required job failed/cancelled/skipped/missing | Existing tests execute the workflow's actual aggregate code for every dependency/outcome; hosted failed dependency also fails quality-gate.                                 |
+| Valid final change                            | Every named hosted job explicitly succeeds at the final PR head.                                                                                                            |
+| Merge enforcement                             | Current required-check/review configuration, plus a ready PR's GitHub merge evaluation where available. Missing settings remain Unverified, not inferred from draft status. |
 
-Required check names and an expected GitHub Actions source do not authenticate
-a specific workflow implementation: editable workflows can publish misleading
-checks. Independent policy review remains required. Administrators can change
-protections; administrative credentials must remain outside agent reach.
-Central organization-required workflows may improve this boundary later, but
-must not be assumed available on the current plan.
+Local defect exercises are temporary and never published or merged. Reuse the
+existing tests rather than duplicate them. The prior exhaustive ledger remains
+historical/deferred; no direct-push, force-push, deletion, spoofed-status,
+credential-isolation or protected-target advancement probes are M0 blockers.
 
-### Deliberate-defect verification matrix
+### Revised Phase C acceptance criteria
 
-Use disposable PRs and an owner-approved disposable branch/test repository
-with equivalent protections. Never merge defective changes or force-push/delete
-main. Draft status alone is not proof that gates prevent merging.
+- C1: Main's required PR/check/review settings are confirmed; all seven required
+  checks are bound to GitHub Actions and validate against the current base.
+- C2: A bot-authored PR permits genuine owner review; the agent does not approve
+  or merge it. Full account isolation and bypass certification are deferred.
+- C3: Existing checks/thresholds remain intact, CODEOWNERS is included and reviewed,
+  and its base-branch effect is verified after bootstrap merge.
+- C4: The bounded regression exercises above have traceable results. Detection
+  and actual server-side enforcement are reported separately.
+- C5: Scanner false positives and dependency triage have narrow, documented
+  dispositions; recovery/exception instructions remain usable.
+- C6: The owner reviews/accepts the closeout and the resulting main run is green.
 
-| Probe                                                                       | Expected independently observed result                                                                    |
-| --------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| Valid application change with appropriate tests                             | All checks pass; eligible after independent approval.                                                     |
-| Documentation-only change                                                   | All required checks appear and complete.                                                                  |
-| TypeScript error; C# compiler/analyzer violation                            | Respective job and aggregate gate fail.                                                                   |
-| Failed frontend/backend assertion                                           | Tests and aggregate gate fail.                                                                            |
-| Remove blank-name validation                                                | Backend and browser behavioral tests detect the regression.                                               |
-| Break UI submission or restart persistence                                  | Real browser/database tests fail, even if mocked tests pass.                                              |
-| Manifest/lock mismatch                                                      | Locked restore fails.                                                                                     |
-| Reduce coverage below approved floor                                        | Coverage check fails.                                                                                     |
-| Focus/skip tests, remove discovery, or omit reports                         | Integrity checks fail; no empty green run.                                                                |
-| API startup/readiness failure                                               | Bounded failure with diagnostics and cleanup.                                                             |
-| Cancel or skip a required job/workflow                                      | Merge remains blocked; missing evidence is not success.                                                   |
-| Replace tests/checks with a no-op or lower thresholds                       | Required policy review blocks acceptance; a green modified workflow is insufficient.                      |
-| Change/remove CODEOWNERS                                                    | Base-branch review requirements still apply.                                                              |
-| Spoof required status from an unauthorized source                           | Expected-source restriction prevents acceptance.                                                          |
-| Push after approval or advance disposable target via authorized owner merge | Fresh approval/base validation is required as configured.                                                 |
-| Direct push, force push, or deletion with agent credentials                 | Rejected on the disposable protected target.                                                              |
-| Synthetic secret fixture or controlled vulnerable dependency                | Security check detects it; never use a real secret or execute a vulnerable package solely for this probe. |
-| Advisory-service failure                                                    | Security result is incomplete/failing, not clean.                                                         |
-
-Record expected/actual outcome, commit SHA, check conclusions, mergeability, and
-evidence links for each probe. Repeat relevant probes after changes to workflows,
-permissions, protection settings, or credentials.
-
-Phase C's base-advance probe uses only `codex/m0-phase-c-target`, advanced through
-a valid, independently reviewed PR and a separately authorized owner merge under
-all active protections. It never advances main for testing, directly pushes the
-target, or bypasses protections. Without that separate merge authorization C15b
-remains pending; no deliberate defect is merged into any branch.
-
-### Phase C acceptance criteria
-
-- C1: Eligible GitHub protections are active and their actual settings are recorded.
-- C2: Implementation and review identities are distinct; agent credentials cannot
-  administer/bypass controls, approve their own work, or update protected main.
-- C3: Every required check and independent policy approval is enforced.
-- C4: Valid and defective probes produce the expected outcomes with traceable evidence.
-- C5: Recovery/exception procedures are documented without silent bypasses.
-- C6: The owner accepts the report and any authorized merge has a successful main run.
-
-Only after C is accepted may M0 be called an enforceable development foundation.
-Unresolved account/credential questions or untested protections block that claim.
+Completion means a supervised CI foundation. It does not certify isolation from
+owner credentials, adversarial workflow resistance, automatic merging or deployment.
 
 ## Standard acceptance report
 

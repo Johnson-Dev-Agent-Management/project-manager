@@ -1,5 +1,11 @@
 # Milestone 0, Phase C acceptance report
 
+> Historical snapshot. The owner subsequently approved the CI-focused closeout.
+> [Current scope](milestone-0.md#phase-c--bounded-ci-closeout) and
+> [current report](milestone-0-closeout-report.md) supersede the isolation,
+> exhaustive-probe and inactive-fingerprint prerequisites below. Historical
+> outcomes remain historical; deferred requirements are not claimed passed.
+
 - Status: **Incomplete; preparation updated, enforcement acceptance pending.**
 - Implementation type: AI
 - Implementation author: Codex Cloud

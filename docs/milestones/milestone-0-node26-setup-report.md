@@ -1,5 +1,11 @@
 # Node 26/npm 12 setup follow-up
 
+> Historical snapshot. The owner subsequently approved the CI-focused closeout.
+> [Current scope](milestone-0.md#phase-c--bounded-ci-closeout) and
+> [current report](milestone-0-closeout-report.md) supersede the isolation,
+> exhaustive-probe and inactive-fingerprint prerequisites below. Historical
+> outcomes remain historical; deferred requirements are not claimed passed.
+
 Status: **Implementation prepared; exact-head hosted validation is recorded in PR #15.**
 Implementation type: AI
 Implementation author: Codex Cloud

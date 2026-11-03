@@ -24,6 +24,9 @@ with SQLite persistence and automated unit and browser tests.
 
 - Before milestone work, read [Milestone 0: Trusted Development Foundation](docs/milestones/milestone-0.md).
 - Follow the assigned phase, its acceptance criteria, and the acceptance-report format.
+- The owner approved a CI-focused M0 closeout on November 2, 2026. Current Phase C
+  criteria supersede historical account-isolation and exhaustive-probe blockers.
+  Keep bot PR authorship, human review, required checks and coverage/security floors.
   The plan is not authorization to start another phase, merge, or change GitHub settings.
 - Treat CI configuration, test definitions, coverage thresholds, and engineering standards
   as protected policy. Explicitly identify proposed changes; never silently weaken controls.
