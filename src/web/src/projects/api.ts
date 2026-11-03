@@ -10,11 +10,15 @@ export type ProjectTask = {
 export type Project = { id: number; name: string; description: string | null };
 export type ProjectDetail = Project & { tasks: ProjectTask[]; selectedTaskIds: number[] };
 
-export async function request<T>(url: string, fallback: string, options?: RequestInit): Promise<T> {
+export async function request<T>(
+  url: string,
+  fallback: string,
+  options?: RequestInit,
+  notFound = 'This project or task could not be found. Return to projects to continue.',
+): Promise<T> {
   const response = await fetch(url, options);
   if (!response.ok) {
-    if (response.status === 404)
-      throw new Error('This project or task could not be found. Return to projects to continue.');
+    if (response.status === 404) throw new Error(notFound);
     let message = fallback;
     try {
       const problem = (await response.json()) as { errors?: Record<string, string[]> } | null;

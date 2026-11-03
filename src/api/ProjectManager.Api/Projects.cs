@@ -36,9 +36,12 @@ public class ProjectDb(DbContextOptions<ProjectDb> options) : DbContext(options)
     public DbSet<Project> Projects => Set<Project>();
     public DbSet<ProjectTask> Tasks => Set<ProjectTask>();
     public DbSet<TodaySelection> TodaySelections => Set<TodaySelection>();
+    public DbSet<InboxItem> InboxItems => Set<InboxItem>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<InboxItem>().Property(item => item.CapturedAt)
+            .HasConversion(value => value, value => DateTime.SpecifyKind(value, DateTimeKind.Utc));
         modelBuilder.Entity<ProjectTask>().HasOne<Project>().WithMany().HasForeignKey(task => task.ProjectId);
         modelBuilder.Entity<TodaySelection>().HasKey(selection => new { selection.TaskId, selection.Day });
         modelBuilder.Entity<TodaySelection>().HasOne<ProjectTask>().WithMany().HasForeignKey(selection => selection.TaskId);

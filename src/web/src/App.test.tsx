@@ -24,7 +24,7 @@ test('loading disables submission; empty state becomes a saved project and clear
   vi.stubGlobal('fetch', fetchMock);
   render(<App />);
   expect(screen.getByRole('status')).toHaveTextContent('Loading projects…');
-  expect(screen.getByRole('button')).toBeDisabled();
+  expect(screen.getByRole('button', { name: /Create project|Creating…/ })).toBeDisabled();
   await act(async () => {
     finishLoad({ ok: true, json: () => [] });
     await Promise.resolve();
@@ -33,7 +33,7 @@ test('loading disables submission; empty state becomes a saved project and clear
   await user.type(screen.getByLabelText('Project name'), ' Example ');
   await user.click(screen.getByRole('button', { name: 'Create project' }));
   expect(screen.getByRole('button', { name: 'Creating…' })).toBeDisabled();
-  await user.click(screen.getByRole('button'));
+  await user.click(screen.getByRole('button', { name: /Create project|Creating…/ }));
   expect(fetchMock).toHaveBeenCalledTimes(2);
   expect(fetchMock).toHaveBeenLastCalledWith('/api/projects', {
     method: 'POST',
@@ -46,7 +46,7 @@ test('loading disables submission; empty state becomes a saved project and clear
   });
   expect(screen.getByRole('listitem')).toHaveTextContent('Example');
   expect(screen.getByLabelText('Project name')).toHaveValue('');
-  expect(screen.getByRole('button')).toBeEnabled();
+  expect(screen.getByRole('button', { name: /Create project|Creating…/ })).toBeEnabled();
   expect(screen.queryByText('No projects yet.')).not.toBeInTheDocument();
 });
 
@@ -68,7 +68,7 @@ test('loads existing projects in server order and appends a successful creation'
   render(<App />);
   await screen.findByText('Second');
   await user.type(screen.getByLabelText('Project name'), 'Third');
-  await user.click(screen.getByRole('button'));
+  await user.click(screen.getByRole('button', { name: /Create project|Creating…/ }));
   await screen.findByText('Third');
   expect(screen.getAllByRole('listitem').map((item) => item.textContent)).toEqual([
     'First',
@@ -109,12 +109,12 @@ test.each([
     render(<App />);
     await screen.findByText('Existing');
     await user.type(screen.getByLabelText('Project name'), 'Retry');
-    await user.click(screen.getByRole('button'));
+    await user.click(screen.getByRole('button', { name: /Create project|Creating…/ }));
     expect(await screen.findByRole('alert')).toHaveTextContent(message);
     expect(screen.getByLabelText('Project name')).toHaveValue('Retry');
     expect(screen.getAllByRole('listitem')).toHaveLength(1);
-    expect(screen.getByRole('button')).toBeEnabled();
-    await user.click(screen.getByRole('button'));
+    expect(screen.getByRole('button', { name: /Create project|Creating…/ })).toBeEnabled();
+    await user.click(screen.getByRole('button', { name: /Create project|Creating…/ }));
     await screen.findByText('Retry');
     expect(screen.queryByRole('alert')).not.toBeInTheDocument();
     expect(screen.getAllByRole('listitem')).toHaveLength(2);
@@ -136,9 +136,9 @@ test.each([
   render(<App />);
   await screen.findByText('No projects yet.');
   await user.type(screen.getByLabelText('Project name'), 'Keep me');
-  await user.click(screen.getByRole('button'));
+  await user.click(screen.getByRole('button', { name: /Create project|Creating…/ }));
   expect(await screen.findByRole('alert')).toHaveTextContent(message);
   expect(screen.getByLabelText('Project name')).toHaveValue('Keep me');
-  expect(screen.getByRole('button')).toBeEnabled();
+  expect(screen.getByRole('button', { name: /Create project|Creating…/ })).toBeEnabled();
   expect(screen.queryByRole('listitem')).not.toBeInTheDocument();
 });

@@ -62,15 +62,16 @@ curl -fsS http://127.0.0.1:5173/api/projects
 
 ### Development database upgrades
 
-Stage 2 automatically preserves and upgrades **Stage 1** SQLite databases at API
-startup. It adds priority (default None), a nullable due date, and daily selections
-in a transaction. Existing projects, descriptions, tasks, notes, statuses and IDs
-are retained. Repeated starts are safe; no database is deleted or reset. Tests
-upgrade a temporary copy of a synthetic Stage 1 database and verify retained data,
-new task creation, planning edits and selections across repeated restarts.
+Stage 3 automatically preserves and upgrades **Stage 1 and Stage 2** SQLite
+databases at API startup. The additive transaction adds the Inbox table alongside
+any missing Stage 2 priority, due date, and daily-selection fields. Existing
+projects, descriptions, tasks, notes, statuses, planning fields and IDs are
+retained. Repeated starts are safe; no database is deleted or reset. Tests upgrade
+temporary copies of synthetic Stage 1 and Stage 2 databases and verify retained
+data, captures, edits, moves and planning across repeated restarts.
 
 Stop development services before changing versions. Keep using the same
-`PROJECT_DEV_DATA_DIR` as Stage 1 (the default is `.data/projects.db`; if you used
+`PROJECT_DEV_DATA_DIR` as the previous stage (the default is `.data/projects.db`; if you used
 `.data/stage-1`, keep that override). Back up synthetic data before upgrading if
 you need to roll back to an earlier app version. This bounded development upgrade
 is not a production migration platform.
@@ -79,10 +80,10 @@ Pre-Stage-1 project-only databases remain unsupported. To leave one untouched,
 select a fresh task-owned directory rather than resetting it:
 
 ```bash
-PROJECT_DEV_DATA_DIR="$PWD/.data/stage-2" bash scripts/dev.sh
+PROJECT_DEV_DATA_DIR="$PWD/.data/stage-3" bash scripts/dev.sh
 ```
 
-Use that same override on later starts to retain data in `.data/stage-2/projects.db`.
+Use that same override on later starts to retain data in `.data/stage-3/projects.db`.
 Tests always use isolated temporary databases. See the
 [database guidance](docs/engineering.md#development-database-schema-changes).
 
@@ -98,6 +99,33 @@ labels for incomplete tasks that are overdue or due today.
 Changes and completion counts update after a successful save. Failed saves retain
 your inputs so you can correct them or retry. Reloading or leaving a page discards
 unsaved edits. A missing project provides a message and navigation back to the list.
+
+### Quick capture and Inbox
+
+**Quick capture** is available on Projects, project pages, Today, and Inbox. Enter
+just a title and press Enter or **Capture**. Titles are trimmed; blank titles are
+rejected. Successful capture clears and focuses the field for another item. A
+failed save keeps the text, and saving disables repeated submissions.
+
+Open **Inbox** to review unassigned tasks and ideas, newest capture first (higher
+ID first when capture timestamps tie). Capture dates display in your local time.
+Use **Edit item** to change its title and optional plain-text notes, then **Save
+item**. Cancel leaves the saved content unchanged. Save or cancel edits before
+moving. **Discard item** asks for confirmation; **Keep item** cancels it.
+
+Choose an existing destination and **Move to project**. The title and notes become
+one project task, starting as **To do**, priority **None**, and no due date. A
+successful move removes the Inbox item and offers **Open destination project**.
+The move is atomic: a rejected destination or database failure leaves the item in
+Inbox, and concurrent/repeated moves cannot create duplicate tasks. If a response
+is lost after the server commits, refresh Inbox and check Projects before retrying.
+When no projects exist, **Create a project** opens Projects; return to Inbox to
+organize your saved captures. Today accepts project tasks only, so file an Inbox
+item first to set priority, due date, status, or select it for Today.
+
+Captured items, saved edits, discards and moves persist across reloads and API
+restarts. Unsaved Inbox edits are lost when leaving or reloading the page; failed
+saves and captures made while editing do not clear those drafts.
 
 ### Planning Today
 
