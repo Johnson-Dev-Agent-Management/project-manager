@@ -3,7 +3,8 @@
 Project management app built with React, strict TypeScript, Vite, ASP.NET Core,
 EF Core, and SQLite. Create a project, open its page, edit its name/description,
 and track tasks with titles, optional notes, and To do / In progress / Done statuses.
-Only Done tasks count as complete. Names and task titles are trimmed; blank values
+Tasks also have a priority (None, Low, Medium, High), an optional calendar due date,
+and a daily focus selection across projects. Only Done tasks count as complete. Names and task titles are trimmed; blank values
 are rejected with useful validation errors. Data is synthetic.
 Authentication, shared access, deployments, and production migrations are future work.
 
@@ -59,27 +60,30 @@ curl -fsS http://127.0.0.1:5000/api/health
 curl -fsS http://127.0.0.1:5173/api/projects
 ```
 
-### Stage 1 development database
+### Development database upgrades
 
-Stage 1 adds project descriptions and a Tasks table. Startup uses `EnsureCreated`:
-it creates a fresh schema but **does not upgrade an existing database**. Old
-project-only databases (normally `.data/projects.db`) are incompatible with the
-Stage 1 app. They are never automatically reset or modified to the
-new schema. No preservation/production migration is included in this stage.
+Stage 2 automatically preserves and upgrades **Stage 1** SQLite databases at API
+startup. It adds priority (default None), a nullable due date, and daily selections
+in a transaction. Existing projects, descriptions, tasks, notes, statuses and IDs
+are retained. Repeated starts are safe; no database is deleted or reset. Tests
+upgrade a temporary copy of a synthetic Stage 1 database and verify retained data,
+new task creation, planning edits and selections across repeated restarts.
 
-For an existing checkout, stop its development services and select a fresh,
-task-owned directory for disposable synthetic data:
+Stop development services before changing versions. Keep using the same
+`PROJECT_DEV_DATA_DIR` as Stage 1 (the default is `.data/projects.db`; if you used
+`.data/stage-1`, keep that override). Back up synthetic data before upgrading if
+you need to roll back to an earlier app version. This bounded development upgrade
+is not a production migration platform.
+
+Pre-Stage-1 project-only databases remain unsupported. To leave one untouched,
+select a fresh task-owned directory rather than resetting it:
 
 ```bash
-PROJECT_DEV_DATA_DIR="$PWD/.data/stage-1" bash scripts/dev.sh
+PROJECT_DEV_DATA_DIR="$PWD/.data/stage-2" bash scripts/dev.sh
 ```
 
-Use that same override on later starts to retain progress in
-`.data/stage-1/projects.db`. Choose another unused directory if that path already
-contains an old-schema database. This leaves `.data/projects.db` and other sessions'
-data untouched; no deletion is needed. A fresh checkout may use the default path.
-Backend and browser tests use isolated empty SQLite files and verify project edits,
-tasks, notes, and statuses across an API restart. See the
+Use that same override on later starts to retain data in `.data/stage-2/projects.db`.
+Tests always use isolated temporary databases. See the
 [database guidance](docs/engineering.md#development-database-schema-changes).
 
 ### Using project pages
@@ -87,10 +91,44 @@ tasks, notes, and statuses across an API restart. See the
 Click a project name to open its bookmarkable `/#/projects/{id}` page. Use
 **Back to projects** to return to the list. Edit the project name and optional
 description, then choose **Save project**. Add tasks using **New task**; new tasks
-start in **To do**. Edit a task's title, notes, or status and choose **Save task**.
+start in **To do**. Edit a task's title, notes, status, priority or due date and choose **Save task**.
+Choose **None** to clear a priority, or **Clear due date** and save to clear a date.
+New tasks default to None and no due date. Dates display as YYYY-MM-DD with text
+labels for incomplete tasks that are overdue or due today.
 Changes and completion counts update after a successful save. Failed saves retain
 your inputs so you can correct them or retry. Reloading or leaving a page discards
 unsaved edits. A missing project provides a message and navigation back to the list.
+
+### Planning Today
+
+Use **Projects** and **Today** in the navigation. Choose **Add to today** beside
+an incomplete task in a project, or in Today's **Due now** section. Today shows
+selected tasks across projects, with their project link, saved status, priority
+and optional due date. Change status and choose **Save status** to complete or
+reopen a task; project completion counts reflect that saved status. Selected Done
+tasks stay in **Completed today**. **Remove from today** only removes that day's
+selection; it does not change the task, priority, due date or completion count.
+
+**Due now** contains unselected, incomplete tasks due today or earlier. Selected
+and completed rows are excluded so each task appears once. Selected/completed
+sections sort by High, Medium, Low, None, then earliest due date (undated last),
+then task ID. Due now sorts by earliest due date, priority, then task ID.
+
+Today means the **browser's local calendar date**, sent explicitly to the API;
+the API host's timezone is never used. Due dates and selection days are strict
+YYYY-MM-DD calendar strings, not timestamps, so they do not shift with timezones.
+At local midnight, an open Today page loads the new day's selections. Project
+selection controls also refresh. A sleeping tab refreshes on focus/visibility;
+a clock/timezone change is also detected within a minute. A stale selection
+control cannot write to yesterday after the clock changes. An operation already
+sent before midnight belongs to its original day.
+
+Yesterday's selections remain stored for that date but **do not carry forward**.
+Unfinished tasks remain in their projects and surface again when due or overdue.
+Selection does not reschedule tasks. There is no history UI or automatic carryover.
+This is a personal, single-user workflow; accounts and shared access remain future
+work. Unsaved task forms stay in place on the normal midnight refresh; navigation
+or a full reload discards unsaved edits.
 
 Native Windows uses **Git Bash**, bootstrap Node/npm, the pinned native .NET SDK
 on PATH, Python 3, and curl. Use the same setup/check/dev commands; setup selects
@@ -157,7 +195,8 @@ bash scripts/e2e-qualify.sh
 
 E2E owns loopback ports 5001/5174, rejects occupied ports, verifies the build/proxy,
 and tests project/task validation, trimming, edits, status transitions, completion
-counts, cross-project isolation, direct-page reload, and API restart persistence.
+counts, cross-project isolation, daily selection across projects, due-date display,
+completion/reopening in Today, direct-page reload, and API restart persistence.
 It cleans up its processes/database and retains each run's diagnostics/screenshots
 under ignored `.artifacts`. CI uses matched Chromium; restricted cloud runs report
 any system Chromium fallback explicitly. There are no browser retries.

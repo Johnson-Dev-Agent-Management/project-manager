@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   errorMessage,
   jsonRequest,
@@ -8,6 +8,9 @@ import {
   type ProjectTask,
 } from './api';
 import TaskForm from './TaskForm';
+import { localDay, useLocalDay } from '../today/dates';
+import TaskMeta from '../today/TaskMeta';
+import SelectionButton from '../today/SelectionButton';
 
 export default function ProjectPage({ projectId }: { projectId: string }) {
   const [project, setProject] = useState<ProjectDetail | null>(null);
@@ -19,15 +22,24 @@ export default function ProjectPage({ projectId }: { projectId: string }) {
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState('');
   const [saved, setSaved] = useState(false);
+  const initialized = useRef(false);
+  const day = useLocalDay();
+  const [loadedDay, setLoadedDay] = useState('');
   const url = `/api/projects/${projectId}`;
   useEffect(() => {
     const controller = new AbortController();
-    void request<ProjectDetail>(url, 'Could not load project.', { signal: controller.signal })
+    void request<ProjectDetail>(`${url}?day=${day}`, 'Could not load project.', {
+      signal: controller.signal,
+    })
       .then((value) => {
         if (controller.signal.aborted) return;
         setProject(value);
-        setName(value.name);
-        setDescription(value.description ?? '');
+        setLoadedDay(day);
+        if (!initialized.current) {
+          setName(value.name);
+          setDescription(value.description ?? '');
+          initialized.current = true;
+        }
       })
       .catch((reason: unknown) => {
         if (!controller.signal.aborted)
@@ -37,7 +49,7 @@ export default function ProjectPage({ projectId }: { projectId: string }) {
         if (!controller.signal.aborted) setLoading(false);
       });
     return () => controller.abort();
-  }, [url, attempt]);
+  }, [url, day, attempt]);
 
   async function saveProject() {
     setSaving(true);
@@ -139,6 +151,31 @@ export default function ProjectPage({ projectId }: { projectId: string }) {
                 <ul className="task-list">
                   {project.tasks.map((task) => (
                     <li key={task.id}>
+                      <TaskMeta task={task} day={day} />
+                      {(task.status !== 'Done' || project.selectedTaskIds.includes(task.id)) && (
+                        <SelectionButton
+                          key={day}
+                          taskId={task.id}
+                          day={day}
+                          selected={project.selectedTaskIds.includes(task.id)}
+                          disabled={loadedDay !== day}
+                          onSaved={(selected) => {
+                            if (day !== localDay()) return;
+                            setProject(
+                              (current) =>
+                                current && {
+                                  ...current,
+                                  selectedTaskIds: selected
+                                    ? [
+                                        ...current.selectedTaskIds.filter((id) => id !== task.id),
+                                        task.id,
+                                      ]
+                                    : current.selectedTaskIds.filter((id) => id !== task.id),
+                                },
+                            );
+                          }}
+                        />
+                      )}
                       <TaskForm projectId={projectId} task={task} onSaved={taskSaved} />
                     </li>
                   ))}

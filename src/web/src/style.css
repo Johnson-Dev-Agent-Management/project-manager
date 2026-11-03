@@ -80,3 +80,22 @@ button:disabled {
   list-style: none;
   padding: 0;
 }
+
+nav {
+  max-width: 46rem;
+  margin: 1rem auto;
+  padding: 0 1rem;
+  display: flex;
+  gap: 1.5rem;
+}
+[aria-current='page'] {
+  font-weight: 700;
+}
+.today-task {
+  background: white;
+  border: 1px solid #ccd3dc;
+  border-radius: 0.4rem;
+  padding: 1rem;
+  margin: 1rem 0;
+  overflow-wrap: anywhere;
+}

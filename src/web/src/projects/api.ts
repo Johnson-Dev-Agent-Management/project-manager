@@ -4,9 +4,11 @@ export type ProjectTask = {
   title: string;
   notes: string | null;
   status: 'To do' | 'In progress' | 'Done';
+  priority: 'None' | 'Low' | 'Medium' | 'High';
+  dueDate: string | null;
 };
 export type Project = { id: number; name: string; description: string | null };
-export type ProjectDetail = Project & { tasks: ProjectTask[] };
+export type ProjectDetail = Project & { tasks: ProjectTask[]; selectedTaskIds: number[] };
 
 export async function request<T>(url: string, fallback: string, options?: RequestInit): Promise<T> {
   const response = await fetch(url, options);

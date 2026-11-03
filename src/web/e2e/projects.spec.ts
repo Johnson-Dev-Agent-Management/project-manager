@@ -1,8 +1,12 @@
 import { test, expect } from '@playwright/test';
 
+test.use({ timezoneId: 'America/Los_Angeles' });
+
 test('project pages and scoped tasks persist through UI reload and API restart', async ({
   page,
 }, info) => {
+  // Nov 3 in Los Angeles, Nov 4 in UTC: both API-process phases use the local day.
+  await page.clock.setFixedTime(new Date('2026-11-04T01:30:00Z'));
   await page.goto('/');
   await expect(page.locator('script[type="module"]')).toHaveAttribute('src', /^\/assets\/.+\.js$/);
   const health = await page.request.get('/api/health');
@@ -39,6 +43,8 @@ test('project pages and scoped tasks persist through UI reload and API restart',
     await expect(page.getByText('0 of 0 tasks complete.')).toBeVisible();
     await create.getByLabel('Task title').fill('  Draft outline  ');
     await create.getByLabel('Notes (optional)').fill('Initial notes');
+    await create.getByLabel('Priority').selectOption('Low');
+    await create.getByLabel('Due date (optional)').fill('2026-11-02');
     await create.getByRole('button', { name: 'Add task' }).click();
     const first = page.getByRole('form', { name: 'Edit task: Draft outline', exact: true });
     await expect(first.getByLabel('Status')).toHaveValue('To do');
@@ -109,4 +115,87 @@ test('project pages and scoped tasks persist through UI reload and API restart',
   await expect(page.getByRole('alert')).toContainText('could not be found');
   await page.getByRole('link', { name: 'Back to projects' }).click();
   await expect(page.getByRole('heading', { name: 'Projects' })).toBeVisible();
+  if (process.env.E2E_PHASE === 'create') {
+    await page
+      .getByRole('link', { name: 'Cloud persistence project — planned', exact: true })
+      .click();
+    const check = page.getByRole('form', { name: 'Edit task: Check outline' });
+    await check.getByLabel('Priority').selectOption('High');
+    await check.getByLabel('Due date (optional)').fill('2026-11-03');
+    await check.getByRole('button', { name: 'Save task' }).click();
+    await expect(check.getByText('Task saved.')).toBeVisible();
+    const checkRow = page.getByRole('listitem').filter({ has: check });
+    await expect(checkRow.getByText(/Due today/)).toBeVisible();
+    await checkRow.getByRole('button', { name: 'Add to today' }).click();
+    await expect(checkRow.getByRole('button', { name: 'Remove from today' })).toBeVisible();
+    // A selected task completed today remains available after reload and API restart.
+    await persisted.getByLabel('Status').selectOption('To do');
+    await persisted.getByRole('button', { name: 'Save task' }).click();
+    await expect(page.getByText('0 of 2 tasks complete.')).toBeVisible();
+    const draftRow = page.getByRole('listitem').filter({ has: persisted });
+    await draftRow.getByRole('button', { name: 'Add to today' }).click();
+    await expect(draftRow.getByRole('button', { name: 'Remove from today' })).toBeVisible();
+    await persisted.getByLabel('Status').selectOption('Done');
+    await persisted.getByRole('button', { name: 'Save task' }).click();
+    await expect(page.getByText('1 of 2 tasks complete.')).toBeVisible();
+    await page.getByRole('link', { name: 'Back to projects' }).click();
+    await page.getByRole('link', { name: 'Separate project', exact: true }).click();
+    const other = page.getByRole('form', { name: 'Edit task: Other project task' });
+    await other.getByLabel('Priority').selectOption('Medium');
+    await other.getByLabel('Due date (optional)').fill('2026-11-02');
+    await other.getByRole('button', { name: 'Save task' }).click();
+    await expect(other.getByText('Task saved.')).toBeVisible();
+    await page.getByRole('link', { name: 'Today', exact: true }).click();
+    const dueNow = page.getByRole('region', { name: 'Due now' });
+    await expect(dueNow.getByRole('listitem')).toHaveCount(1);
+    await expect(dueNow.getByText(/Overdue/)).toBeVisible();
+    await dueNow.getByRole('button', { name: 'Add to today' }).click();
+    const selected = page.getByRole('region', { name: 'Selected for today' });
+    await expect(selected.getByRole('heading', { level: 3 })).toHaveText([
+      'Check outline',
+      'Other project task',
+    ]);
+    await expect(page.getByRole('listitem', { name: 'Other project task' })).toHaveCount(1);
+    const selectedCheck = selected.getByRole('listitem', { name: 'Check outline' });
+    await selectedCheck.getByLabel('Status for Check outline').selectOption('Done');
+    await selectedCheck.getByRole('button', { name: 'Save status' }).click();
+    const completedCheck = page
+      .getByRole('region', { name: 'Completed today' })
+      .getByRole('listitem', { name: 'Check outline' });
+    await expect(completedCheck.getByText('Status: Done')).toBeVisible();
+    await completedCheck.getByRole('link', { name: 'Cloud persistence project — planned' }).click();
+    await expect(page.getByText('2 of 2 tasks complete.')).toBeVisible();
+    await page.getByRole('link', { name: 'Today', exact: true }).click();
+    await completedCheck.getByLabel('Status for Check outline').selectOption('To do');
+    await completedCheck.getByRole('button', { name: 'Save status' }).click();
+    await expect(selectedCheck).toBeVisible();
+    await selectedCheck.getByRole('button', { name: 'Remove from today' }).click();
+    await expect(dueNow.getByRole('listitem', { name: 'Check outline' })).toBeVisible();
+    await dueNow.getByRole('button', { name: 'Add to today' }).click();
+    await expect(selectedCheck).toBeVisible();
+    await page.reload();
+  } else {
+    await page.getByRole('link', { name: 'Today', exact: true }).click();
+  }
+  const selectedToday = page.getByRole('region', { name: 'Selected for today' });
+  await expect(selectedToday.getByRole('heading', { level: 3 })).toHaveText([
+    'Check outline',
+    'Other project task',
+  ]);
+  await expect(selectedToday.getByText('Priority: High', { exact: false })).toBeVisible();
+  await expect(selectedToday.getByText('Due today', { exact: false })).toBeVisible();
+  await expect(selectedToday.getByText('Overdue', { exact: false })).toBeVisible();
+  await expect(page.getByRole('region', { name: 'Due now' }).getByRole('listitem')).toHaveCount(0);
+  await expect(
+    page.getByRole('region', { name: 'Completed today' }).getByRole('heading', { level: 3 }),
+  ).toHaveText(['Draft outline revised']);
+  await page.screenshot({
+    path: info.outputPath(`${process.env.E2E_PHASE ?? 'invalid'}-today.png`),
+    fullPage: true,
+  });
+  await selectedToday.getByRole('link', { name: 'Separate project' }).click();
+  const otherSaved = page.getByRole('form', { name: 'Edit task: Other project task' });
+  await expect(otherSaved.getByLabel('Priority')).toHaveValue('Medium');
+  await expect(otherSaved.getByLabel('Due date (optional)')).toHaveValue('2026-11-02');
+  await expect(page.getByText('0 of 1 tasks complete.')).toBeVisible();
 });
