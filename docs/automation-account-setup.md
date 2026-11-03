@@ -9,8 +9,10 @@ visibility and private cloud development.
 
 Use the [fresh context readback](milestones/evidence/phase-c/fresh-context-readback.json)
 and [ordered owner handoff](milestones/milestone-0-phase-c-owner-handoff.md) for the
-current assignment. Earlier snapshots remain historical. The agent now uses only
-codexcodemachine; no owner connection or unidentified Git/CLI credential is invoked.
+current assignment. Earlier snapshots remain historical. Publication uses only
+codexcodemachine. Latest owner steering authorizes an identified personal
+connector for read-only verification, but this chat still exposes no owner route.
+No owner connection or unidentified Git/CLI credential is invoked.
 
 | Item                          | Direct observation                                                                                                  | Limit                                                                                                   |
 | ----------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
@@ -38,8 +40,10 @@ absence of every owner-capable route. Never inspect secret values to diagnose it
 
 ## Supported setup still required
 
-Only codexcodemachine is authorized for agent GitHub operations in this
-continuation. The owner performs main administration in their separate session;
+Only codexcodemachine is authorized for publication in this continuation.
+Owner-connector read-only verification is separately authorized if live-identified
+and available; the present snapshot still identifies only codexcodemachine.
+The owner performs main administration in their separate session;
 the [handoff](milestones/milestone-0-phase-c-owner-handoff.md) contains exact UI/CLI
 steps and readback. Account Admin status does not add connector capabilities;
 reconnecting the same managed connector cannot supply excluded administration.

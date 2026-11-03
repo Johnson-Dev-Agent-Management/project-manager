@@ -1,8 +1,10 @@
 # Phase C verification ledger
 
 Status: **Not run; all Phase C probe outcomes Unverified.**
-The agent now uses only codexcodemachine; owner-only main administration is
-handed off to the owner session. Main now reports protected with all seven checks
+The agent publishes only as codexcodemachine; latest steering also allows an
+identified personal owner connector for read-only verification. It is not exposed
+in this tool snapshot. Main administration stays in the owner session.
+Main now reports protected with all seven checks
 bound to App 15368; detailed settings remain Unverified. Equivalent target
 settings, reviewed source SHA, creation and precise probe scope still require
 separate authorization. No disposable target exists; its initial SHA is unassigned.

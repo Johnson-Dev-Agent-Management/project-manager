@@ -4,16 +4,18 @@ Status: **Main protection partly verified; complete readback and Phase C accepta
 remain incomplete. No settings changed by the agent.**
 See the [report](milestones/milestone-0-phase-c-report.md) and
 [fresh readback](milestones/evidence/phase-c/fresh-context-readback.json).
-The latest continuation requires **only codexcodemachine** for agent GitHub
-operations and explicitly requests owner UI/CLI instructions. Use the single
-[ordered owner handoff](milestones/milestone-0-phase-c-owner-handoff.md). Earlier
-owner-account administration authorization does not permit owner use in this continuation.
+Implementation publication uses **only codexcodemachine**. The latest owner
+steering also authorizes the personal Joshbomb75 connector for **read-only
+verification** if exposed and live-identified; it does not authorize settings
+writes or reviews/merges. Current tools still expose only codexcodemachine and
+no owner selector. Use the [ordered owner handoff](milestones/milestone-0-phase-c-owner-handoff.md).
 
 ## Authorization and identities
 
 The owner performs the already-approved main configuration in their separate session.
-The agent uses only `codexcodemachine` and continues repository preparation,
-validation and PR updates without owner credentials. No reviews, approvals, merges,
+The agent uses `codexcodemachine` for preparation, validation and PR updates.
+Only separately identified owner-connector read-only verification is now authorized;
+no owner route is currently exposed or invoked. No reviews, approvals, merges,
 mutation/destructive probes, accounts, collaborator/organization changes, visibility
 changes, purchases or broader credential permissions are authorized. Preserve public
 source and private cloud development; never inspect or retain secret values.
@@ -77,7 +79,8 @@ an owner-authored bootstrap PR.
 ## Administration capability and safe application
 
 Historical owner identity and Admin role readback do **not** establish app permission.
-The owner connection is not invoked again in the current continuation.
+The newly authorized read-only owner connection is not exposed or invoked in
+this tool snapshot; current live identity remains codexcodemachine.
 The managed connector explicitly excludes administration access; the earlier
 detailed protection GET returned **403 Resource not accessible by integration**.
 It exposes no protection/ruleset/repository-settings write operation. Effective

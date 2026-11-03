@@ -164,54 +164,10 @@
       "production_provenance": {
         "commit": "0e29546900765364a1861d5537c83d44dc7af5ef",
         "run": "40632431988",
-        "files": {
-          "Microsoft.Data.Sqlite.dll": "7841927435be066c58a41d498fd067dcf98bf567985526472260ee092a18ab86",
-          "Microsoft.EntityFrameworkCore.Abstractions.dll": "97615007521c269ecce1e49d47a3e2e13b477ff28962dce5deac77eedf6410e7",
-          "Microsoft.EntityFrameworkCore.Relational.dll": "330ad75d0c80e9dd37b582bad3666c7ea70e41c6d9fd43e7f6e9e1f3e75ba88e",
-          "Microsoft.EntityFrameworkCore.Sqlite.dll": "184db4379fbaf339a8b50844b2ded3d91c59746059824f025e7c5bc05d930636",
-          "Microsoft.EntityFrameworkCore.dll": "1c763d6ae0cbd473929cfbcd50e4e1fe77969ca524fb6e8602df865f24204a1d",
-          "Microsoft.Extensions.DependencyModel.dll": "d113abe99da62949cf9c08b04b4c2fdf3dc4b770f94c4f36375062126524ee03",
-          "ProjectManager.Api": "26f694d3fad8631f52c27cd2fc3f34da5f186089bf6b06d2101a2dc361b02ecb",
-          "ProjectManager.Api.deps.json": "be991b1150c317225b9e81200e31d7bfa537352ecf80cbff9331067d1245fb45",
-          "ProjectManager.Api.dll": "a7b3d072ef1161af7b624ca7bc3cd64120189a262cf79194ab460fa56607f485",
-          "ProjectManager.Api.pdb": "f6350fe95399effbb6ea113e45f673d17a4f0b7e50e471d627b668127f79888e",
-          "ProjectManager.Api.runtimeconfig.json": "eff38a9750f7cca2407b1d639a963d56ffea92088e6da971bbbfa74e3dcd7224",
-          "ProjectManager.Api.staticwebassets.endpoints.json": "c1686417e8d5c31bba969f12b6f3d2b35e6609adb5ca42f212261a3a02771aac",
-          "SQLitePCLRaw.batteries_v2.dll": "1ee3c6ff4d39171690d6ff6f84b4d876ed038ca28e39bb6e74995f52d2aacf8b",
-          "SQLitePCLRaw.core.dll": "b72c9dfe1479a568d6b84e249eaf949e76c757888f8056fb6ddb9c0480e0dd25",
-          "SQLitePCLRaw.provider.e_sqlite3.dll": "1d4cb69b3aaf6a9cf40dfe179cc16dd678f12bc024b212d4297654e0a29e220d",
-          "runtimes/android-arm/native/libe_sqlite3.so": "6846178c7337b5b9a3c9d7090808a6621dd09db6879efdf16075ce2afc260212",
-          "runtimes/android-arm64/native/libe_sqlite3.so": "52d49cc84918c112d5713a6de83269d33f03c4c7c3ed721fbd2c8c00adf4ca80",
-          "runtimes/android-x64/native/libe_sqlite3.so": "8088b315ee0b7db13c053051dae063c8bdf9318c25d3f8b9024b9786bd27cab1",
-          "runtimes/android-x86/native/libe_sqlite3.so": "43731d621cc2b1fbde62bae8ff465cfe0fd1ea9c2f25d566d3e61e495d226d9f",
-          "runtimes/browser-wasm/nativeassets/net9.0/e_sqlite3.a": "73675fcf71a65531ea10763f2029300bb4dc1528c24fc9bebc6bb2cbccf7656f",
-          "runtimes/ios-arm/native/e_sqlite3.a": "0c2cf95c369c37330ecfbc0870c1d214ed727b17bf7b86bce0bac94db4a9acd9",
-          "runtimes/ios-arm64/native/e_sqlite3.a": "0c2cf95c369c37330ecfbc0870c1d214ed727b17bf7b86bce0bac94db4a9acd9",
-          "runtimes/iossimulator-arm64/native/e_sqlite3.a": "87076969e5e0ffc22877e6a5603131f34f2e33bdfc61d11b77dba7c0fcc8f8e1",
-          "runtimes/iossimulator-x64/native/e_sqlite3.a": "87076969e5e0ffc22877e6a5603131f34f2e33bdfc61d11b77dba7c0fcc8f8e1",
-          "runtimes/linux-arm/native/libe_sqlite3.so": "9a697f00c70420314a3604cea281c8859cb925680f935c23f6261e9a6f769368",
-          "runtimes/linux-arm64/native/libe_sqlite3.so": "66436d4bd02b1b1c25b964a744b5230122bca6a5d006aa80add129ef892c273a",
-          "runtimes/linux-armel/native/libe_sqlite3.so": "f6cd622eee5d5df12419c7a11eaf4a17ed1948c28f41db8395959682978c870a",
-          "runtimes/linux-mips64/native/libe_sqlite3.so": "f66410709bd4b5ec6b9fb9b4f89f1e49c842e9f9fa21c95766f1ea20c66074ba",
-          "runtimes/linux-musl-arm/native/libe_sqlite3.so": "98e03c2b80ae3924d1ed6da32d036f933db48b28ee2ef55c417f48ef0a382c62",
-          "runtimes/linux-musl-arm64/native/libe_sqlite3.so": "91e5ff240be8cdc24068c149754d3506dd3f7098cb0fd3d6606c4f0ce3b5fd42",
-          "runtimes/linux-musl-riscv64/native/libe_sqlite3.so": "033f84cbe93cb46eb0b5a96d5acbf1089f1716e9e0e9ee117d9d039c3c58060f",
-          "runtimes/linux-musl-s390x/native/libe_sqlite3.so": "31d53eafaefec15651dac766665171e7d8f2dd4f1c021c7a21e754aba2091b17",
-          "runtimes/linux-musl-x64/native/libe_sqlite3.so": "7d275542af8aac5a19f5a873da7cdadcc20c453fb52b7df57bd747e2f02ab92b",
-          "runtimes/linux-ppc64le/native/libe_sqlite3.so": "9d5e453ad17fb857b123da69adfa067e55bb716816979e4131fe76e513866f53",
-          "runtimes/linux-riscv64/native/libe_sqlite3.so": "a7ac179be5d4a25cea62781fab3a0266903745f5929e0c880dd20fd0e84f2593",
-          "runtimes/linux-s390x/native/libe_sqlite3.so": "55296ed2a74253a8e998d2ca8d4d5471e03c573bdd109ee83f089499ef9aedf7",
-          "runtimes/linux-x64/native/libe_sqlite3.so": "eddcd4aa561d5b8f252db77e8272e7d1aed96bcab9fda3f177ca542f916290bf",
-          "runtimes/linux-x86/native/libe_sqlite3.so": "0269d385a7a8cbbc385c4688bf57c030351036aaae8c6e06f02ecf2d5ada96de",
-          "runtimes/maccatalyst-arm64/native/libe_sqlite3.dylib": "144793f8f993837a66249c0bb8898dd3171904cc796048acd1bede20ce1dab69",
-          "runtimes/maccatalyst-x64/native/libe_sqlite3.dylib": "ac224e3e18f8227dc964b3cf29a0f6244e475af37eed5744708e222fe9691c19",
-          "runtimes/osx-arm64/native/libe_sqlite3.dylib": "2b27f45233818ae11d97016ca2a16dffcf63a53c46f60bcd52b342fc187b0c83",
-          "runtimes/osx-x64/native/libe_sqlite3.dylib": "20143ee08a1af0a510368e14109f512d7c7870481ba16937ae5733a415d0a201",
-          "runtimes/win-arm64/native/e_sqlite3.dll": "a59c169757d12a8bfc30c1760b8dd1f04cf9519f3774bdee6a9b595469f22be6",
-          "runtimes/win-x64/native/e_sqlite3.dll": "6ad8e149f8ce3ed3716402b4b3a2268ebbdc7b64391b5fafed747e03bb1b9418",
-          "runtimes/win-x86/native/e_sqlite3.dll": "8d76b5d0faa6f3a3c6204605d1a3d31dad57a0104b92fce3df19b12bdd983ae7",
-          "web.config": "56671d35d5ed6733acb5c9ce38e24d0b182bd23cfe08d3aa1ed2d1bc1146e778"
-        }
+        "output_file_count": 46,
+        "original_manifest_sha256": "f21ba786b2857afe6ebc9b9a2517251ce93766fa8eafa13cc58d8de97b2e9aa7",
+        "output_hashes_independently_verified": true,
+        "retention": "Summary only; original provenance remains in the archive identified by the retained archive digest."
       },
       "production_hashes_verified": true
     },
@@ -232,10 +188,10 @@
       "production_provenance": {
         "commit": "0e29546900765364a1861d5537c83d44dc7af5ef",
         "run": "40632431988",
-        "files": {
-          "assets/index-CXFAtVdX.js": "b862a6344c237023494df0a87b1f42fd813a1cbd1631aa55f557af4e65226507",
-          "index.html": "fddc3b7b464b3bb3f7abe9813a65afd62f5a434a2726b31ca90f5b20e9e02817"
-        }
+        "output_file_count": 2,
+        "original_manifest_sha256": "cf8fa1fee750639621f85e424d61f60db9c1ed0dfea20185268d8d741c6cd69d",
+        "output_hashes_independently_verified": true,
+        "retention": "Summary only; original provenance remains in the archive identified by the retained archive digest."
       },
       "production_hashes_verified": true
     },

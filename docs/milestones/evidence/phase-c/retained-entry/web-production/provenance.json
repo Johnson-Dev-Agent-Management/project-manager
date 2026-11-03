@@ -1,8 +1,8 @@
 {
   "commit": "0e29546900765364a1861d5537c83d44dc7af5ef",
   "run": "40632431988",
-  "files": {
-    "assets/index-CXFAtVdX.js": "b862a6344c237023494df0a87b1f42fd813a1cbd1631aa55f557af4e65226507",
-    "index.html": "fddc3b7b464b3bb3f7abe9813a65afd62f5a434a2726b31ca90f5b20e9e02817"
-  }
+  "output_file_count": 2,
+  "original_manifest_sha256": "cf8fa1fee750639621f85e424d61f60db9c1ed0dfea20185268d8d741c6cd69d",
+  "output_hashes_independently_verified": true,
+  "retention": "Summary only; original provenance remains in the archive identified by the retained archive digest."
 }

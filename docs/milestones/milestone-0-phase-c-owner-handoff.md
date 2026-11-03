@@ -1,8 +1,10 @@
 # Phase C — ordered owner handoff
 
 **Ready for owner action; Milestone 0 is not complete.**
-The agent uses only codexcodemachine. No owner credential, permission change,
-merge or mutation/destructive probe is used in this continuation.
+The agent publishes only as codexcodemachine. Latest steering authorizes the
+personal owner connector for read-only verification if available and live-identified;
+the current tools still expose only codexcodemachine. No owner credential,
+permission change, merge or mutation/destructive probe is used in this continuation.
 
 ## 1. Completed work and evidence
 
@@ -181,7 +183,10 @@ independent C1–C6/probe verification and owner acceptance.
 **Smallest ordered owner checklist:**
 
 1. Return the current UTC-dated protection/rule-ID/effective-rule/bypass export in
-   §4, retaining any earlier before/after exports if available. No repeat settings
+   §4, retaining any earlier before/after exports if available. A fresh chat may
+   expose the reconnected personal account; its managed connector may still lack
+   administration read access, so a complete owner export remains the reliable
+   fallback. No repeat settings
    write is needed for evidence. Retain the full entry E2E artifact before
    **2026-11-04 04:30:46 UTC**; executor transfer is blocked by the 32 MiB limit.
 2. Return supported non-secret connection/runtime scope and isolation metadata
@@ -190,7 +195,11 @@ independent C1–C6/probe verification and owner acceptance.
    ordinary branch capabilities, remote-actor verification and replacement draft.
 3. Provide genuine independent human policy/bootstrap review at the replacement's
    exact green head. Keep #15 open until that replacement is confirmed. Decide any
-   owner bootstrap merge separately, without weakening protections.
+   owner bootstrap merge separately, without weakening protections. Review the
+   new moderate minimatch advisory and the evidence-hash Gitleaks findings described
+   in the report. Current full-history CI stays blocked; do not suppress or rewrite
+   shared history. A clean successor based before the evidence-hash commit needs
+   the same isolation/replacement prerequisites and independent validation.
 4. Separately decide reviewed target source/creation/equivalent protection and
    each exact probe scope; C15b needs its own valid reviewed PR/owner-merge approval.
    After any authorized owner merge, verify seven checks on exact resulting main,

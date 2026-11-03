@@ -7,8 +7,11 @@ These reports validate that entry snapshot, not the later documentation commit.
 
 The adjacent [CI readback](../ci-recheck-2026-11-03.json) retains all seven job and
 source IDs, diagnostic excerpts, archive digests/expiry and inspection results.
-Selected JUnit/TRX, coverage, tool versions, production provenance and clean
-security reports are retained here. Absolute runner repository paths in selected
+Selected JUnit/TRX, coverage, tool versions and clean security reports are retained
+here. Production provenance uses commit/run/file-count/original-manifest-digest
+summaries because raw maps pairing Api filenames with hashes triggered generic-key
+findings. Original maps remain in the source ZIPs; output hashes were independently
+verified. Absolute runner repository paths in selected
 reports are replaced with `<repository>` and retained text uses LF newlines;
 archive-byte digests in the readback
 refer to the original downloaded ZIPs. No raw credentials or secret findings.

@@ -18,6 +18,15 @@ and account-list changes below; it does not verify inaccessible detailed setting
 No permissions, protections, credential configuration or target refs were changed.
 No owner/unidentified credential, review, approval or merge was invoked.
 
+**Later owner steering:** the user reconnected their personal GitHub account and
+authorized it for read-only verification. Rechecking live profile, account and
+installation metadata still returns only codexcodemachine and the organization,
+with no account selector. Plugin discovery confirms GitHub is installed/enabled
+but exposes no additional route. A fresh chat may refresh connection tools;
+managed connector administration restrictions may still require an owner export.
+Publication remains codexcodemachine-only. If an owner route becomes exposed,
+this verification context cannot establish isolated implementation C2.
+
 ## Acceptance status
 
 Passed means directly verified within the stated scope; Failed means an observed
@@ -116,7 +125,7 @@ job/check/source IDs, relevant diagnostic excerpts, artifact digests/expiry and
 report inspection. Seven of eight archives were transferred and their SHA-256
 digests checked. Available tested-commit files and production provenance match
 the tested merge; production output hashes were checked. Selected test, coverage,
-policy/security reports are retained before expiry under
+policy/security reports and production provenance summaries are retained before expiry under
 [evidence/phase-c/retained-entry](evidence/phase-c/retained-entry/README.md).
 The **33,607,179-byte E2E ZIP exceeds the 32 MiB executor transfer limit**.
 Its archive download reference, metadata/digest and successful ten-run decoded
@@ -143,6 +152,43 @@ and Gitleaks therefore remain Not run locally; no substitute, suppression or
 network bypass is used. Local browser qualification and Windows are Not run for
 this documentation-only continuation; the final hosted lanes are inspected.
 No new test is added for these prose/evidence edits.
+
+**New hosted failure, requiring review:** head
+`f21a64a6d4d858afd6fb825bc99523414a82adf0`, tested merge
+`7d59b4e6d1ddcbd552eb3c2bc9390365578c5c64`,
+[run 41560967603](https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/41560967603)
+fails supply-chain. Fresh npm data reports **14 moderate, zero high/critical**
+findings, rooted in minimatch **GHSA-g3hv-75wg-m249**, potential denial of service
+through globparts amplification in versions below 11.0.1. These are development
+lint/parser tooling paths, not runtime product dependencies. Crafted glob inputs
+can exhaust tooling resources; untrusted PR/configuration handling still matters.
+Upstream compatible remediation and reachability need human review by Joshbomb75;
+no dependency downgrade, forced override, accepted risk or exception is introduced.
+NuGet advisory retrieval succeeds without listed vulnerable packages.
+
+All seven job conclusions, App 15368 source IDs and decoded logs were inspected:
+frontend, backend, windows-smoke, e2e and policy succeed; supply-chain and
+quality-gate fail. The gate correctly propagates supply-chain failure. E2E
+completes all ten executions with zero retries. This is execution evidence,
+not a Phase C target probe or independently attributed protection enforcement.
+
+The blocking scanner reports **10 generic-api-key findings** on the retained
+production provenance maps: filenames containing Api beside independently verified
+SHA-256 file hashes, duplicated in the CI JSON. The artifact ZIP digests, original
+manifest hashes and downloaded output-byte hashing establish their non-secret
+provenance. No credential values were inspected. Only sanitized rule/file/line/
+commit metadata is retained in
+[the follow-up readback](evidence/phase-c/followup-readback.json).
+The current tree now retains commit/run/file-count/original-manifest-digest
+summaries, with the original raw maps remaining in the referenced artifact ZIPs.
+**A normal correction does not erase the earlier full-history findings.** The
+current shared branch therefore remains blocked without weakening the scanner.
+No suppression/allowlist, history rewrite/force-push or silent exception is used.
+After isolation/capability prerequisites, a clean successor based on the last
+pre-evidence-hash head can be independently validated and reviewed as the
+replacement; keep #15 open until confirmation. These incidental scanner findings
+are not authorized Phase C probes or an enforcement pass.
+
 Final published head, tested merge, all seven jobs/sources, logs and relevant
 artifacts are inspected after publication and recorded in PR #15, avoiding an
 untested self-referential evidence commit. Entry CI never validates later edits.
