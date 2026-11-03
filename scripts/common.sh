@@ -7,11 +7,21 @@ project_node_version=$(<"$ROOT/.nvmrc")
 project_npm_version=$(<"$ROOT/.npm-version")
 # Versioned directories let Windows upgrade without replacing a running node.exe.
 export PROJECT_NODE_DIR=${PROJECT_NODE_DIR:-"$PROJECT_TOOLS_DIR/node-$project_node_version-npm-$project_npm_version"}
+project_node_platform=$(node -p 'process.platform')
+project_node_arch=$(node -p 'process.arch')
+[[ $project_node_platform == win32 ]] && project_node_platform=win
+[[ $project_node_platform == win && $project_node_arch == ia32 ]] && project_node_arch=x86
+project_node_package="node-$project_node_platform-$project_node_arch"
+if [[ $project_node_platform == darwin && $project_node_arch == arm64 ]]; then
+  project_node_package=node-bin-darwin-arm64
+fi
+export PROJECT_NODE_BIN="$PROJECT_NODE_DIR/node_modules/$project_node_package/bin"
 WINDOWS_SHELL=false
 case "$(uname -s)" in
   MINGW*|MSYS*|CYGWIN*)
     WINDOWS_SHELL=true
     PROJECT_NODE_DIR=$(cygpath -au "$PROJECT_NODE_DIR")
+    PROJECT_NODE_BIN=$(cygpath -au "$PROJECT_NODE_BIN")
     ;;
   *)
     # Reuse a prepared cloud image when present; hosted runners use PATH.
@@ -48,7 +58,9 @@ case "$(uname -s)" in
 esac
 # Select workspace Node/npm in every supported Bash shell. Native node.exe must
 # precede npm's generated shims on Windows. These directories can appear in setup.
-export PATH="$PROJECT_NODE_DIR/node_modules/node/bin:$PROJECT_NODE_DIR/node_modules/.bin:$PATH"
+if [[ -x $PROJECT_NODE_BIN/node || -x $PROJECT_NODE_BIN/node.exe ]]; then
+  export PATH="$PROJECT_NODE_BIN:$PROJECT_NODE_DIR/node_modules/.bin:$PATH"
+fi
 if [[ $WINDOWS_SHELL == true ]]; then
   npm_config_cache=${npm_config_cache:-$(cygpath -am "$PROJECT_CACHE_DIR/npm")}
   export npm_config_cache

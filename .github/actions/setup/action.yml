@@ -31,7 +31,7 @@ runs:
         git rev-parse HEAD > .artifacts/tested-commit.txt
         bash scripts/setup.sh 2>&1 | tee .artifacts/setup.log
         source scripts/common.sh
-        native_path "$PROJECT_NODE_DIR/node_modules/node/bin" >> "$GITHUB_PATH"
+        native_path "$PROJECT_NODE_BIN" >> "$GITHUB_PATH"
         native_path "$PROJECT_NODE_DIR/node_modules/.bin" >> "$GITHUB_PATH"
         {
           node --version

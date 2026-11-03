@@ -26,6 +26,8 @@ Setup selects exact tools, runs `npm --prefix src/web ci` and
 `dotnet restore tests/ProjectManager.Api.Tests --locked-mode`. Setup installs
 Node/npm in a versioned directory under ignored `.tools` when host versions differ,
 including on Windows Git Bash. This also works with newer bootstrap host tools.
+The bootstrap selects the platform's prebuilt binary package with install scripts
+disabled, avoiding npm's Windows node-wrapper launcher issue.
 Versioned directories avoid replacing a running Windows executable during upgrades.
 Cache overrides and prepared
 cloud reuse are documented in [CI operation](docs/ci.md). No personal credentials

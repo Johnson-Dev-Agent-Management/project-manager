@@ -6,8 +6,12 @@ required_npm_version=$(<"$ROOT/.npm-version")
 if [[ ${PROJECT_BOOTSTRAP_NODE:-false} == true || $(node --version 2>/dev/null || true) != "v$required_node_version" || $(npm --version 2>/dev/null || true) != "$required_npm_version" ]]; then
   # Bootstrap exact project tools in the writable checkout on every platform,
   # including Windows Git Bash. The host supplies Node/npm only for this install.
+  # Install the native binary package directly: the node wrapper's preinstall
+  # mutates its Windows bin target after npm has already generated launchers.
   npm install --prefix "$PROJECT_NODE_DIR" --no-save --package-lock=false \
-    --no-audit --no-fund "node@$required_node_version" "npm@$required_npm_version"
+    --ignore-scripts --no-audit --no-fund \
+    "$project_node_package@$required_node_version" "npm@$required_npm_version"
+  export PATH="$PROJECT_NODE_BIN:$PROJECT_NODE_DIR/node_modules/.bin:$PATH"
   hash -r
 fi
 [[ $(node --version) == "v$required_node_version" ]] || {

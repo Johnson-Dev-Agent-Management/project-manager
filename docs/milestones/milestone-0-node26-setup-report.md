@@ -21,6 +21,10 @@ mutation, permission change, review, merge or Phase C target probe is performed.
   including Windows Git Bash, when host tools differ. A newer host can run setup;
   the project entry points select the tested pins. Versioned directories permit
   Windows upgrades without replacing an executing node.exe.
+- Install the native platform binary package directly with install scripts
+  disabled. The first hosted Windows attempt exposed the node wrapper's stale
+  launcher pointing at its placeholder file; direct native packages avoid the
+  preinstall-time bin-target mutation and need no install-hook permission.
 - Normalize native Windows override/cache paths. Retain native .NET prerequisites,
   locked restores, cache behavior and SQLite path conversion.
 - Remove the CI global npm installation. Record the selected project tools and
@@ -87,6 +91,13 @@ documented release-download restriction; hosted lanes are inspected instead.
 Final head/tested merge, all seven hosted job/source IDs, native Windows
 setup/bootstrap logs and relevant artifacts are recorded in PR #15 after
 inspection. Native Windows execution is claimed only after inspecting that job.
+
+The first runtime attempt, head `bd285b570b275900d8fc0d6843bb04ce2d63d772`,
+tested merge `57e7da73a522a7e1e2970653865a1cb12d8cccf9`,
+[run 41566666181](https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/41566666181),
+failed Windows setup with `node/bin/node: line 1: This: command not found`.
+No passing Windows result is inferred from the mocked regression. The native
+binary correction is validated at its later exact head in the PR handoff.
 
 This follow-up does not establish enforcement. C1 remains Unverified; C2 is Failed
 for this owner-accessible context; C3 is Failed because actual main lacks CODEOWNERS;

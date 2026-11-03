@@ -38,6 +38,10 @@ root = pathlib.Path(os.environ['SETUP_TEST_ROOT'])
 if sys.argv[1:] == ['--version']:
     private = pathlib.Path(os.environ['PROJECT_TOOLS_DIR']) in pathlib.Path(__file__).parents
     print('v' + ((root / '.nvmrc').read_text().strip() if private else os.environ['SETUP_TEST_NODE']))
+elif sys.argv[1:] == ['-p', 'process.platform']:
+    print('win32' if os.environ['SETUP_TEST_PLATFORM'].startswith('MINGW') else 'linux')
+elif sys.argv[1:] == ['-p', 'process.arch']:
+    print('x64')
 else:
     print(os.environ['SETUP_TEST_SDK'])
 ''',
@@ -49,9 +53,12 @@ if sys.argv[1:] == ['--version']:
 elif sys.argv[1] == 'install':
     with (root / 'calls.txt').open('a') as f: f.write('install\\n')
     if os.environ.get('SETUP_TEST_INSTALL_FAILURE'): sys.exit(17)
-    (tools / 'node_modules/node/bin').mkdir(parents=True)
+    package = 'node-win-x64' if os.environ['SETUP_TEST_PLATFORM'].startswith('MINGW') else 'node-linux-x64'
+    assert package + '@' + (root / '.nvmrc').read_text().strip() in sys.argv
+    assert '--ignore-scripts' in sys.argv
+    (tools / 'node_modules' / package / 'bin').mkdir(parents=True)
     (tools / 'node_modules/.bin').mkdir(parents=True)
-    shutil.copy2(root / 'host/node', tools / 'node_modules/node/bin/node')
+    shutil.copy2(root / 'host/node', tools / 'node_modules' / package / 'bin/node')
     shutil.copy2(root / 'host/npm', tools / 'node_modules/.bin/npm')
 else:
     with (root / 'calls.txt').open('a') as f: f.write('ci\\n')
