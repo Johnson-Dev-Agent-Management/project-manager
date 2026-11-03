@@ -13,6 +13,11 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class SetupTests(unittest.TestCase):
+    def setUp(self):
+        # Windows CreateProcess can select System32's WSL bash before PATH.
+        self.bash = shutil.which('bash')
+        self.assertIsNotNone(self.bash, 'Bash is required for setup tests')
+
     def fixture(self, directory, platform, matching_host=False):
         root = Path(directory)
         (root / 'scripts').mkdir()
@@ -25,7 +30,7 @@ class SetupTests(unittest.TestCase):
         node_version = (ROOT / '.nvmrc').read_text().strip()
         npm_version = (ROOT / '.npm-version').read_text().strip()
         sdk = json.loads((ROOT / 'global.json').read_text())['sdk']['version']
-        env = {**os.environ, 'PATH': f'{host}:{os.environ["PATH"]}',
+        env = {**os.environ, 'PATH': os.pathsep.join((str(host), os.environ['PATH'])),
                'PROJECT_TOOLS_DIR': str(root / 'tools'),
                'PROJECT_CACHE_DIR': str(root / 'cache'),
                'SETUP_TEST_ROOT': str(root), 'SETUP_TEST_PLATFORM': platform,
@@ -83,7 +88,7 @@ else:
             with self.subTest(platform=platform), tempfile.TemporaryDirectory() as directory:
                 root, env, node, npm = self.fixture(directory, platform)
                 for _ in range(2):
-                    result = subprocess.run(['bash', 'scripts/setup.sh'], cwd=root, env=env, capture_output=True, text=True)
+                    result = subprocess.run([self.bash, 'scripts/setup.sh'], cwd=root, env=env, capture_output=True, text=True)
                     self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
                     self.assertIn(f'v{node}\n{npm}\n', result.stdout)
                 self.assertEqual((root / 'calls.txt').read_text().splitlines(), ['install', 'ci', 'restore', 'ci', 'restore'])
@@ -108,25 +113,24 @@ else:
                     f'#!/bin/sh\nexec {shlex.quote(Path(utility).as_posix())} "$@"\n',
                     newline='\n')
                 wrapper.chmod(0o755)
-            bash = shutil.which('bash')
             prepared_shell_path = subprocess.check_output(
-                [bash, '-c', 'pwd'], cwd=prepared, text=True).strip()
+                [self.bash, '-c', 'pwd'], cwd=prepared, text=True).strip()
             # Supply only shell utilities and fixture commands; never inherit a host Node.
             env['PATH'] = str(host)
             env.pop('BASH_ENV', None)
             for name in ('node', 'npm'):
                 absent = subprocess.run(
-                    [bash, '-c', f'command -v {name}'],
+                    [self.bash, '-c', f'command -v {name}'],
                     cwd=root, env=env, capture_output=True, text=True)
                 self.assertEqual(absent.returncode, 1, absent.stdout + absent.stderr)
             result = subprocess.run(
-                [bash, 'scripts/setup.sh'],
+                [self.bash, 'scripts/setup.sh'],
                 cwd=root, env=env, capture_output=True, text=True)
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
             self.assertIn(f'v{node}\n{npm}\n', result.stdout)
             self.assertEqual((root / 'calls.txt').read_text().splitlines(), ['ci', 'restore'])
             selected = subprocess.run(
-                [bash, '-c', 'source scripts/common.sh\nprintf "%s\\n" "$(command -v node)" "$project_node_package"'],
+                [self.bash, '-c', 'source scripts/common.sh\nprintf "%s\\n" "$(command -v node)" "$project_node_package"'],
                 cwd=root, env=env, capture_output=True, text=True)
             self.assertEqual(selected.returncode, 0, selected.stdout + selected.stderr)
             self.assertEqual(selected.stdout, f'{prepared_shell_path}/node\nnode-linux-x64\n')
@@ -135,7 +139,7 @@ else:
         with tempfile.TemporaryDirectory() as directory:
             root, env, _, _ = self.fixture(directory, 'MINGW64_NT-10.0', matching_host=True)
             env['PROJECT_BOOTSTRAP_NODE'] = 'true'
-            result = subprocess.run(['bash', 'scripts/setup.sh'], cwd=root, env=env, capture_output=True, text=True)
+            result = subprocess.run([self.bash, 'scripts/setup.sh'], cwd=root, env=env, capture_output=True, text=True)
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
             self.assertEqual((root / 'calls.txt').read_text().splitlines(), ['install', 'ci', 'restore'])
 
@@ -143,6 +147,6 @@ else:
         with tempfile.TemporaryDirectory() as directory:
             root, env, _, _ = self.fixture(directory, 'MINGW64_NT-10.0')
             env['SETUP_TEST_INSTALL_FAILURE'] = 'true'
-            result = subprocess.run(['bash', 'scripts/setup.sh'], cwd=root, env=env, capture_output=True, text=True)
+            result = subprocess.run([self.bash, 'scripts/setup.sh'], cwd=root, env=env, capture_output=True, text=True)
             self.assertEqual(result.returncode, 17, result.stdout + result.stderr)
             self.assertEqual((root / 'calls.txt').read_text().splitlines(), ['install'])
