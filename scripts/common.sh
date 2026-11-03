@@ -79,3 +79,21 @@ native_path() {
     printf '%s\n' "$1"
   fi
 }
+
+# Stop only explicitly owned children, with bounded graceful shutdown.
+stop_processes() {
+  local pid attempt alive
+  for pid in "$@"; do kill "$pid" 2>/dev/null || true; done
+  for ((attempt=0; attempt<50; attempt++)); do
+    alive=false
+    for pid in "$@"; do
+      if kill -0 "$pid" 2>/dev/null; then alive=true; fi
+    done
+    [[ $alive == false ]] && break
+    sleep 0.1
+  done
+  for pid in "$@"; do
+    if kill -0 "$pid" 2>/dev/null; then kill -KILL "$pid" 2>/dev/null || true; fi
+    wait "$pid" 2>/dev/null || true
+  done
+}

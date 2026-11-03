@@ -39,7 +39,7 @@ class SetupTests(unittest.TestCase):
                'SETUP_TEST_SDK': sdk, 'PROJECT_BOOTSTRAP_NODE': 'false'}
         env.pop('PROJECT_NODE_DIR', None)
         commands = {
-            'node': '''import os, pathlib, sys
+            'node': '''import json, os, pathlib, sys
 root = pathlib.Path(os.environ['SETUP_TEST_ROOT'])
 if sys.argv[1:] == ['--version']:
     private = pathlib.Path(os.environ['PROJECT_TOOLS_DIR']) in pathlib.Path(__file__).parents
@@ -49,7 +49,7 @@ elif sys.argv[1:] == ['-p', 'process.platform']:
 elif sys.argv[1:] == ['-p', 'process.arch']:
     print('x64')
 else:
-    print(os.environ['SETUP_TEST_SDK'])
+    print(json.loads((root / 'global.json').read_text())['sdk']['version'])
 ''',
             'npm': '''import os, pathlib, shutil, sys
 root = pathlib.Path(os.environ['SETUP_TEST_ROOT'])
@@ -150,3 +150,12 @@ else:
             result = subprocess.run([self.bash, 'scripts/setup.sh'], cwd=root, env=env, capture_output=True, text=True)
             self.assertEqual(result.returncode, 17, result.stdout + result.stderr)
             self.assertEqual((root / 'calls.txt').read_text().splitlines(), ['install'])
+
+    def test_windows_missing_sdk_reports_native_install_without_restore(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root, env, _, _ = self.fixture(directory, 'MINGW64_NT-10.0', matching_host=True)
+            env['SETUP_TEST_SDK'] = '9.0.100'
+            result = subprocess.run([self.bash, 'scripts/setup.sh'], cwd=root, env=env, capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn('Install the Windows .NET SDK (not just the runtime)', result.stderr)
+            self.assertFalse((root / 'calls.txt').exists(), result.stdout + result.stderr)

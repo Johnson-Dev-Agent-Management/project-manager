@@ -20,8 +20,11 @@ when host versions differ. Native Windows uses Git Bash and the pinned native
 Node/npm can bootstrap setup without matching the project pins first.
 `PROJECT_BOOTSTRAP_NODE=true` forces a workspace installation, and
 `PROJECT_NODE_DIR` selects an isolated directory. The Windows job uses a fresh
-runner-temp directory to exercise native bootstrap, then repeats setup/build and
-runs the complete `check.sh` suite, including Python setup regressions.
+runner-temp directory with spaces to exercise native bootstrap, then repeats setup/build and
+runs the complete `check.sh` suite, including Python setup regressions. It also
+checks the development-server lifecycle with temporary storage and both production
+browser phases via `e2e.sh`. Artifact environment paths use native Windows format;
+Git enforces LF text checkouts even when `core.autocrlf=true`.
 The shared Actions setup publishes the selected private tool paths to later steps
 and records actual selected versions; it no longer installs npm globally.
 There is no required `/workspace` location or dependency on personal credentials.
@@ -31,14 +34,14 @@ There is no required `/workspace` location or dependency on personal credentials
 Here, local means the authorized cloud checkout, never the owner's computer.
 Use focused tests while iterating and the following division of work for handoff:
 
-| Validation                     | Cloud checkout                                                                                                                                                    | Hosted CI on every PR, including documentation                                        |
-| ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| Setup and application checks   | Run `setup.sh` for the checkout's pins/locks, relevant tests, and complete `check.sh` before handoff. Documentation-only work needs no invented behavioral tests. | Frontend/backend builds, tests, coverage floors and report integrity remain required. |
-| Formatting and policy          | Run `policy.sh` when available; check changed-file formatting even when a policy-tool download is blocked. Exercise affected policy checks for policy changes.    | Full `policy` job is required.                                                        |
-| Security                       | Run `security.sh` when available, especially for dependency/security changes; record unavailable downloads or advisory data accurately.                           | Fresh advisory retrieval and both secret scans in `supply-chain` are required.        |
-| Browser E2E                    | Run `e2e.sh` for application behavior/integration changes when supported. For documentation-only changes, hosted E2E suffices.                                    | Ten consecutive full runs without retries remain required in `e2e`.                   |
-| Repeated browser qualification | Run `e2e-qualify.sh` locally for browser/harness reliability changes or diagnosing flakes; routine work need not duplicate the hosted ten runs.                   | Always runs; this is an ongoing requirement, not a retired milestone exercise.        |
-| Windows compatibility          | Use the hosted smoke job; no execution on the owner's machine is authorized.                                                                                      | Native setup, repeated setup, build, and the complete `check.sh` suite are required.  |
+| Validation                     | Cloud checkout                                                                                                                                                    | Hosted CI on every PR, including documentation                                                               |
+| ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| Setup and application checks   | Run `setup.sh` for the checkout's pins/locks, relevant tests, and complete `check.sh` before handoff. Documentation-only work needs no invented behavioral tests. | Frontend/backend builds, tests, coverage floors and report integrity remain required.                        |
+| Formatting and policy          | Run `policy.sh` when available; check changed-file formatting even when a policy-tool download is blocked. Exercise affected policy checks for policy changes.    | Full `policy` job is required.                                                                               |
+| Security                       | Run `security.sh` when available, especially for dependency/security changes; record unavailable downloads or advisory data accurately.                           | Fresh advisory retrieval and both secret scans in `supply-chain` are required.                               |
+| Browser E2E                    | Run `e2e.sh` for application behavior/integration changes when supported. For documentation-only changes, hosted E2E suffices.                                    | Ten consecutive full runs without retries remain required in `e2e`.                                          |
+| Repeated browser qualification | Run `e2e-qualify.sh` locally for browser/harness reliability changes or diagnosing flakes; routine work need not duplicate the hosted ten runs.                   | Always runs; this is an ongoing requirement, not a retired milestone exercise.                               |
+| Windows compatibility          | Use the hosted smoke job; no execution on the owner's machine is authorized.                                                                                      | Native setup/repeated setup, builds, full checks, dev lifecycle, and one full browser scenario are required. |
 
 Record local commands as Passed, Failed, or Not run, with exact limitations. A
 blocked cloud tool does not require permission/network changes or repeated download
@@ -70,6 +73,7 @@ bash scripts/e2e-qualify.sh
 | `policy.sh`                      | Prettier --check, dotnet format --verify-no-changes --no-restore --severity info for both projects, ShellCheck, actionlint, Python tests                |
 | `security.sh`                    | npm audit, forced uncached locked NuGet restore and transitive vulnerability JSON, fail-closed parser, redacted Gitleaks history and tracked-tree scans |
 | `build.sh`                       | Existing frontend/backend/test-project Windows-compatible build smoke                                                                                   |
+| `dev-smoke.sh`                   | Development startup/proxy/create/list/shutdown; isolated temporary SQLite directory with spaces; rejects occupied ports                                 |
 | `production-build.sh [web\|api]` | Vite build or dotnet publish -c Release --no-restore; output/provenance under .artifacts/build                                                          |
 | `e2e.sh [--use-builds]`          | Default builds production output; optional flag consumes verified existing output; both browser phases and cleanup                                      |
 | `e2e-qualify.sh`                 | Ten consecutive full executions of e2e.sh --use-builds, fresh scenario database each time; abort at first failure                                       |
@@ -118,7 +122,11 @@ failed attempts are not replaced by successful retries.
 ## Runners, tools, evidence, and costs
 
 Linux stays on ubuntu-24.04; Windows stays on windows-2025 with Git Bash repeated
-setup, build, and the complete `check.sh` suite. Validation timeouts remain ten minutes, gate two minutes.
+setup, build, the complete `check.sh` suite, development lifecycle, and one full
+production browser scenario. Linux retains ten-run browser qualification.
+The policy/security installer explicitly rejects non-Linux-x64 hosts before
+downloads or tool writes; Windows verifies both entry points report that limitation.
+Validation timeouts remain ten minutes, gate two minutes.
 Superseded runs are cancelled. Tokens are contents:read; checkout credentials are
 not persisted. Supply-chain checkout fetches full history for secret scanning.
 The privileged metadata-only attribution workflow is unchanged and never runs

@@ -98,12 +98,28 @@ jobs:
           cache: ${{ inputs.cold-cache != true }}
       - name: Rerun setup, build, and checks in Git Bash
         run: |
-          export PROJECT_NODE_DIR="$RUNNER_TEMP/native-node-bootstrap"
+          export PROJECT_NODE_DIR="$RUNNER_TEMP/native node bootstrap"
           PROJECT_BOOTSTRAP_NODE=true bash scripts/setup.sh 2>&1 | tee .artifacts/setup-bootstrap.log
           bash scripts/setup.sh 2>&1 | tee .artifacts/setup-rerun.log
           bash scripts/build.sh 2>&1 | tee .artifacts/build.log
           bash scripts/check.sh 2>&1 | tee .artifacts/check.log
           echo 'Windows Git Bash: native workspace bootstrap, repeated setup, builds, and full checks Passed' >> "$GITHUB_STEP_SUMMARY"
+      - name: Development and production scripts in Git Bash
+        run: |
+          export PROJECT_NODE_DIR="$RUNNER_TEMP/native node bootstrap"
+          source scripts/common.sh
+          for script in scripts/*.sh; do bash -n "$script"; done
+          bash scripts/dev-smoke.sh 2>&1 | tee .artifacts/dev-smoke.log
+          npx --prefix src/web --no-install playwright install chromium 2>&1 | tee .artifacts/browser-install.log
+          bash scripts/e2e.sh 2>&1 | tee .artifacts/e2e.log
+          for script in policy security; do
+            if bash "scripts/$script.sh" > ".artifacts/$script-platform.log" 2>&1; then
+              echo "Expected Linux-only $script to reject Windows" >&2
+              exit 1
+            fi
+            grep -F 'Policy/security tools require Linux x64.' ".artifacts/$script-platform.log"
+          done
+          echo 'Windows Git Bash: dev lifecycle, production builds, browser persistence, and Linux-only tool diagnostics Passed' >> "$GITHUB_STEP_SUMMARY"
       - name: Upload Windows evidence
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
