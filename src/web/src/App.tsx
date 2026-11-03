@@ -3,8 +3,11 @@ import ProjectList from './projects/ProjectList';
 import ProjectPage from './projects/ProjectPage';
 import './style.css';
 import TodayPage from './today/TodayPage';
+import QuickCapture from './inbox/QuickCapture';
+import InboxPage from './inbox/InboxPage';
 
 export default function App() {
+  const [captureVersion, setCaptureVersion] = useState(0);
   const [route, setRoute] = useState(window.location.hash);
   useEffect(() => {
     const navigate = () => setRoute(window.location.hash);
@@ -12,15 +15,28 @@ export default function App() {
     return () => window.removeEventListener('hashchange', navigate);
   }, []);
   const navigation = (
-    <nav aria-label="Main navigation">
-      <a href="#/" aria-current={route !== '#/today' ? 'page' : undefined}>
-        Projects
-      </a>
-      <a href="#/today" aria-current={route === '#/today' ? 'page' : undefined}>
-        Today
-      </a>
-    </nav>
+    <>
+      <nav aria-label="Main navigation">
+        <a href="#/" aria-current={route !== '#/today' && route !== '#/inbox' ? 'page' : undefined}>
+          Projects
+        </a>
+        <a href="#/today" aria-current={route === '#/today' ? 'page' : undefined}>
+          Today
+        </a>
+        <a href="#/inbox" aria-current={route === '#/inbox' ? 'page' : undefined}>
+          Inbox
+        </a>
+      </nav>
+      <QuickCapture onCaptured={() => setCaptureVersion((value) => value + 1)} />
+    </>
   );
+  if (route === '#/inbox')
+    return (
+      <>
+        {navigation}
+        <InboxPage captureVersion={captureVersion} />
+      </>
+    );
   if (route === '#/today')
     return (
       <>

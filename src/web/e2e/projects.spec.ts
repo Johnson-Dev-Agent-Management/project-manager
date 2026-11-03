@@ -87,6 +87,7 @@ test('project pages and scoped tasks persist through UI reload and API restart',
   await expect(page.getByRole('listitem')).toHaveText([
     'Cloud persistence project — planned',
     'Separate project',
+    ...(process.env.E2E_PHASE === 'restart' ? ['Captured work'] : []),
   ]);
   await page.getByRole('link', { name: 'Cloud persistence project — planned' }).click();
   await expect(page.getByLabel('Project name')).toHaveValue('Cloud persistence project — planned');
@@ -212,4 +213,133 @@ test('project pages and scoped tasks persist through UI reload and API restart',
   await expect(otherSaved.getByLabel('Priority')).toHaveValue('Medium');
   await expect(otherSaved.getByLabel('Due date (optional)')).toHaveValue('2026-11-02');
   await expect(page.getByText('0 of 1 tasks complete.')).toBeVisible();
+});
+
+test('quick capture, Inbox edits and atomic filing preserve content across reload and API restart', async ({
+  page,
+}, info) => {
+  await page.clock.setFixedTime(new Date('2026-11-04T01:30:00Z'));
+  await page.goto('/');
+  const capture = page.getByRole('form', { name: 'Quick capture' });
+  const inbox = page.getByRole('link', { name: 'Inbox', exact: true });
+  const filedTitle = 'Plan captured work';
+  const notes = 'Keep this idea\nIncluding the second line.';
+  if (process.env.E2E_PHASE === 'create') {
+    await capture.getByLabel('Capture title').fill('   ');
+    await capture.getByLabel('Capture title').press('Enter');
+    await expect(capture.getByRole('alert')).toHaveText('Item title is required.');
+    await expect(capture.getByLabel('Capture title')).toHaveValue('   ');
+    await capture.getByLabel('Capture title').fill('  Captured idea  ');
+    await capture.getByLabel('Capture title').press('Enter');
+    await expect(capture.getByRole('status')).toContainText('Captured “Captured idea” in Inbox.');
+    await expect(capture.getByLabel('Capture title')).toBeFocused();
+    await expect(capture.getByLabel('Capture title')).toHaveValue('');
+    await inbox.click();
+    const row = page.getByRole('listitem', { name: 'Captured idea', exact: true });
+    await expect(row.getByText(/Captured/).filter({ has: page.locator('time') })).toBeVisible();
+    await row.getByRole('button', { name: 'Edit item', exact: true }).click();
+    await row.getByLabel('Item title').fill('   ');
+    await row.getByRole('button', { name: 'Save item' }).click();
+    await expect(row.getByRole('alert')).toHaveText('Item title is required.');
+    await row.getByLabel('Item title').fill(`  ${filedTitle}  `);
+    await row.getByLabel('Notes (optional)').fill(notes);
+    await row.getByRole('button', { name: 'Save item' }).click();
+    await expect(page.getByText('Item saved.')).toBeVisible();
+    await page.reload();
+    const edited = page.getByRole('listitem', { name: filedTitle, exact: true });
+    await expect(edited.getByText(notes)).toBeVisible();
+    await page.getByRole('link', { name: 'Projects', exact: true }).click();
+    await page.getByLabel('Project name').fill('Captured work');
+    await page.getByRole('button', { name: 'Create project' }).click();
+    await expect(page.getByRole('link', { name: 'Captured work', exact: true })).toBeVisible();
+    await inbox.click();
+    await edited.getByLabel('Destination project').selectOption({ label: 'Captured work' });
+    // A failed move leaves the captured content and choice available for retry.
+    await page.route('**/api/inbox/*/move', async (route) => {
+      await route.fulfill({ status: 500, contentType: 'application/problem+json', body: '{}' });
+    });
+    await edited.getByRole('button', { name: 'Move to project' }).click();
+    await expect(edited.getByRole('alert')).toHaveText('Could not move item. Please try again.');
+    await expect(edited.getByText(notes)).toBeVisible();
+    await page.unroute('**/api/inbox/*/move');
+    await edited.getByRole('button', { name: 'Move to project' }).click();
+    await expect(edited).toHaveCount(0);
+    await page.getByRole('link', { name: 'Open destination project' }).click();
+    await expect(page.getByRole('heading', { name: 'Captured work' })).toBeVisible();
+    await expect(page.getByText('0 of 1 tasks complete.')).toBeVisible();
+    // Capture also works from project details; discard remains scoped to Inbox.
+    await capture.getByLabel('Capture title').fill('Discard this thought');
+    await capture.getByLabel('Capture title').press('Enter');
+    await expect(capture.getByRole('status')).toContainText('Captured “Discard this thought”');
+    await page.getByRole('link', { name: 'Today', exact: true }).click();
+    await capture.getByLabel('Capture title').fill('Review later');
+    await capture.getByLabel('Capture title').press('Enter');
+    await expect(capture.getByRole('status')).toContainText('Captured “Review later”');
+    await expect(page.getByRole('listitem', { name: 'Review later' })).toHaveCount(0);
+    await inbox.click();
+    const discard = page.getByRole('listitem', { name: 'Discard this thought' });
+    await discard.getByRole('button', { name: 'Discard item' }).click();
+    await discard.getByRole('button', { name: 'Keep item' }).click();
+    await expect(discard).toBeVisible();
+    await discard.getByRole('button', { name: 'Discard item' }).click();
+    await discard.getByRole('button', { name: 'Confirm discard' }).click();
+    await expect(discard).toHaveCount(0);
+    const pending = page.getByRole('listitem', { name: 'Review later' });
+    await pending.getByRole('button', { name: 'Edit item' }).click();
+    await pending.getByLabel('Notes (optional)').fill('Still in Inbox after restart.');
+    await pending.getByRole('button', { name: 'Save item' }).click();
+    await expect(pending.getByText('Item saved.')).toBeVisible();
+  } else {
+    await inbox.click();
+  }
+  await page.reload();
+  await expect(page.getByRole('listitem')).toHaveCount(1);
+  const pending = page.getByRole('listitem', { name: 'Review later' });
+  await expect(pending.getByText('Still in Inbox after restart.')).toBeVisible();
+  await expect(pending.locator('time')).toHaveAttribute('datetime', /Z$/);
+  await page.screenshot({
+    path: info.outputPath(`${process.env.E2E_PHASE ?? 'invalid'}-inbox.png`),
+    fullPage: true,
+  });
+  await page.getByRole('link', { name: 'Projects', exact: true }).click();
+  await page.getByRole('link', { name: 'Captured work', exact: true }).click();
+  await expect(page.getByText('0 of 1 tasks complete.')).toBeVisible();
+  await expect(page.getByRole('form', { name: /Edit task:/ })).toHaveCount(1);
+  const task = page.getByRole('form', { name: `Edit task: ${filedTitle}` });
+  await expect(task.getByLabel('Task title')).toHaveValue(filedTitle);
+  await expect(task.getByLabel('Notes (optional)')).toHaveValue(notes);
+  await expect(task.getByLabel('Status')).toHaveValue('To do');
+  await expect(task.getByLabel('Priority')).toHaveValue('None');
+  await expect(task.getByLabel('Due date (optional)')).toHaveValue('');
+  await page.screenshot({
+    path: info.outputPath(`${process.env.E2E_PHASE ?? 'invalid'}-filed-task.png`),
+    fullPage: true,
+  });
+  if (process.env.E2E_PHASE === 'restart') {
+    await task.getByLabel('Priority').selectOption('High');
+    await task.getByLabel('Due date (optional)').fill('2026-11-03');
+    await task.getByRole('button', { name: 'Save task' }).click();
+    await expect(task.getByText('Task saved.')).toBeVisible();
+    await page.getByRole('button', { name: 'Add to today' }).click();
+    await expect(page.getByRole('button', { name: 'Remove from today' })).toBeVisible();
+    await page.getByRole('link', { name: 'Today', exact: true }).click();
+    const selected = page
+      .getByRole('region', { name: 'Selected for today' })
+      .getByRole('listitem', { name: filedTitle });
+    await expect(selected.getByText(/Priority: High/)).toBeVisible();
+    await expect(selected.getByText(/Due today/)).toBeVisible();
+    await selected.getByLabel(`Status for ${filedTitle}`).selectOption('Done');
+    await selected.getByRole('button', { name: 'Save status' }).click();
+    const completed = page
+      .getByRole('region', { name: 'Completed today' })
+      .getByRole('listitem', { name: filedTitle });
+    await expect(completed.getByText('Status: Done')).toBeVisible();
+    await completed.getByRole('link', { name: 'Captured work' }).click();
+    await expect(page.getByText('1 of 1 tasks complete.')).toBeVisible();
+    await expect(task.getByLabel('Notes (optional)')).toHaveValue(notes);
+    await page.reload();
+    await expect(page.getByText('1 of 1 tasks complete.')).toBeVisible();
+    await expect(task.getByLabel('Priority')).toHaveValue('High');
+    await expect(task.getByLabel('Due date (optional)')).toHaveValue('2026-11-03');
+  }
 });

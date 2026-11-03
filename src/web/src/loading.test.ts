@@ -12,7 +12,7 @@ test.each([
   render(createElement(App));
   expect(await screen.findByRole('alert')).toHaveTextContent(message);
   expect(screen.queryByRole('status')).not.toBeInTheDocument();
-  expect(screen.getByRole('button')).toBeEnabled();
+  expect(screen.getByRole('button', { name: /Create project|Creating…/ })).toBeEnabled();
 });
 
 test.each(['resolve', 'reject'])(

@@ -56,7 +56,7 @@ validation problems with `errors.name` / `errors.title`; an invalid update statu
 returns `errors.status`. Validation failures do not change any saved fields.
 Descriptions/notes preserve whitespace and may be omitted or null (cleared on PUT).
 Missing projects/tasks and task IDs belonging to another project return 404.
-There are no added length/uniqueness limits or deletion endpoints.
+There are no added length/uniqueness limits or project/task deletion endpoints.
 
 ### Stage 2 planning contracts
 
@@ -90,10 +90,44 @@ retention and repeated restarts. Fresh databases use the EF model with equivalen
 constraints. Pre-Stage-1 databases remain unsupported; use a fresh task-owned
 storage path as documented in [README](../README.md#development-database-upgrades).
 
+### Stage 3 capture and Inbox contracts
+
+Inbox items are a separate simple table (`Id`, `Title`, nullable `Notes`, UTC
+`CapturedAt`). Tasks keep their required project foreign key; Inbox is not part
+of Today queries. Capture timestamps retain UTC semantics when read from SQLite.
+
+| Endpoint                    | Behavior                                                                                                                |
+| --------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `GET /api/inbox`            | Unassigned items, capture timestamp descending then ID descending.                                                      |
+| `POST /api/inbox`           | `{ title }`; trims the title, assigns the UTC capture time, returns 201 with item JSON and Location.                    |
+| `GET /api/inbox/{id}`       | Returns one item, or 404 after discard/move.                                                                            |
+| `PUT /api/inbox/{id}`       | `{ title, notes }`; trims the title, preserves the capture date, returns the saved item. Omitted/null notes clear them. |
+| `DELETE /api/inbox/{id}`    | Discards only an Inbox item; returns `{ id }`, or 404 if absent.                                                        |
+| `POST /api/inbox/{id}/move` | `{ projectId }`; returns 201 project-task JSON and its Location. Defaults are To do / None / null due date.             |
+
+Blank titles return 400 validation problems with `errors.title`; missing/nonpositive
+or nonexistent destination IDs return 400 with `errors.projectId`. Malformed JSON
+or wrong field types return 400. Missing Inbox items return 404. Invalid requests
+do not write. Moves start an immediate SQLite write transaction before reading,
+then create the task and delete the Inbox row in the same commit. Concurrent moves
+serialize; once consumed, a retry returns 404 without creating another task. A
+failed transaction rolls back both changes. A lost success response can therefore
+be reconciled by reloading Inbox and checking Projects; no durable retry receipt
+or cross-project task move is introduced.
+
+The additive startup upgrade creates InboxItems when absent and preserves Stage 1
+and Stage 2 data. `InboxTests` upgrades a temporary copy of a synthetic Stage 2
+database, verifies existing planning data, capture/edit/discard persistence,
+concurrent moves, forced-write rollback, and filed task behavior across restarts.
+Frontend behavior tests cover drafts, duplicate guards, loading/errors/retries,
+confirmation, navigation, and stale reads. Browser tests retain both earlier
+stages and add capture → edit → failed/successful move → project task, plus
+unassigned and assigned content after reload and a real API restart.
+
 ### Development database schema changes
 
 The API calls `Database.EnsureCreated()` at startup, followed by the bounded
-Stage 2 upgrade above. EnsureCreated alone only creates fresh schemas; future
+Stage 2 and Stage 3 upgrades above. EnsureCreated alone only creates fresh schemas; future
 schema changes still need an explicit preservation or reset strategy. `scripts/dev.sh` retains
 synthetic data in ignored `.data/projects.db`; tests use temporary databases.
 Passing fresh-database tests alone does not establish compatibility with existing data.

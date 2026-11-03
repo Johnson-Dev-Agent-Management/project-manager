@@ -7,4 +7,5 @@ using (var scope = app.Services.CreateScope()) DatabaseSchema.Initialize(scope.S
 app.MapGet("/api/health", () => Results.Ok(new { status = "ok" }));
 app.MapProjects();
 app.MapToday();
+app.MapInbox();
 app.Run();
