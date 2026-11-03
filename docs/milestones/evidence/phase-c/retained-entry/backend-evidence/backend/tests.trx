@@ -1,0 +1,719 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="0897afa5-7c4e-40f1-a2eb-cbe7e617c81e" name="@runnervmtai0g 2026-10-28 04:28:21" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-28T04:28:21.6417943+00:00" queuing="2026-10-28T04:28:21.6417944+00:00" start="2026-10-28T04:28:18.9052600+00:00" finish="2026-10-28T04:28:22.0496840+00:00" />
+  <TestSettings name="default" id="2a9fa578-2edc-4533-8486-f69f8e63e7b3">
+    <Deployment runDeploymentRoot="_runnervmtai0g_2026-10-28_04_28_21" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="da7aa8c2-0763-45a3-aa62-083eac68c84d" testId="d8573614-d86f-1790-9daa-d1f4234d1c00" testName="ProjectManager.Api.Tests.ProjectsTests.RejectsInvalidBodiesWithoutWriting(body: &quot;null&quot;)" computerName="runnervmtai0g" duration="00:00:00.0215797" startTime="2026-10-28T04:28:21.4269199+00:00" endTime="2026-10-28T04:28:21.4478618+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="da7aa8c2-0763-45a3-aa62-083eac68c84d" />
+    <UnitTestResult executionId="c7e97035-44c1-40f4-b592-986e3b7953c1" testId="3db1398d-aad0-67c6-b223-1016996cbbc7" testName="ProjectManager.Api.Tests.ProjectsTests.RejectsBlankNamesWithoutWriting(name: &quot;   &quot;)" computerName="runnervmtai0g" duration="00:00:00.0242667" startTime="2026-10-28T04:28:21.5221498+00:00" endTime="2026-10-28T04:28:21.5461042+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c7e97035-44c1-40f4-b592-986e3b7953c1" />
+    <UnitTestResult executionId="cb35088f-4aaa-47d8-ac39-c3f4e4ccce7a" testId="93004c61-b752-f46b-abae-c89f119705bd" testName="ProjectManager.Api.Tests.ProjectsTests.RejectsInvalidBodiesWithoutWriting(body: &quot;{}&quot;)" computerName="runnervmtai0g" duration="00:00:00.0553056" startTime="2026-10-28T04:28:21.3718353+00:00" endTime="2026-10-28T04:28:21.4258530+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cb35088f-4aaa-47d8-ac39-c3f4e4ccce7a" />
+    <UnitTestResult executionId="6dbf4321-ffdb-44af-b681-6b92152721f1" testId="2317ce5a-222f-ddc7-f25a-c621b93056d0" testName="ProjectManager.Api.Tests.ProjectsTests.EmptyStoreHealthAndInsertionOrderHaveStableContracts" computerName="runnervmtai0g" duration="00:00:01.2501774" startTime="2026-10-28T04:28:20.0674095+00:00" endTime="2026-10-28T04:28:21.3029219+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6dbf4321-ffdb-44af-b681-6b92152721f1" />
+    <UnitTestResult executionId="105fd215-eb4c-47bf-8a3e-b18564fad706" testId="0b8a3328-3d7a-dbcf-b19b-8579c287b0cb" testName="ProjectManager.Api.Tests.ProjectsTests.RejectsInvalidBodiesWithoutWriting(body: &quot;{&quot;)" computerName="runnervmtai0g" duration="00:00:00.0642356" startTime="2026-10-28T04:28:21.3238594+00:00" endTime="2026-10-28T04:28:21.3701220+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="105fd215-eb4c-47bf-8a3e-b18564fad706" />
+    <UnitTestResult executionId="41a20cc1-51e3-4b58-b825-7ca620fbfffb" testId="56db8011-4e6f-34d3-de07-01eab75446ab" testName="ProjectManager.Api.Tests.ProjectsTests.RejectsInvalidBodiesWithoutWriting(body: &quot;{\&quot;name\&quot;:42}&quot;)" computerName="runnervmtai0g" duration="00:00:00.0420085" startTime="2026-10-28T04:28:21.4488444+00:00" endTime="2026-10-28T04:28:21.4903507+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="41a20cc1-51e3-4b58-b825-7ca620fbfffb" />
+    <UnitTestResult executionId="0afc9e40-989c-4ced-9731-2e905b9fc95e" testId="917aa542-c66f-6443-bb3f-6efd9e48639c" testName="ProjectManager.Api.Tests.ProjectsTests.RejectsBlankNamesWithoutWriting(name: null)" computerName="runnervmtai0g" duration="00:00:00.0294745" startTime="2026-10-28T04:28:21.5468830+00:00" endTime="2026-10-28T04:28:21.5761246+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0afc9e40-989c-4ced-9731-2e905b9fc95e" />
+    <UnitTestResult executionId="6fd9dd64-4774-4617-8480-f54cbfc4215e" testId="2e304ba7-e3e7-f248-4274-f7625134e281" testName="ProjectManager.Api.Tests.ProjectsTests.RejectsBlankNamesWithoutWriting(name: &quot;\t\r\n&quot;)" computerName="runnervmtai0g" duration="00:00:00.0316953" startTime="2026-10-28T04:28:21.5770512+00:00" endTime="2026-10-28T04:28:21.6094460+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6fd9dd64-4774-4617-8480-f54cbfc4215e" />
+    <UnitTestResult executionId="a4ec33e9-ed12-4ff9-829c-0c6b89cd36a3" testId="b9939b78-d6bc-ccae-d4f6-204675838000" testName="ProjectManager.Api.Tests.ProjectsTests.CreateListAndRestartPreservesTrimmedName" computerName="runnervmtai0g" duration="00:00:00.0444991" startTime="2026-10-28T04:28:21.6232665+00:00" endTime="2026-10-28T04:28:21.6534023+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a4ec33e9-ed12-4ff9-829c-0c6b89cd36a3" />
+    <UnitTestResult executionId="32c40ff0-0488-42df-aa24-67f1f379031e" testId="a7c165e1-af1a-ac35-d639-02d648208ad3" testName="ProjectManager.Api.Tests.ProjectsTests.RejectsBlankNamesWithoutWriting(name: &quot;&quot;)" computerName="runnervmtai0g" duration="00:00:00.0305221" startTime="2026-10-28T04:28:21.4910959+00:00" endTime="2026-10-28T04:28:21.5213843+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="32c40ff0-0488-42df-aa24-67f1f379031e" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="ProjectManager.Api.Tests.ProjectsTests.RejectsInvalidBodiesWithoutWriting(body: &quot;{}&quot;)" storage="&lt;repository&gt;/tests/projectmanager.api.tests/bin/debug/net10.0/projectmanager.api.tests.dll" id="93004c61-b752-f46b-abae-c89f119705bd">
+      <Execution id="cb35088f-4aaa-47d8-ac39-c3f4e4ccce7a" />
+      <TestMethod codeBase="&lt;repository&gt;/tests/ProjectManager.Api.Tests/bin/Debug/net10.0/ProjectManager.Api.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="ProjectManager.Api.Tests.ProjectsTests" name="RejectsInvalidBodiesWithoutWriting" />
+    </UnitTest>
+    <UnitTest name="ProjectManager.Api.Tests.ProjectsTests.CreateListAndRestartPreservesTrimmedName" storage="&lt;repository&gt;/tests/projectmanager.api.tests/bin/debug/net10.0/projectmanager.api.tests.dll" id="b9939b78-d6bc-ccae-d4f6-204675838000">
+      <Execution id="a4ec33e9-ed12-4ff9-829c-0c6b89cd36a3" />
+      <TestMethod codeBase="&lt;repository&gt;/tests/ProjectManager.Api.Tests/bin/Debug/net10.0/ProjectManager.Api.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="ProjectManager.Api.Tests.ProjectsTests" name="CreateListAndRestartPreservesTrimmedName" />
+    </UnitTest>
+    <UnitTest name="ProjectManager.Api.Tests.ProjectsTests.RejectsInvalidBodiesWithoutWriting(body: &quot;{&quot;)" storage="&lt;repository&gt;/tests/projectmanager.api.tests/bin/debug/net10.0/projectmanager.api.tests.dll" id="0b8a3328-3d7a-dbcf-b19b-8579c287b0cb">
+      <Execution id="105fd215-eb4c-47bf-8a3e-b18564fad706" />
+      <TestMethod codeBase="&lt;repository&gt;/tests/ProjectManager.Api.Tests/bin/Debug/net10.0/ProjectManager.Api.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="ProjectManager.Api.Tests.ProjectsTests" name="RejectsInvalidBodiesWithoutWriting" />
+    </UnitTest>
+    <UnitTest name="ProjectManager.Api.Tests.ProjectsTests.RejectsBlankNamesWithoutWriting(name: null)" storage="&lt;repository&gt;/tests/projectmanager.api.tests/bin/debug/net10.0/projectmanager.api.tests.dll" id="917aa542-c66f-6443-bb3f-6efd9e48639c">
+      <Execution id="0afc9e40-989c-4ced-9731-2e905b9fc95e" />
+      <TestMethod codeBase="&lt;repository&gt;/tests/ProjectManager.Api.Tests/bin/Debug/net10.0/ProjectManager.Api.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="ProjectManager.Api.Tests.ProjectsTests" name="RejectsBlankNamesWithoutWriting" />
+    </UnitTest>
+    <UnitTest name="ProjectManager.Api.Tests.ProjectsTests.RejectsBlankNamesWithoutWriting(name: &quot;   &quot;)" storage="&lt;repository&gt;/tests/projectmanager.api.tests/bin/debug/net10.0/projectmanager.api.tests.dll" id="3db1398d-aad0-67c6-b223-1016996cbbc7">
+      <Execution id="c7e97035-44c1-40f4-b592-986e3b7953c1" />
+      <TestMethod codeBase="&lt;repository&gt;/tests/ProjectManager.Api.Tests/bin/Debug/net10.0/ProjectManager.Api.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="ProjectManager.Api.Tests.ProjectsTests" name="RejectsBlankNamesWithoutWriting" />
+    </UnitTest>
+    <UnitTest name="ProjectManager.Api.Tests.ProjectsTests.EmptyStoreHealthAndInsertionOrderHaveStableContracts" storage="&lt;repository&gt;/tests/projectmanager.api.tests/bin/debug/net10.0/projectmanager.api.tests.dll" id="2317ce5a-222f-ddc7-f25a-c621b93056d0">
+      <Execution id="6dbf4321-ffdb-44af-b681-6b92152721f1" />
+      <TestMethod codeBase="&lt;repository&gt;/tests/ProjectManager.Api.Tests/bin/Debug/net10.0/ProjectManager.Api.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="ProjectManager.Api.Tests.ProjectsTests" name="EmptyStoreHealthAndInsertionOrderHaveStableContracts" />
+    </UnitTest>
+    <UnitTest name="ProjectManager.Api.Tests.ProjectsTests.RejectsBlankNamesWithoutWriting(name: &quot;&quot;)" storage="&lt;repository&gt;/tests/projectmanager.api.tests/bin/debug/net10.0/projectmanager.api.tests.dll" id="a7c165e1-af1a-ac35-d639-02d648208ad3">
+      <Execution id="32c40ff0-0488-42df-aa24-67f1f379031e" />
+      <TestMethod codeBase="&lt;repository&gt;/tests/ProjectManager.Api.Tests/bin/Debug/net10.0/ProjectManager.Api.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="ProjectManager.Api.Tests.ProjectsTests" name="RejectsBlankNamesWithoutWriting" />
+    </UnitTest>
+    <UnitTest name="ProjectManager.Api.Tests.ProjectsTests.RejectsInvalidBodiesWithoutWriting(body: &quot;{\&quot;name\&quot;:42}&quot;)" storage="&lt;repository&gt;/tests/projectmanager.api.tests/bin/debug/net10.0/projectmanager.api.tests.dll" id="56db8011-4e6f-34d3-de07-01eab75446ab">
+      <Execution id="41a20cc1-51e3-4b58-b825-7ca620fbfffb" />
+      <TestMethod codeBase="&lt;repository&gt;/tests/ProjectManager.Api.Tests/bin/Debug/net10.0/ProjectManager.Api.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="ProjectManager.Api.Tests.ProjectsTests" name="RejectsInvalidBodiesWithoutWriting" />
+    </UnitTest>
+    <UnitTest name="ProjectManager.Api.Tests.ProjectsTests.RejectsBlankNamesWithoutWriting(name: &quot;\t\r\n&quot;)" storage="&lt;repository&gt;/tests/projectmanager.api.tests/bin/debug/net10.0/projectmanager.api.tests.dll" id="2e304ba7-e3e7-f248-4274-f7625134e281">
+      <Execution id="6fd9dd64-4774-4617-8480-f54cbfc4215e" />
+      <TestMethod codeBase="&lt;repository&gt;/tests/ProjectManager.Api.Tests/bin/Debug/net10.0/ProjectManager.Api.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="ProjectManager.Api.Tests.ProjectsTests" name="RejectsBlankNamesWithoutWriting" />
+    </UnitTest>
+    <UnitTest name="ProjectManager.Api.Tests.ProjectsTests.RejectsInvalidBodiesWithoutWriting(body: &quot;null&quot;)" storage="&lt;repository&gt;/tests/projectmanager.api.tests/bin/debug/net10.0/projectmanager.api.tests.dll" id="d8573614-d86f-1790-9daa-d1f4234d1c00">
+      <Execution id="da7aa8c2-0763-45a3-aa62-083eac68c84d" />
+      <TestMethod codeBase="&lt;repository&gt;/tests/ProjectManager.Api.Tests/bin/Debug/net10.0/ProjectManager.Api.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="ProjectManager.Api.Tests.ProjectsTests" name="RejectsInvalidBodiesWithoutWriting" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="d8573614-d86f-1790-9daa-d1f4234d1c00" executionId="da7aa8c2-0763-45a3-aa62-083eac68c84d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3db1398d-aad0-67c6-b223-1016996cbbc7" executionId="c7e97035-44c1-40f4-b592-986e3b7953c1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="93004c61-b752-f46b-abae-c89f119705bd" executionId="cb35088f-4aaa-47d8-ac39-c3f4e4ccce7a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2317ce5a-222f-ddc7-f25a-c621b93056d0" executionId="6dbf4321-ffdb-44af-b681-6b92152721f1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0b8a3328-3d7a-dbcf-b19b-8579c287b0cb" executionId="105fd215-eb4c-47bf-8a3e-b18564fad706" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="56db8011-4e6f-34d3-de07-01eab75446ab" executionId="41a20cc1-51e3-4b58-b825-7ca620fbfffb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="917aa542-c66f-6443-bb3f-6efd9e48639c" executionId="0afc9e40-989c-4ced-9731-2e905b9fc95e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2e304ba7-e3e7-f248-4274-f7625134e281" executionId="6fd9dd64-4774-4617-8480-f54cbfc4215e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b9939b78-d6bc-ccae-d4f6-204675838000" executionId="a4ec33e9-ed12-4ff9-829c-0c6b89cd36a3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a7c165e1-af1a-ac35-d639-02d648208ad3" executionId="32c40ff0-0488-42df-aa24-67f1f379031e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="10" executed="10" passed="10" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.1+bf6400fd51 (64-bit .NET 10.0.14)
+[xUnit.net 00:00:00.09]   Discovering: ProjectManager.Api.Tests
+[xUnit.net 00:00:00.14]   Discovered:  ProjectManager.Api.Tests
+[xUnit.net 00:00:00.18]   Starting:    ProjectManager.Api.Tests
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (18ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      PRAGMA journal_mode = 'wal';
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE TABLE "Projects" (
+          "Id" INTEGER NOT NULL CONSTRAINT "PK_Projects" PRIMARY KEY AUTOINCREMENT,
+          "Name" TEXT NOT NULL
+      );
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Development
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: &lt;repository&gt;/src/api/ProjectManager.Api
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/health - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'HTTP: GET /api/health'
+info: Microsoft.AspNetCore.Http.Result.OkObjectResult[1]
+      Setting HTTP status code 200.
+info: Microsoft.AspNetCore.Http.Result.OkObjectResult[3]
+      Writing value of type '&lt;&gt;f__AnonymousType0`1' as Json.
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'HTTP: GET /api/health'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/health - 200 - application/json;+charset=utf-8 82.5385ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/projects - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'HTTP: GET /api/projects'
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "p"."Id", "p"."Name"
+      FROM "Projects" AS "p"
+      ORDER BY "p"."Id"
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'HTTP: GET /api/projects'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/projects - 200 - application/json;+charset=utf-8 233.9350ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost/api/projects - application/json;+charset=utf-8 16
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'HTTP: POST /api/projects'
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (3ms) [Parameters=[@p0='?' (Size = 5)], CommandType='Text', CommandTimeout='30']
+      INSERT INTO "Projects" ("Name")
+      VALUES (@p0)
+      RETURNING "Id";
+info: Microsoft.AspNetCore.Http.Result.CreatedResult[1]
+      Setting HTTP status code 201.
+info: Microsoft.AspNetCore.Http.Result.CreatedResult[3]
+      Writing value of type 'Project' as Json.
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'HTTP: POST /api/projects'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost/api/projects - 201 - application/json;+charset=utf-8 186.6407ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost/api/projects - application/json;+charset=utf-8 16
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'HTTP: POST /api/projects'
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@p0='?' (Size = 5)], CommandType='Text', CommandTimeout='30']
+      INSERT INTO "Projects" ("Name")
+      VALUES (@p0)
+      RETURNING "Id";
+info: Microsoft.AspNetCore.Http.Result.CreatedResult[1]
+      Setting HTTP status code 201.
+info: Microsoft.AspNetCore.Http.Result.CreatedResult[3]
+      Writing value of type 'Project' as Json.
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'HTTP: POST /api/projects'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost/api/projects - 201 - application/json;+charset=utf-8 5.0675ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost/api/projects - application/json;+charset=utf-8 17
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'HTTP: POST /api/projects'
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@p0='?' (Size = 6)], CommandType='Text', CommandTimeout='30']
+      INSERT INTO "Projects" ("Name")
+      VALUES (@p0)
+      RETURNING "Id";
+info: Microsoft.AspNetCore.Http.Result.CreatedResult[1]
+      Setting HTTP status code 201.
+info: Microsoft.AspNetCore.Http.Result.CreatedResult[3]
+      Writing value of type 'Project' as Json.
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'HTTP: POST /api/projects'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost/api/projects - 201 - application/json;+charset=utf-8 2.6041ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/projects - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'HTTP: GET /api/projects'
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "p"."Id", "p"."Name"
+      FROM "Projects" AS "p"
+      ORDER BY "p"."Id"
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'HTTP: GET /api/projects'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/projects - 200 - application/json;+charset=utf-8 6.2265ms
+info: Microsoft.Hosting.Lifetime[0]
+      Application is shutting down...
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      PRAGMA journal_mode = 'wal';
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE TABLE "Projects" (
+          "Id" INTEGER NOT NULL CONSTRAINT "PK_Projects" PRIMARY KEY AUTOINCREMENT,
+          "Name" TEXT NOT NULL
+      );
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Development
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: &lt;repository&gt;/src/api/ProjectManager.Api
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost/api/projects - application/json;+charset=utf-8 1
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'HTTP: POST /api/projects'
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'HTTP: POST /api/projects'
+fail: Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware[1]
+      An unhandled exception has occurred while executing the request.
+      Microsoft.AspNetCore.Http.BadHttpRequestException: Failed to read parameter "CreateProject input" from the request body as JSON.
+       ---&gt; System.Text.Json.JsonException: Expected depth to be zero at the end of the JSON payload. There is an open JSON object or array that should be closed. Path: $ | LineNumber: 0 | BytePositionInLine: 1.
+       ---&gt; System.Text.Json.JsonReaderException: Expected depth to be zero at the end of the JSON payload. There is an open JSON object or array that should be closed. LineNumber: 0 | BytePositionInLine: 1.
+         at System.Text.Json.ThrowHelper.ThrowJsonReaderException(Utf8JsonReader&amp; json, ExceptionResource resource, Byte nextByte, ReadOnlySpan`1 bytes)
+         at System.Text.Json.Utf8JsonReader.ReadSingleSegment()
+         at System.Text.Json.Utf8JsonReader.Read()
+         at System.Text.Json.Serialization.Converters.ObjectWithParameterizedConstructorConverter`1.ReadConstructorArgumentsWithContinuation(ReadStack&amp; state, Utf8JsonReader&amp; reader, JsonSerializerOptions options)
+         at System.Text.Json.Serialization.Converters.ObjectWithParameterizedConstructorConverter`1.OnTryRead(Utf8JsonReader&amp; reader, Type typeToConvert, JsonSerializerOptions options, ReadStack&amp; state, T&amp; value)
+         at System.Text.Json.Serialization.JsonConverter`1.TryRead(Utf8JsonReader&amp; reader, Type typeToConvert, JsonSerializerOptions options, ReadStack&amp; state, T&amp; value, Boolean&amp; isPopulatedValue)
+         at System.Text.Json.Serialization.JsonConverter`1.ReadCore(Utf8JsonReader&amp; reader, T&amp; value, JsonSerializerOptions options, ReadStack&amp; state)
+         --- End of inner exception stack trace ---
+         at System.Text.Json.ThrowHelper.ReThrowWithPath(ReadStack&amp; state, JsonReaderException ex)
+         at System.Text.Json.Serialization.JsonConverter`1.ReadCore(Utf8JsonReader&amp; reader, T&amp; value, JsonSerializerOptions options, ReadStack&amp; state)
+         at System.Text.Json.Serialization.Metadata.JsonTypeInfo`1.ContinueDeserialize[TReadBufferState,TStream](TReadBufferState&amp; bufferState, JsonReaderState&amp; jsonReaderState, ReadStack&amp; readStack, T&amp; value)
+         at System.Text.Json.Serialization.Metadata.JsonTypeInfo`1.DeserializeAsync[TReadBufferState,TStream](TStream utf8Json, TReadBufferState bufferState, CancellationToken cancellationToken)
+         at System.Text.Json.Serialization.Metadata.JsonTypeInfo`1.DeserializeAsObjectAsync(PipeReader utf8Json, CancellationToken cancellationToken)
+         at Microsoft.AspNetCore.Http.HttpRequestJsonExtensions.ReadFromJsonAsync(HttpRequest request, JsonTypeInfo jsonTypeInfo, CancellationToken cancellationToken)
+         at Microsoft.AspNetCore.Http.HttpRequestJsonExtensions.ReadFromJsonAsync(HttpRequest request, JsonTypeInfo jsonTypeInfo, CancellationToken cancellationToken)
+         at Microsoft.AspNetCore.Http.RequestDelegateFactory.&lt;HandleRequestBodyAndCompileRequestDelegateForJson&gt;g__TryReadBodyAsync|102_0(HttpContext httpContext, Type bodyType, String parameterTypeName, String parameterName, Boolean allowEmptyRequestBody, Boolean throwOnBadRequest, JsonTypeInfo jsonTypeInfo)
+         --- End of inner exception stack trace ---
+         at Microsoft.AspNetCore.Http.RequestDelegateFactory.Log.InvalidJsonRequestBody(HttpContext httpContext, String parameterTypeName, String parameterName, Exception exception, Boolean shouldThrow)
+         at Microsoft.AspNetCore.Http.RequestDelegateFactory.&lt;HandleRequestBodyAndCompileRequestDelegateForJson&gt;g__TryReadBodyAsync|102_0(HttpContext httpContext, Type bodyType, String parameterTypeName, String parameterName, Boolean allowEmptyRequestBody, Boolean throwOnBadRequest, JsonTypeInfo jsonTypeInfo)
+         at Microsoft.AspNetCore.Http.RequestDelegateFactory.&lt;&gt;c__DisplayClass102_2.&lt;&lt;HandleRequestBodyAndCompileRequestDelegateForJson&gt;b__2&gt;d.MoveNext()
+      --- End of stack trace from previous location ---
+         at Microsoft.AspNetCore.Routing.EndpointMiddleware.&lt;Invoke&gt;g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+         at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost/api/projects - 400 - text/plain;+charset=utf-8 14.9042ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/projects - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'HTTP: GET /api/projects'
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "p"."Id", "p"."Name"
+      FROM "Projects" AS "p"
+      ORDER BY "p"."Id"
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'HTTP: GET /api/projects'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/projects - 200 - application/json;+charset=utf-8 1.8950ms
+info: Microsoft.Hosting.Lifetime[0]
+      Application is shutting down...
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      PRAGMA journal_mode = 'wal';
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE TABLE "Projects" (
+          "Id" INTEGER NOT NULL CONSTRAINT "PK_Projects" PRIMARY KEY AUTOINCREMENT,
+          "Name" TEXT NOT NULL
+      );
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Development
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: &lt;repository&gt;/src/api/ProjectManager.Api
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost/api/projects - application/json;+charset=utf-8 2
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'HTTP: POST /api/projects'
+info: Microsoft.AspNetCore.Http.HttpResults.ProblemHttpResult[1]
+      Setting HTTP status code 400.
+info: Microsoft.AspNetCore.Http.HttpResults.ProblemHttpResult[3]
+      Writing value of type 'HttpValidationProblemDetails' as Json.
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'HTTP: POST /api/projects'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost/api/projects - 400 - application/problem+json 24.5801ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/projects - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'HTTP: GET /api/projects'
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "p"."Id", "p"."Name"
+      FROM "Projects" AS "p"
+      ORDER BY "p"."Id"
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'HTTP: GET /api/projects'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/projects - 200 - application/json;+charset=utf-8 4.0797ms
+info: Microsoft.Hosting.Lifetime[0]
+      Application is shutting down...
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      PRAGMA journal_mode = 'wal';
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE TABLE "Projects" (
+          "Id" INTEGER NOT NULL CONSTRAINT "PK_Projects" PRIMARY KEY AUTOINCREMENT,
+          "Name" TEXT NOT NULL
+      );
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Development
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: &lt;repository&gt;/src/api/ProjectManager.Api
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost/api/projects - application/json;+charset=utf-8 4
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'HTTP: POST /api/projects'
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'HTTP: POST /api/projects'
+fail: Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware[1]
+      An unhandled exception has occurred while executing the request.
+      Microsoft.AspNetCore.Http.BadHttpRequestException: Implicit body inferred for parameter "input" but no body was provided. Did you mean to use a Service instead?
+         at lambda_method107(Closure, Object, HttpContext, Object)
+         at Microsoft.AspNetCore.Http.RequestDelegateFactory.&lt;&gt;c__DisplayClass102_2.&lt;&lt;HandleRequestBodyAndCompileRequestDelegateForJson&gt;b__2&gt;d.MoveNext()
+      --- End of stack trace from previous location ---
+         at Microsoft.AspNetCore.Routing.EndpointMiddleware.&lt;Invoke&gt;g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+         at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost/api/projects - 400 - text/plain;+charset=utf-8 6.3484ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/projects - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'HTTP: GET /api/projects'
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "p"."Id", "p"."Name"
+      FROM "Projects" AS "p"
+      ORDER BY "p"."Id"
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'HTTP: GET /api/projects'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/projects - 200 - application/json;+charset=utf-8 1.9881ms
+info: Microsoft.Hosting.Lifetime[0]
+      Application is shutting down...
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      PRAGMA journal_mode = 'wal';
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE TABLE "Projects" (
+          "Id" INTEGER NOT NULL CONSTRAINT "PK_Projects" PRIMARY KEY AUTOINCREMENT,
+          "Name" TEXT NOT NULL
+      );
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Development
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: &lt;repository&gt;/src/api/ProjectManager.Api
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost/api/projects - application/json;+charset=utf-8 11
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'HTTP: POST /api/projects'
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'HTTP: POST /api/projects'
+fail: Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware[1]
+      An unhandled exception has occurred while executing the request.
+      Microsoft.AspNetCore.Http.BadHttpRequestException: Failed to read parameter "CreateProject input" from the request body as JSON.
+       ---&gt; System.Text.Json.JsonException: The JSON value could not be converted to ProjectManager.Api.CreateProject. Path: $.name | LineNumber: 0 | BytePositionInLine: 10.
+       ---&gt; System.InvalidOperationException: Cannot get the value of a token type 'Number' as a string.
+         at System.Text.Json.ThrowHelper.ThrowInvalidOperationException_ExpectedString(JsonTokenType tokenType)
+         at System.Text.Json.Utf8JsonReader.GetString()
+         at System.Text.Json.Serialization.JsonConverter`1.TryRead(Utf8JsonReader&amp; reader, Type typeToConvert, JsonSerializerOptions options, ReadStack&amp; state, T&amp; value, Boolean&amp; isPopulatedValue)
+         at System.Text.Json.Serialization.Converters.SmallObjectWithParameterizedConstructorConverter`5.TryRead[TArg](ReadStack&amp; state, Utf8JsonReader&amp; reader, JsonParameterInfo jsonParameterInfo, TArg&amp; arg)
+         at System.Text.Json.Serialization.Converters.SmallObjectWithParameterizedConstructorConverter`5.ReadAndCacheConstructorArgument(ReadStack&amp; state, Utf8JsonReader&amp; reader, JsonParameterInfo jsonParameterInfo)
+         at System.Text.Json.Serialization.Converters.ObjectWithParameterizedConstructorConverter`1.ReadConstructorArgumentsWithContinuation(ReadStack&amp; state, Utf8JsonReader&amp; reader, JsonSerializerOptions options)
+         at System.Text.Json.Serialization.Converters.ObjectWithParameterizedConstructorConverter`1.OnTryRead(Utf8JsonReader&amp; reader, Type typeToConvert, JsonSerializerOptions options, ReadStack&amp; state, T&amp; value)
+         at System.Text.Json.Serialization.JsonConverter`1.TryRead(Utf8JsonReader&amp; reader, Type typeToConvert, JsonSerializerOptions options, ReadStack&amp; state, T&amp; value, Boolean&amp; isPopulatedValue)
+         at System.Text.Json.Serialization.JsonConverter`1.ReadCore(Utf8JsonReader&amp; reader, T&amp; value, JsonSerializerOptions options, ReadStack&amp; state)
+         --- End of inner exception stack trace ---
+         at System.Text.Json.ThrowHelper.ReThrowWithPath(ReadStack&amp; state, Utf8JsonReader&amp; reader, Exception ex)
+         at System.Text.Json.Serialization.JsonConverter`1.ReadCore(Utf8JsonReader&amp; reader, T&amp; value, JsonSerializerOptions options, ReadStack&amp; state)
+         at System.Text.Json.Serialization.Metadata.JsonTypeInfo`1.ContinueDeserialize[TReadBufferState,TStream](TReadBufferState&amp; bufferState, JsonReaderState&amp; jsonReaderState, ReadStack&amp; readStack, T&amp; value)
+         at System.Text.Json.Serialization.Metadata.JsonTypeInfo`1.DeserializeAsync[TReadBufferState,TStream](TStream utf8Json, TReadBufferState bufferState, CancellationToken cancellationToken)
+         at System.Text.Json.Serialization.Metadata.JsonTypeInfo`1.DeserializeAsObjectAsync(PipeReader utf8Json, CancellationToken cancellationToken)
+         at Microsoft.AspNetCore.Http.HttpRequestJsonExtensions.ReadFromJsonAsync(HttpRequest request, JsonTypeInfo jsonTypeInfo, CancellationToken cancellationToken)
+         at Microsoft.AspNetCore.Http.HttpRequestJsonExtensions.ReadFromJsonAsync(HttpRequest request, JsonTypeInfo jsonTypeInfo, CancellationToken cancellationToken)
+         at Microsoft.AspNetCore.Http.RequestDelegateFactory.&lt;HandleRequestBodyAndCompileRequestDelegateForJson&gt;g__TryReadBodyAsync|102_0(HttpContext httpContext, Type bodyType, String parameterTypeName, String parameterName, Boolean allowEmptyRequestBody, Boolean throwOnBadRequest, JsonTypeInfo jsonTypeInfo)
+         --- End of inner exception stack trace ---
+         at Microsoft.AspNetCore.Http.RequestDelegateFactory.Log.InvalidJsonRequestBody(HttpContext httpContext, String parameterTypeName, String parameterName, Exception exception, Boolean shouldThrow)
+         at Microsoft.AspNetCore.Http.RequestDelegateFactory.&lt;HandleRequestBodyAndCompileRequestDelegateForJson&gt;g__TryReadBodyAsync|102_0(HttpContext httpContext, Type bodyType, String parameterTypeName, String parameterName, Boolean allowEmptyRequestBody, Boolean throwOnBadRequest, JsonTypeInfo jsonTypeInfo)
+         at Microsoft.AspNetCore.Http.RequestDelegateFactory.&lt;&gt;c__DisplayClass102_2.&lt;&lt;HandleRequestBodyAndCompileRequestDelegateForJson&gt;b__2&gt;d.MoveNext()
+      --- End of stack trace from previous location ---
+         at Microsoft.AspNetCore.Routing.EndpointMiddleware.&lt;Invoke&gt;g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+         at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost/api/projects - 400 - text/plain;+charset=utf-8 6.3754ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/projects - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'HTTP: GET /api/projects'
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "p"."Id", "p"."Name"
+      FROM "Projects" AS "p"
+      ORDER BY "p"."Id"
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'HTTP: GET /api/projects'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/projects - 200 - application/json;+charset=utf-8 1.9756ms
+info: Microsoft.Hosting.Lifetime[0]
+      Application is shutting down...
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      PRAGMA journal_mode = 'wal';
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE TABLE "Projects" (
+          "Id" INTEGER NOT NULL CONSTRAINT "PK_Projects" PRIMARY KEY AUTOINCREMENT,
+          "Name" TEXT NOT NULL
+      );
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Development
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: &lt;repository&gt;/src/api/ProjectManager.Api
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost/api/projects - application/json;+charset=utf-8 19
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'HTTP: POST /api/projects'
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@p0='?' (Size = 8)], CommandType='Text', CommandTimeout='30']
+      INSERT INTO "Projects" ("Name")
+      VALUES (@p0)
+      RETURNING "Id";
+info: Microsoft.AspNetCore.Http.Result.CreatedResult[1]
+      Setting HTTP status code 201.
+info: Microsoft.AspNetCore.Http.Result.CreatedResult[3]
+      Writing value of type 'Project' as Json.
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'HTTP: POST /api/projects'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost/api/projects - 201 - application/json;+charset=utf-8 6.6008ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost/api/projects - application/json;+charset=utf-8 11
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'HTTP: POST /api/projects'
+info: Microsoft.AspNetCore.Http.HttpResults.ProblemHttpResult[1]
+      Setting HTTP status code 400.
+info: Microsoft.AspNetCore.Http.HttpResults.ProblemHttpResult[3]
+      Writing value of type 'HttpValidationProblemDetails' as Json.
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'HTTP: POST /api/projects'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost/api/projects - 400 - application/problem+json 3.3095ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/projects - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'HTTP: GET /api/projects'
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "p"."Id", "p"."Name"
+      FROM "Projects" AS "p"
+      ORDER BY "p"."Id"
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'HTTP: GET /api/projects'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/projects - 200 - application/json;+charset=utf-8 1.3932ms
+info: Microsoft.Hosting.Lifetime[0]
+      Application is shutting down...
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      PRAGMA journal_mode = 'wal';
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE TABLE "Projects" (
+          "Id" INTEGER NOT NULL CONSTRAINT "PK_Projects" PRIMARY KEY AUTOINCREMENT,
+          "Name" TEXT NOT NULL
+      );
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Development
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: &lt;repository&gt;/src/api/ProjectManager.Api
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost/api/projects - application/json;+charset=utf-8 19
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'HTTP: POST /api/projects'
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@p0='?' (Size = 8)], CommandType='Text', CommandTimeout='30']
+      INSERT INTO "Projects" ("Name")
+      VALUES (@p0)
+      RETURNING "Id";
+info: Microsoft.AspNetCore.Http.Result.CreatedResult[1]
+      Setting HTTP status code 201.
+info: Microsoft.AspNetCore.Http.Result.CreatedResult[3]
+      Writing value of type 'Project' as Json.
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'HTTP: POST /api/projects'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost/api/projects - 201 - application/json;+charset=utf-8 6.9755ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost/api/projects - application/json;+charset=utf-8 14
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'HTTP: POST /api/projects'
+info: Microsoft.AspNetCore.Http.HttpResults.ProblemHttpResult[1]
+      Setting HTTP status code 400.
+info: Microsoft.AspNetCore.Http.HttpResults.ProblemHttpResult[3]
+      Writing value of type 'HttpValidationProblemDetails' as Json.
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'HTTP: POST /api/projects'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost/api/projects - 400 - application/problem+json 2.9750ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/projects - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'HTTP: GET /api/projects'
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "p"."Id", "p"."Name"
+      FROM "Projects" AS "p"
+      ORDER BY "p"."Id"
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'HTTP: GET /api/projects'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/projects - 200 - application/json;+charset=utf-8 1.3152ms
+info: Microsoft.Hosting.Lifetime[0]
+      Application is shutting down...
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      PRAGMA journal_mode = 'wal';
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE TABLE "Projects" (
+          "Id" INTEGER NOT NULL CONSTRAINT "PK_Projects" PRIMARY KEY AUTOINCREMENT,
+          "Name" TEXT NOT NULL
+      );
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Development
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: &lt;repository&gt;/src/api/ProjectManager.Api
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost/api/projects - application/json;+charset=utf-8 19
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'HTTP: POST /api/projects'
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@p0='?' (Size = 8)], CommandType='Text', CommandTimeout='30']
+      INSERT INTO "Projects" ("Name")
+      VALUES (@p0)
+      RETURNING "Id";
+info: Microsoft.AspNetCore.Http.Result.CreatedResult[1]
+      Setting HTTP status code 201.
+info: Microsoft.AspNetCore.Http.Result.CreatedResult[3]
+      Writing value of type 'Project' as Json.
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'HTTP: POST /api/projects'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost/api/projects - 201 - application/json;+charset=utf-8 8.5591ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost/api/projects - application/json;+charset=utf-8 13
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'HTTP: POST /api/projects'
+info: Microsoft.AspNetCore.Http.HttpResults.ProblemHttpResult[1]
+      Setting HTTP status code 400.
+info: Microsoft.AspNetCore.Http.HttpResults.ProblemHttpResult[3]
+      Writing value of type 'HttpValidationProblemDetails' as Json.
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'HTTP: POST /api/projects'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost/api/projects - 400 - application/problem+json 4.0988ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/projects - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'HTTP: GET /api/projects'
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "p"."Id", "p"."Name"
+      FROM "Projects" AS "p"
+      ORDER BY "p"."Id"
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'HTTP: GET /api/projects'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/projects - 200 - application/json;+charset=utf-8 1.4616ms
+info: Microsoft.Hosting.Lifetime[0]
+      Application is shutting down...
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      PRAGMA journal_mode = 'wal';
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE TABLE "Projects" (
+          "Id" INTEGER NOT NULL CONSTRAINT "PK_Projects" PRIMARY KEY AUTOINCREMENT,
+          "Name" TEXT NOT NULL
+      );
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Development
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: &lt;repository&gt;/src/api/ProjectManager.Api
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost/api/projects - application/json;+charset=utf-8 19
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'HTTP: POST /api/projects'
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@p0='?' (Size = 8)], CommandType='Text', CommandTimeout='30']
+      INSERT INTO "Projects" ("Name")
+      VALUES (@p0)
+      RETURNING "Id";
+info: Microsoft.AspNetCore.Http.Result.CreatedResult[1]
+      Setting HTTP status code 201.
+info: Microsoft.AspNetCore.Http.Result.CreatedResult[3]
+      Writing value of type 'Project' as Json.
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'HTTP: POST /api/projects'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost/api/projects - 201 - application/json;+charset=utf-8 8.5536ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost/api/projects - application/json;+charset=utf-8 17
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'HTTP: POST /api/projects'
+info: Microsoft.AspNetCore.Http.HttpResults.ProblemHttpResult[1]
+      Setting HTTP status code 400.
+info: Microsoft.AspNetCore.Http.HttpResults.ProblemHttpResult[3]
+      Writing value of type 'HttpValidationProblemDetails' as Json.
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'HTTP: POST /api/projects'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost/api/projects - 400 - application/problem+json 4.7341ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/projects - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'HTTP: GET /api/projects'
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "p"."Id", "p"."Name"
+      FROM "Projects" AS "p"
+      ORDER BY "p"."Id"
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'HTTP: GET /api/projects'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/projects - 200 - application/json;+charset=utf-8 1.4068ms
+info: Microsoft.Hosting.Lifetime[0]
+      Application is shutting down...
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      PRAGMA journal_mode = 'wal';
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE TABLE "Projects" (
+          "Id" INTEGER NOT NULL CONSTRAINT "PK_Projects" PRIMARY KEY AUTOINCREMENT,
+          "Name" TEXT NOT NULL
+      );
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Development
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: &lt;repository&gt;/src/api/ProjectManager.Api
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost/api/projects - application/json;+charset=utf-8 26
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'HTTP: POST /api/projects'
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@p0='?' (Size = 7)], CommandType='Text', CommandTimeout='30']
+      INSERT INTO "Projects" ("Name")
+      VALUES (@p0)
+      RETURNING "Id";
+info: Microsoft.AspNetCore.Http.Result.CreatedResult[1]
+      Setting HTTP status code 201.
+info: Microsoft.AspNetCore.Http.Result.CreatedResult[3]
+      Writing value of type 'Project' as Json.
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'HTTP: POST /api/projects'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost/api/projects - 201 - application/json;+charset=utf-8 10.4879ms
+info: Microsoft.Hosting.Lifetime[0]
+      Application is shutting down...
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT COUNT(*) FROM "sqlite_master" WHERE "type" = 'table' AND "rootpage" IS NOT NULL;
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Development
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: &lt;repository&gt;/src/api/ProjectManager.Api
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/projects - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'HTTP: GET /api/projects'
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "p"."Id", "p"."Name"
+      FROM "Projects" AS "p"
+      ORDER BY "p"."Id"
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'HTTP: GET /api/projects'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/projects - 200 - application/json;+charset=utf-8 4.8693ms
+info: Microsoft.Hosting.Lifetime[0]
+      Application is shutting down...
+[xUnit.net 00:00:01.83]   Finished:    ProjectManager.Api.Tests
+</StdOut>
+    </Output>
+    <CollectorDataEntries>
+      <Collector agentName="runnervmtai0g" uri="datacollector://microsoft/CoverletCodeCoverage/1.0" collectorDisplayName="XPlat code coverage">
+        <UriAttachments>
+          <UriAttachment>
+            <A href="runnervmtai0g/coverage.cobertura.xml"></A>
+          </UriAttachment>
+        </UriAttachments>
+      </Collector>
+    </CollectorDataEntries>
+  </ResultSummary>
+</TestRun>

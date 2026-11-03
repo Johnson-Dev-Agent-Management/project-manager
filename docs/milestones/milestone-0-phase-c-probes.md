@@ -2,7 +2,8 @@
 
 Status: **Not run; all Phase C probe outcomes Unverified.**
 The agent now uses only codexcodemachine; owner-only main administration is
-handed off to the owner session. Main settings remain approved. Equivalent target
+handed off to the owner session. Main now reports protected with all seven checks
+bound to App 15368; detailed settings remain Unverified. Equivalent target
 settings, reviewed source SHA, creation and precise probe scope still require
 separate authorization. No disposable target exists; its initial SHA is unassigned.
 Fresh isolated implementation credentials, recreated implementation PR, exact
@@ -39,8 +40,10 @@ Before execution, fill these fields with owner approval evidence:
 - Independent human reviewer / owner merger: owner-confirmed **Joshbomb75**;
   implementation API connection **Codex GitHub / codexcodemachine** is present.
 - Credential separation in a fresh implementation context and absence of
-  owner-capable routes/bypass: **Unverified**. Owner account selection remains advertised but is not invoked
-  in this continuation; this does not establish C2. Git push/workflow-comment/draft-PR capability verification
+  owner-capable routes/bypass: **Unverified**. Joshbomb75 is absent from fresh
+  connector accounts/installations and no selector is advertised; unidentified
+  cloud GH_TOKEN and incomplete scope/bypass metadata still prevent a C2 claim.
+  Git push/workflow-comment/draft-PR capability verification
   remains Not run until supported isolation prerequisites hold.
 
 For every row, Actual is **Not run**, head/base/tested merge SHAs are **—**,
@@ -80,7 +83,7 @@ For rows with multiple subcases, execute and record each subcase independently.
 | C16a | Fast-forward direct target update with implementation credentials                                                                         | Rejected for protected-branch access/PR requirements; capture remote response and unchanged target SHA                                                                                                                                                                                     |
 | C16b | Non-fast-forward target update with implementation credentials                                                                            | Rejected for intended protection; pin expected old SHA and approved known-good destination. Never substitute a failed lease as force-push protection evidence                                                                                                                              |
 | C16c | Delete disposable target with implementation credentials                                                                                  | Rejected for intended protection; unchanged ref. Never attempt main deletion                                                                                                                                                                                                               |
-| C17  | Add a conspicuously synthetic, nonfunctional Gitleaks fixture on a probe branch                                                           | Redacted scanner detects fixture and supply-chain/aggregate fail; never use real secret material or a live credential. Historical fixture commit stays off target/main                                                                                                                     |
+| C17  | Separately add a conspicuously synthetic nonfunctional Gitleaks fixture or a controlled vulnerable dependency fixture                     | Redacted scanner or advisory check detects the exact fixture and supply-chain/aggregate fail; never use real secrets or execute a vulnerable package solely for a probe. Pin and separately authorize each fixture; it stays off target/main                                               |
 | C18  | Make advisory retrieval unavailable using branch-scoped invalid source/proxy in the probe run                                             | Security job fails/incomplete with exact unavailable-service diagnostic, not clean; do not change global network policy or suppress audit warnings                                                                                                                                         |
 
 C16b must be a real non-fast-forward relative to the recorded target, such as a
@@ -149,6 +152,45 @@ execution authorization. None of that authorization is implied by this handoff.
 Per-case detection and enforcement must be reported separately. A failed test
 may prove detection while its merge blocker remains masked; network/credential
 denials and failed leases do not prove branch enforcement.
+
+### Grouped subcase status
+
+The 31 parent rows above remain the plan identifiers. Each grouped execution below
+is independently **Unverified**, for both detection and enforcement, with no
+head/base/tested SHA, approval or CI evidence. This expansion prepares evidence
+slots only; it grants no execution or fixture authorization. C17's dependency
+subcase restores the milestone matrix's explicit vulnerable-dependency alternative.
+
+| Subcase                   | Status     | Reason / next action                                                                                                                  |
+| ------------------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| C03b.compiler             | Unverified | No approved target/scope; pin compiler diagnostic after prerequisites                                                                 |
+| C03b.analyzer             | Unverified | No approved target/scope; isolate analyzer diagnostic from formatting/compiler failures                                               |
+| C05.backend-detection     | Unverified | No approved target/scope; preserve existing blank-name assertions                                                                     |
+| C05.browser-detection     | Unverified | No approved target/scope; separately execute unchanged browser against the same defective production SHA if backend failure masks E2E |
+| C06b.backend-restart      | Unverified | No approved target/scope; retain isolated SQLite restart failure                                                                      |
+| C06b.browser-restart      | Unverified | No approved target/scope; independently retain real browser restart failure                                                           |
+| C08a.lines                | Unverified | No approved target/scope; isolate frontend line-floor failure with measured counts                                                    |
+| C08a.branches             | Unverified | No approved target/scope; isolate frontend branch-floor failure with measured counts                                                  |
+| C08b.lines                | Unverified | No approved target/scope; isolate backend line-floor failure with unrounded counts                                                    |
+| C08b.branches             | Unverified | No approved target/scope; isolate backend branch-floor failure with unrounded counts                                                  |
+| C09a.focus.frontend       | Unverified | No approved target/scope; pin actual frontend focused-test diagnostic                                                                 |
+| C09a.focus.browser        | Unverified | No approved target/scope; pin actual browser focused-test diagnostic                                                                  |
+| C09a.skip.frontend        | Unverified | No approved target/scope; isolate skipped frontend test                                                                               |
+| C09a.skip.backend         | Unverified | No approved target/scope; isolate skipped backend test                                                                                |
+| C09a.skip.browser         | Unverified | No approved target/scope; isolate skipped browser test                                                                                |
+| C09a.skip.python          | Unverified | No approved target/scope; isolate skipped Python test                                                                                 |
+| C09b.discovery.frontend   | Unverified | No approved target/scope; isolate frontend discovery/inventory removal                                                                |
+| C09b.discovery.backend    | Unverified | No approved target/scope; isolate backend discovery/inventory removal                                                                 |
+| C09b.discovery.browser    | Unverified | No approved target/scope; isolate browser discovery/inventory removal                                                                 |
+| C09b.discovery.python     | Unverified | No approved target/scope; isolate Python discovery-pattern removal                                                                    |
+| C09b.empty-python-module  | Unverified | No approved target/scope; isolate individually empty discovered module alongside passing modules                                      |
+| C09c.frontend-report      | Unverified | No approved target/scope; omit only required frontend report                                                                          |
+| C09c.backend-report       | Unverified | No approved target/scope; omit only required backend report                                                                           |
+| C09c.browser-report       | Unverified | No approved target/scope; omit only required browser report                                                                           |
+| C11a.workflow-cancel      | Unverified | No approved actor/scope; owner cancellation evidence needed if tool unavailable                                                       |
+| C11a.job-cancel           | Unverified | No approved actor/scope; separately attribute required-job cancellation                                                               |
+| C17.synthetic-secret      | Unverified | No approved fixture/target/scope; pin conspicuously nonfunctional fixture, redaction and detection diagnostic                         |
+| C17.vulnerable-dependency | Unverified | No approved fixture/target/scope; pin advisory/package fixture without executing it solely for this probe                             |
 
 ## Per-case evidence record (copy for each execution)
 

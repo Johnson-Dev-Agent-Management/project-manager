@@ -1,9 +1,9 @@
 # Branch enforcement — Phase C configuration package
 
-Status: **Ready for owner action; no settings applied. Phase C and Milestone 0
-remain incomplete.**
+Status: **Main protection partly verified; complete readback and Phase C acceptance
+remain incomplete. No settings changed by the agent.**
 See the [report](milestones/milestone-0-phase-c-report.md) and
-[fresh readback](milestones/evidence/phase-c/audit-readback.json).
+[fresh readback](milestones/evidence/phase-c/fresh-context-readback.json).
 The latest continuation requires **only codexcodemachine** for agent GitHub
 operations and explicitly requests owner UI/CLI instructions. Use the single
 [ordered owner handoff](milestones/milestone-0-phase-c-owner-handoff.md). Earlier
@@ -21,8 +21,10 @@ source and private cloud development; never inspect or retain secret values.
 Use `codexcodemachine` (ID `348095294`) for implementation publication and future
 PR authorship. API identity, collaborator Write, push=true, admin=false,
 maintain=false and reported empty organization memberships are verified. Role
-does not inventory credential scope or prove absence of bypass. Owner-account selection is still advertised in tool metadata but is not invoked
-in this continuation. This separation gap does not establish C2. Verify full
+does not inventory credential scope or prove absence of bypass. Fresh account and
+installation metadata no longer list Joshbomb75; current tools advertise no account
+selector. Complete isolation remains unverified because cloud GH_TOKEN has no
+supported identity binding and scope/bypass readback is incomplete. Verify full
 separation in a fresh implementation context without owner-capable routes;
 selecting a different account here is insufficient. See [account isolation](automation-account-setup.md).
 
@@ -79,9 +81,12 @@ The owner connection is not invoked again in the current continuation.
 The managed connector explicitly excludes administration access; the earlier
 detailed protection GET returned **403 Resource not accessible by integration**.
 It exposes no protection/ruleset/repository-settings write operation. Effective
-branch-rule and CODEOWNERS-error URLs are unsupported. Listed rulesets including
-parents are `[]`; main reports protected=false and checks off. These establish
-absence of reported active protection, not a complete settings export.
+branch-rule and CODEOWNERS-error URLs are unsupported. Fresh rulesets including
+parents are `[]`; main reports protected=true and all seven checks bound to
+App 15368, enforcement_level=everyone. Auto-merge remains disabled. Empty rulesets
+are consistent with classic protection. Detailed strict/review/restriction/admin/
+force/deletion/bypass settings and rule IDs remain Unverified; obtain the current
+owner export before recommending changes. Partial readback must never replace settings.
 
 The current private cloud runtime has no ready outbound identities, secret
 bindings or runtime variables. The earlier bounded `gh api user` attempt through the normal
@@ -91,9 +96,10 @@ invoked here because it is not verified as belonging to codexcodemachine. No den
 endpoint is repeatedly retried; no alternate host/proxy bypass is used. Public
 Git fetch proves read connectivity only.
 
-The minimum missing setup is a **supported owner administration route** that
-authenticates Joshbomb75, reads complete classic protection and inherited/effective
-rules, and writes/reads back every listed setting for this repository. Reconnecting
+The minimum missing configuration evidence is a **complete owner read-only export**
+of classic protection and inherited/effective rules, including IDs and bypass
+actors. The owner reports configuring the controls already. No additional write
+is requested merely because readback is inaccessible. Reconnecting
 the same managed owner connector does not add its excluded capability. A supported
 CLI route would also need authorized API networking and a ready, already-authorized
 owner binding; none is configured here. Do not mint tokens, expand credential
@@ -113,8 +119,9 @@ The owner-session application and agent verification sequence is:
    union existing checks with the seven App-bound checks. Do not replace settings
    from partial/inaccessible readback. Record any expression gap without substituting
    weaker controls.
-4. The owner applies reconciled **main-only** settings in their separate session. Keep
-   auto-merge disabled. Do not change access, other targets or merge methods.
+4. Compare the owner's reported configuration with the complete export. Any unmet
+   setting is an owner follow-up outside this session; preserve stronger controls
+   and check unions. Keep auto-merge disabled; no access or other-target changes.
 5. Read back effective configuration and compare every row. Retain UTC times,
    classic/ruleset IDs, branch SHA, required names/source IDs, strictness, all review
    and dismissal settings, update restrictions, force/deletion controls, admin

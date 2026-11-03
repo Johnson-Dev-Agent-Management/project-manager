@@ -12,24 +12,28 @@ Whole-repository `* @Joshbomb75` CODEOWNERS, all existing tests/checks and the
 protection proposal are preserved. API identity **codexcodemachine / 348095294**,
 Write, admin=false, maintain=false and reported empty memberships were rechecked.
 Git transport identity, full credential scope/bypass and fresh isolation remain
-Unverified. Joshbomb75 is still advertised as a selectable connection, but was
-not invoked here; the unidentified CLI credential was not used.
+Unverified. Fresh connector account/installations no longer list Joshbomb75 and
+no account selector is advertised. The unidentified cloud GH_TOKEN remains unused;
+complete scope/bypass and whole-context isolation are not established.
 
-Previously verified preparation head `3c1abc138a95f98e3f9946cf4b0c4d8fde5e588b`,
-tested merge `1daadb66b0fd5f6512f4eb847bcb7520ad2a40eb`, passed all seven jobs in
-[40628124981](https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40628124981).
+Freshly rechecked entry head `67035dfa7f0e87a6ee5ae4601515800524ed96a7`,
+tested merge `0e29546900765364a1861d5537c83d44dc7af5ef`, passed all seven jobs in
+[40632431988](https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40632431988).
 It does not validate later handoff edits. The PR body records the final published
 head/tested merge, fresh seven-job CI links, log/artifact inspection and local
 validation after this handoff is published; no predecessor CI is reused.
 See the [acceptance report](milestone-0-phase-c-report.md),
-[continuation readback](evidence/phase-c/continuation-readback.json) and
+[fresh readback](evidence/phase-c/fresh-context-readback.json),
+[retained entry CI](evidence/phase-c/ci-recheck-2026-11-03.json) and
 [per-probe status](milestone-0-phase-c-probes.md#probe-acceptance-status).
 
-## 2. Identity setup, independent of main configuration
+## 2. Missing identity evidence, independent of protection readback
 
-Use supported platform configuration to start a **fresh implementation context**
-with only codexcodemachine API and Git routes; owner credentials must be outside
-that context. Keep the owner's separate browser/session for administration/review.
+Provide supported non-secret metadata proving this **fresh implementation context**
+has only codexcodemachine API and Git routes; owner credentials must be outside
+it. Connector account removal is observed, but no credential binding identifies
+the cloud GH_TOKEN. Do not invoke it to discover an unknown identity. Keep the
+owner's separate browser/session for administration/review.
 Do not create accounts, change roles/membership, broaden credential permissions,
 paste tokens or buy services. If supported isolation/Git authentication cannot be
 provided within current access, report that limitation for a separate setup decision.
@@ -42,12 +46,16 @@ actor alone are insufficient. After success, the agent recreates the preparation
 draft as codexcodemachine and keeps #15 open until the replacement is confirmed.
 Joshbomb75 supplies genuine human review; the agent never submits it.
 
-## 3. Main configuration — already approved, owner session only
+## 3. Main readback — owner configuration reference
 
-This work can proceed independently of identity setup, after complete before-state
-readback. The connector lacks administration read/write; do not reconnect it or
-weaken settings to work around that limit. Owner configuration is now explicitly
-handed off at the user's request. **Only main is approved.**
+The owner reports configuring main. Fresh readback verifies protected=true, all
+seven required App 15368 check bindings, and auto-merge=false. Rulesets including
+parents are empty, consistent with classic protection. Detailed GET is 403;
+strict/review/restriction/admin/force/deletion/bypass settings and rule IDs remain
+Unverified. The immediate action is the **read-only current export in §4**,
+independent of identity setup. No settings changes are requested in this session.
+The following remains a reference for comparing the complete export and any later
+owner follow-up; do not PUT or replace settings from the partial readback.
 
 1. In your existing owner-controlled GitHub session, open repository **Settings →
    Branches** and **Settings → Rules → Rulesets**. Inspect every rule matching
@@ -106,8 +114,8 @@ are for your session, not agent execution:
 
 ```bash
 repo=Johnson-Dev-Agent-Management/project-manager
-phase_c_output=phase-c-owner-before
-# Repeat with phase_c_output=phase-c-owner-after after saving settings.
+phase_c_output=phase-c-owner-current
+# Retain historical before/after exports if available; no settings write needed.
 mkdir -p "$phase_c_output"
 date -u +'%Y-%m-%dT%H:%M:%SZ' > "$phase_c_output/observed-at-utc.txt"
 gh api user --jq '{login,id}' > "$phase_c_output/identity.json"
@@ -119,7 +127,8 @@ gh api --paginate --slurp "repos/$repo/rules/branches/main?per_page=100" > "$pha
 gh api graphql -f query='{repository(owner:"Johnson-Dev-Agent-Management",name:"project-manager"){branchProtectionRules(first:100){nodes{id pattern} pageInfo{hasNextPage endCursor}}}}' > "$phase_c_output/classic-rule-ids.json"
 ```
 
-Return **both before/after folders**, any read errors/HTTP status, and the **full
+Return the **current folder**, any available historical before/after exports,
+all read errors/HTTP status, and the **full
 JSON detail for every listed applicable repository/inherited ruleset** (GET its
 returned `_links.self.href`, retaining rule ID, conditions, enforcement, rules and
 bypass actors). If GraphQL reports hasNextPage=true, collect the remaining pages.
@@ -144,14 +153,14 @@ The agent compares every setting/source/actor/ID with the proposal and records
 UTC times and exact refs. Until independently attributed probes run, settings
 readback is configuration evidence, not behavior/enforcement evidence.
 
-| Criterion | Status     | Reason and next action                                                                                                                                               |
-| --------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| C1        | Failed     | Main reports unprotected; configure main and return complete effective readback                                                                                      |
-| C2        | Unverified | API role verified, Git/scope/isolation not; complete §2                                                                                                              |
-| C3        | Failed     | Required-check/independent policy enforcement and base CODEOWNERS absent; configure, independently review/bootstrap, validate base ownership and observe enforcement |
-| C4        | Unverified | Every probe is unrun; complete prerequisites and obtain exact target/scope authorization                                                                             |
-| C5        | Passed     | Recovery/exception/evidence procedures documented; no silent bypass or operative exception                                                                           |
-| C6        | Unverified | Owner acceptance/later merge/main validation/cloud refresh pending                                                                                                   |
+| Criterion | Status     | Reason and next action                                                                                                                         |
+| --------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| C1        | Unverified | Protected main/seven App-bound checks/auto-merge off verified; return missing detailed settings and rule IDs in §4                             |
+| C2        | Unverified | API role verified, Git/scope/isolation not; complete §2                                                                                        |
+| C3        | Failed     | Base CODEOWNERS absent and bootstrap review missing; verify details, complete independent replacement/review/bootstrap and observe enforcement |
+| C4        | Unverified | Every probe is unrun; complete prerequisites and obtain exact target/scope authorization                                                       |
+| C5        | Passed     | Recovery/exception/evidence procedures documented; no silent bypass or operative exception                                                     |
+| C6        | Unverified | Owner acceptance/later merge/main validation/cloud refresh pending                                                                             |
 
 **Already approved:** repository preparation/validation/PR updates as
 codexcodemachine; bounded ordinary-branch capabilities after verified isolation;
@@ -169,6 +178,21 @@ pass on the exact resulting main SHA; recheck protections and base CODEOWNERS,
 retain evidence and refresh the private cloud baseline. M0 completion requires
 independent C1–C6/probe verification and owner acceptance.
 
-**Smallest next checklist:** (1) arrange the fresh isolated implementation context;
-(2) capture before-state, configure main and return before/after readback. Keep
-target/probe/merge decisions for their explicit later authorization.
+**Smallest ordered owner checklist:**
+
+1. Return the current UTC-dated protection/rule-ID/effective-rule/bypass export in
+   §4, retaining any earlier before/after exports if available. No repeat settings
+   write is needed for evidence. Retain the full entry E2E artifact before
+   **2026-11-04 04:30:46 UTC**; executor transfer is blocked by the 32 MiB limit.
+2. Return supported non-secret connection/runtime scope and isolation metadata
+   identifying the implementation Git route and excluding owner routes; no token
+   values or credential expansion. Then the agent can perform the already-approved
+   ordinary branch capabilities, remote-actor verification and replacement draft.
+3. Provide genuine independent human policy/bootstrap review at the replacement's
+   exact green head. Keep #15 open until that replacement is confirmed. Decide any
+   owner bootstrap merge separately, without weakening protections.
+4. Separately decide reviewed target source/creation/equivalent protection and
+   each exact probe scope; C15b needs its own valid reviewed PR/owner-merge approval.
+   After any authorized owner merge, verify seven checks on exact resulting main,
+   protection/base CODEOWNERS validation, retained evidence and private cloud
+   baseline refresh. Accept C/M0 only after independent verification is complete.

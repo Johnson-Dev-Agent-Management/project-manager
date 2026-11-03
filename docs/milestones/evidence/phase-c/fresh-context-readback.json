@@ -1,0 +1,310 @@
+{
+  "observation_begin_utc": "2026-11-03 01:31:50 UTC",
+  "observation_end_utc": "2026-11-03 01:31:51 UTC",
+  "repository": "Johnson-Dev-Agent-Management/project-manager",
+  "scope": "Fresh read-only context. Selected non-secret fields, not a complete protection or credential export.",
+  "api_identity": {
+    "id": "348095294",
+    "name": null,
+    "email": "codex.code.machine@gmail.com",
+    "nickname": "codexcodemachine",
+    "picture": "https://avatars.githubusercontent.com/u/348095294?v=4",
+    "workspace_id": null,
+    "workspace_name": null,
+    "workspace_picture": null
+  },
+  "repository_metadata": {
+    "id": "1409806997",
+    "name": "project-manager",
+    "owner": {
+      "login": "Johnson-Dev-Agent-Management",
+      "id": 342865800,
+      "type": "Organization",
+      "avatar_url": "https://avatars.githubusercontent.com/u/342865800?v=4",
+      "url": "https://api.github.com/users/Johnson-Dev-Agent-Management"
+    },
+    "repository_full_name": "Johnson-Dev-Agent-Management/project-manager",
+    "permissions": {
+      "admin": false,
+      "maintain": false,
+      "pull": true,
+      "push": true,
+      "triage": true
+    },
+    "allow_auto_merge": false,
+    "allow_merge_commit": true,
+    "allow_rebase_merge": true,
+    "allow_squash_merge": true,
+    "allow_update_branch": false,
+    "clone_url": "https://github.com/Johnson-Dev-Agent-Management/project-manager.git",
+    "size": 669,
+    "default_branch": "main",
+    "git_commits_url": "https://api.github.com/repos/Johnson-Dev-Agent-Management/project-manager/git/commits{/sha}",
+    "git_refs_url": "https://api.github.com/repos/Johnson-Dev-Agent-Management/project-manager/git/refs{/sha}",
+    "git_url": "git://github.com/Johnson-Dev-Agent-Management/project-manager.git",
+    "master_branch": null,
+    "visibility": "public",
+    "archived": false,
+    "is_code_search_indexed": null
+  },
+  "collaborator_role": {
+    "permission": "write"
+  },
+  "reported_org_memberships": {
+    "orgs": []
+  },
+  "reported_orgs": {
+    "orgs": []
+  },
+  "connector_accounts": {
+    "accounts": [
+      {
+        "login": "Johnson-Dev-Agent-Management",
+        "is_user_account": false,
+        "is_organization_account": true
+      },
+      {
+        "login": "codexcodemachine",
+        "is_user_account": true,
+        "is_organization_account": false
+      }
+    ]
+  },
+  "installations": {
+    "allow_all_repositories_for_testing": false,
+    "installations": [
+      {
+        "id": 172621871,
+        "account_login": "Johnson-Dev-Agent-Management",
+        "account_id": 342865800,
+        "account_type": "Organization",
+        "account_avatar_url": "https://avatars.githubusercontent.com/u/342865800?v=4",
+        "html_url": "https://github.com/organizations/Johnson-Dev-Agent-Management/settings/installations/172621871",
+        "events": [
+          "check_run",
+          "check_suite",
+          "commit_comment",
+          "issues",
+          "issue_comment",
+          "pull_request",
+          "pull_request_review",
+          "pull_request_review_comment",
+          "pull_request_review_thread",
+          "repository",
+          "status",
+          "sub_issues"
+        ],
+        "repository_selection": "all",
+        "viewer_can_administer": null
+      },
+      {
+        "id": 175319904,
+        "account_login": "codexcodemachine",
+        "account_id": 348095294,
+        "account_type": "User",
+        "account_avatar_url": "https://avatars.githubusercontent.com/u/348095294?v=4",
+        "html_url": "https://github.com/settings/installations/175319904",
+        "events": [
+          "check_run",
+          "check_suite",
+          "commit_comment",
+          "issues",
+          "issue_comment",
+          "pull_request",
+          "pull_request_review",
+          "pull_request_review_comment",
+          "pull_request_review_thread",
+          "repository",
+          "status",
+          "sub_issues"
+        ],
+        "repository_selection": "all",
+        "viewer_can_administer": null
+      }
+    ]
+  },
+  "owner_route": {
+    "owner_account_advertised": false,
+    "account_selector_advertised": false,
+    "owner_credentials_invoked": false,
+    "complete_owner_route_exclusion": "Unverified: no owner route is advertised in current GitHub tools/account metadata, but unidentified CLI variable and incomplete scope/bypass metadata prevent whole-context isolation proof."
+  },
+  "cloud": {
+    "environment_id": "ccarenv_b64_Y2NhcmVudl85NjZmOTdkZTI2M2M4MTkxOGQyNjllMzEzMGYzMTYxMQ",
+    "source_config_id": "d10ad431-223b-4754-8d2f-93c9b1efd507~cecfg_6ac7309f9dd88199836e2f63cedf4f16",
+    "source_config_version_id": "d10ad431-223b-4754-8d2f-93c9b1efd507~cecfgver_6ac732981f648199abc2021150f6481b",
+    "spec_revision": "1",
+    "observed_spec_revision": "1",
+    "observations_current": true,
+    "provider": "cloud",
+    "desired_phase": "running",
+    "observed_phase": "running",
+    "failure": null,
+    "connectivity": "connected",
+    "network_policy": {
+      "mode": "restricted",
+      "state": "enforced",
+      "allowed_hosts": [
+        "api.nuget.org",
+        "builds.dotnet.microsoft.com",
+        "dot.net",
+        "github.com",
+        "registry.npmjs.org"
+      ],
+      "presets": [],
+      "preset_allowed_hosts": [],
+      "effective_allowed_hosts": [
+        "api.nuget.org",
+        "builds.dotnet.microsoft.com",
+        "dot.net",
+        "github.com",
+        "registry.npmjs.org",
+        "www.dot.net",
+        "www.github.com"
+      ]
+    },
+    "capabilities": [],
+    "secrets": [],
+    "runtime_variables": [],
+    "outbound_identities": [],
+    "network_diagnostics": null
+  },
+  "git": {
+    "authenticated_push_identity": "Unverified",
+    "push_attempted": false,
+    "workflow_comment_attempted": false,
+    "GH_TOKEN": "Present; no supported binding or identity metadata; value not inspected and credential not invoked",
+    "other_credential_variables_present": [],
+    "credential_helper_configured": false,
+    "core_askpass_configured": false,
+    "core_ssh_command_configured": false,
+    "standard_credential_files_present": [],
+    "public_fetch": "Succeeded with credential helper/askpass/auth headers disabled; read connectivity only",
+    "initial_sandbox_fetch": "Socket access to proxy unavailable; supported per-command network access resolved it",
+    "replacement_pr": "Not created: documented isolation, Git/workflow-write/remote actor prerequisites remain unsatisfied"
+  },
+  "main": {
+    "sha": "0a923d420c3e7c22b339c193e7ce8e14e73d03b6",
+    "tree": "0763d03f681e11e4c2ae866dfdb4c7cdf68bbf70",
+    "protected": true,
+    "protection_summary": {
+      "enabled": true,
+      "required_status_checks": {
+        "enforcement_level": "everyone",
+        "contexts": [
+          "backend",
+          "quality-gate",
+          "frontend",
+          "windows-smoke",
+          "e2e",
+          "policy",
+          "supply-chain"
+        ],
+        "checks": [
+          {
+            "context": "backend",
+            "app_id": 15368
+          },
+          {
+            "context": "quality-gate",
+            "app_id": 15368
+          },
+          {
+            "context": "frontend",
+            "app_id": 15368
+          },
+          {
+            "context": "windows-smoke",
+            "app_id": 15368
+          },
+          {
+            "context": "e2e",
+            "app_id": 15368
+          },
+          {
+            "context": "policy",
+            "app_id": 15368
+          },
+          {
+            "context": "supply-chain",
+            "app_id": 15368
+          }
+        ]
+      }
+    },
+    "listed_rulesets_including_parents": [],
+    "protection_read": {
+      "error": "GitHub API error 403: {\"message\":\"Resource not accessible by integration\",\"documentation_url\":\"https://docs.github.com/rest/branches/branch-protection#get-branch-protection\",\"status\":\"403\"}",
+      "error_code": "FORBIDDEN",
+      "error_data": {
+        "message": "Resource not accessible by integration",
+        "documentation_url": "https://docs.github.com/rest/branches/branch-protection#get-branch-protection",
+        "status": "403"
+      }
+    },
+    "effective_rules_read": {
+      "error": "HTTPError: 400: GitHub Fetch URL is not an allowed public GitHub repository or search endpoint. (Response: None)",
+      "error_code": "INVALID_ARGUMENT"
+    },
+    "classic_rule_ids": null,
+    "strict": null,
+    "require_pull_requests": null,
+    "review_settings": null,
+    "dismissal_restrictions": null,
+    "protected_update_restrictions": null,
+    "enforce_admins": null,
+    "bypass_lists": null,
+    "allow_force_pushes": null,
+    "allow_deletions": null,
+    "codeowners": "Absent: recursive exact-base tree response is untruncated, no CODEOWNERS at any path; local base tree agrees",
+    "github_codeowners_validation": {
+      "error": "HTTPError: 400: GitHub Fetch URL is not an allowed public GitHub repository or search endpoint. (Response: None)",
+      "error_code": "INVALID_ARGUMENT"
+    },
+    "control_status": {
+      "reported_protected": "Passed",
+      "seven_required_app_bound_checks": "Passed",
+      "auto_merge_disabled": "Passed",
+      "full_detailed_controls": "Unverified",
+      "base_codeowners": "Failed"
+    }
+  },
+  "preparation": {
+    "number": 15,
+    "author": "Joshbomb75",
+    "draft": true,
+    "state": "open",
+    "head": "67035dfa7f0e87a6ee5ae4601515800524ed96a7",
+    "base": "0a923d420c3e7c22b339c193e7ce8e14e73d03b6",
+    "tested_merge": "0e29546900765364a1861d5537c83d44dc7af5ef",
+    "reviews": [],
+    "labels": [
+      {
+        "name": "AI-authored",
+        "description": "Changes primarily implemented by an AI coding agent."
+      }
+    ]
+  },
+  "target": {
+    "name": "codex/m0-phase-c-target",
+    "present": false,
+    "branch_count": 16,
+    "page_size": 100,
+    "reviewed_source_sha": null,
+    "initial_sha": null,
+    "authorization": "None for creation/protection/advance/probes; C15b also needs separately authorized owner merge"
+  },
+  "acceptance": {
+    "C1": "Unverified",
+    "C2": "Unverified",
+    "C3": "Failed",
+    "C4": "Unverified",
+    "C5": "Passed",
+    "C6": "Unverified"
+  },
+  "settings_changes": false,
+  "permission_changes": false,
+  "reviews_approvals_merges": false,
+  "probes_executed": [],
+  "missing_evidence_request": "UTC-dated owner complete protection/rule IDs/effective rules/bypass export and supported non-secret implementation credential/isolation metadata requested. No secret values requested."
+}
