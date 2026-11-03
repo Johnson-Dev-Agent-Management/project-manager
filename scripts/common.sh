@@ -105,9 +105,12 @@ stop_processes() {
 stop_processes_with_grace() {
   local grace_seconds=$1
   shift
-  local pid attempt alive
+  local pid deadline alive
   for pid in "$@"; do kill "$pid" 2>/dev/null || true; done
-  for ((attempt=0; attempt<grace_seconds*10; attempt++)); do
+  # Process creation (notably MSYS sleep on Windows) adds time to every poll.
+  # Bound elapsed time so nested service/supervisor grace periods cannot race.
+  deadline=$((SECONDS + grace_seconds))
+  while ((SECONDS < deadline)); do
     alive=false
     for pid in "$@"; do
       if kill -0 "$pid" 2>/dev/null; then alive=true; fi
