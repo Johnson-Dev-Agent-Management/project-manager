@@ -2,6 +2,7 @@
 from contextlib import ExitStack
 import os
 import socket
+import sys
 
 
 def check(ports):
@@ -18,4 +19,4 @@ def check(ports):
 
 
 if __name__ == '__main__':
-    check((5001, 5174))
+    check(tuple(map(int, sys.argv[1:])) if len(sys.argv) > 1 else (5001, 5174))

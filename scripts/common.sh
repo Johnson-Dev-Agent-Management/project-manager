@@ -79,3 +79,44 @@ native_path() {
     printf '%s\n' "$1"
   fi
 }
+
+# Development commands share explicit ports; ordinary usage keeps its defaults.
+configure_dev_ports() {
+  export PROJECT_DEV_API_PORT=${PROJECT_DEV_API_PORT:-5000}
+  export PROJECT_DEV_WEB_PORT=${PROJECT_DEV_WEB_PORT:-5173}
+  local port
+  for port in "$PROJECT_DEV_API_PORT" "$PROJECT_DEV_WEB_PORT"; do
+    if [[ ! $port =~ ^[1-9][0-9]{0,4}$ ]] || ((port > 65535)); then
+      echo "Development ports must be integers from 1 to 65535: $port" >&2
+      return 1
+    fi
+  done
+  if [[ $PROJECT_DEV_API_PORT == "$PROJECT_DEV_WEB_PORT" ]]; then
+    echo 'Development API and web ports must differ' >&2
+    return 1
+  fi
+}
+
+# Stop only explicitly owned children, with bounded graceful shutdown.
+stop_processes() {
+  stop_processes_with_grace 5 "$@"
+}
+
+stop_processes_with_grace() {
+  local grace_seconds=$1
+  shift
+  local pid attempt alive
+  for pid in "$@"; do kill "$pid" 2>/dev/null || true; done
+  for ((attempt=0; attempt<grace_seconds*10; attempt++)); do
+    alive=false
+    for pid in "$@"; do
+      if kill -0 "$pid" 2>/dev/null; then alive=true; fi
+    done
+    [[ $alive == false ]] && break
+    sleep 0.1
+  done
+  for pid in "$@"; do
+    if kill -0 "$pid" 2>/dev/null; then kill -KILL "$pid" 2>/dev/null || true; fi
+    wait "$pid" 2>/dev/null || true
+  done
+}

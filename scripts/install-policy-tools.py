@@ -4,8 +4,12 @@ import io
 import json
 import os
 from pathlib import Path
+import platform
 import subprocess
 import tarfile
+
+if platform.system() != 'Linux' or platform.machine().lower() not in ('x86_64', 'amd64'):
+    raise SystemExit('Policy/security tools require Linux x64. Use the hosted policy and supply-chain CI jobs.')
 
 ROOT = Path(__file__).resolve().parents[1]
 output = Path(os.environ.get('PROJECT_TOOLS_DIR', ROOT / '.tools')) / 'policy'

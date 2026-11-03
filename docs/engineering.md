@@ -123,7 +123,9 @@ Hashes were obtained from the upstream GitHub release asset metadata. Installati
 verifies the archive before extracting only the named executable. Unavailable
 downloads fail; no substitute/no-op scanner is used. Platform-specific policy-tool
 installation is currently Linux only; Windows retains the required Git Bash
-setup/build smoke check.
+setup/build smoke check and full `check.sh` suite, including Python regressions,
+plus development lifecycle and a production browser scenario. Unsupported hosts
+fail with an explicit Linux x64 requirement before policy-tool installation.
 
 ## Security, exceptions, and definition of done
 

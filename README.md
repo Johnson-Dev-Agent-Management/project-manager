@@ -33,9 +33,24 @@ Cache overrides and prepared
 cloud reuse are documented in [CI operation](docs/ci.md). No personal credentials
 are required. Do not modify lockfiles except for intentional reviewed updates.
 
+Git enforces LF text checkouts (including scripts and version pins), even with
+Windows `core.autocrlf=true`.
+
 Development starts the API on **http://127.0.0.1:5000** and Vite on
 **http://127.0.0.1:5173**, with `/api` proxying. SQLite persists in ignored
-`.data/projects.db`. Ctrl+C stops owned processes. To check readiness:
+`.data/projects.db`. Set `PROJECT_DEV_DATA_DIR` to use a different directory,
+including a Windows path with spaces. Occupied ports fail before startup; Ctrl+C
+stops owned processes with bounded cleanup. `bash scripts/dev-smoke.sh` verifies
+startup, the API proxy, synthetic create/list, and shutdown using temporary storage.
+Services retain their five-second shutdown grace. The smoke supervisor allows ten
+seconds for `dev.sh` to finish child cleanup and requires its acknowledgment before
+deleting temporary storage; missing acknowledgment fails the run and preserves it.
+Both development scripts accept `PROJECT_DEV_API_PORT` and `PROJECT_DEV_WEB_PORT`
+to override the default ports; values must be distinct integers from 1 to 65535.
+The selected API port also configures Vite's proxy. Occupied selected ports still
+fail before startup. Cleanup regression tests allocate their own ports, so
+`check.sh` (including `check.sh frontend`) can run while the normal app is running.
+To check readiness with the defaults:
 
 ```bash
 curl -fsS http://127.0.0.1:5000/api/health
@@ -51,12 +66,16 @@ on PATH, Python 3, and curl. Use the same setup/check/dev commands; setup select
 the project Node/npm tools automatically. It reports missing .NET SDKs instead of
 running a Unix SDK installer. Native cache paths and `cygpath -am` SQLite paths
 (including spaces) are preserved. Hosted Windows tests a fresh workspace Node/npm
-bootstrap, repeated setup, and `bash scripts/build.sh`.
+bootstrap in a path with spaces, repeated setup, `bash scripts/build.sh`, and the full
+`bash scripts/check.sh` suite, including Python setup regressions. It also runs
+development-server smoke checks and `bash scripts/e2e.sh`, covering production
+builds and both browser persistence phases with matched Chromium.
 `PROJECT_BOOTSTRAP_NODE=true bash scripts/setup.sh` explicitly installs workspace
 tools even when host versions match. `PROJECT_NODE_DIR` can select an isolated
 tool directory; use the same override for subsequent project commands.
-Linux x64 is the full policy/security/browser validation platform; policy-tool
-installation and Windows browser execution are not part of the Windows smoke job.
+`policy.sh` and `security.sh` require Linux x64 and report that requirement before
+downloading tools on Windows. Use their required hosted CI jobs for those checks.
+Linux retains ten-run browser qualification; Windows runs one full browser scenario.
 Agent execution remains in the cloud, never on the owner's personal computer.
 
 Underlying development commands, in separate terminals from the repository root:
@@ -80,7 +99,9 @@ Read [AGENTS.md](AGENTS.md), [engineering standards](docs/engineering.md),
 [Milestone 0 plan](docs/milestones/milestone-0.md) provides historical context.
 `check.sh` runs lint, complete authored TypeScript/config checking, frontend build,
 Vitest V8 coverage, .NET build, xUnit/SQLite/Coverlet, report integrity checks, and
-Python attribution/policy regression tests. `policy.sh` runs Prettier, .NET format,
+Python attribution/policy regression tests. Its shell cleanup regressions require
+Perl (included in Git for Windows and the hosted Linux runners) to exercise
+services that ignore SIGTERM on both platforms. `policy.sh` runs Prettier, .NET format,
 ShellCheck, actionlint, and policy tests. `security.sh` runs fresh npm/NuGet advisory
 checks and redacted Gitleaks scans. Unavailable advisory data is a failing result.
 

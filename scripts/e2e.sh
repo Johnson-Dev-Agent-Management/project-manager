@@ -14,27 +14,16 @@ if [[ ${CI:-} != true && -z ${PLAYWRIGHT_CHROMIUM_EXECUTABLE:-} ]] && command -v
   echo "Cloud development fallback: $PLAYWRIGHT_CHROMIUM_EXECUTABLE"
 fi
 mkdir -p .artifacts/e2e
-E2E_ARTIFACT_DIR=$(mktemp -d "$ROOT/.artifacts/e2e/run-XXXXXX")
+log_dir=$(mktemp -d "$ROOT/.artifacts/e2e/run-XXXXXX")
+# Git Bash does not translate paths inside environment variables for Node/Python.
+E2E_ARTIFACT_DIR=$(native_path "$log_dir")
 export E2E_ARTIFACT_DIR
-log_dir=$E2E_ARTIFACT_DIR
 test_dir=$(mktemp -d)
 pids=()
 cleanup() {
   result=$?
   trap - EXIT INT TERM
-  for pid in "${pids[@]}"; do kill "$pid" 2>/dev/null || true; done
-  for ((attempt=0; attempt<50; attempt++)); do
-    alive=false
-    for pid in "${pids[@]}"; do
-      if kill -0 "$pid" 2>/dev/null; then alive=true; fi
-    done
-    [[ $alive == false ]] && break
-    sleep 0.1
-  done
-  for pid in "${pids[@]}"; do
-    if kill -0 "$pid" 2>/dev/null; then kill -KILL "$pid" 2>/dev/null || true; fi
-    wait "$pid" 2>/dev/null || true
-  done
+  stop_processes "${pids[@]}"
   rm -rf "$test_dir"
   printf 'exit=%s; owned processes stopped; scenario storage removed\n' "$result" > "$log_dir/cleanup.txt"
   echo "E2E diagnostics: $log_dir (exit $result)"
@@ -75,8 +64,7 @@ curl --max-time 2 -fsS http://127.0.0.1:5174/api/health > "$log_dir/proxy-health
 python3 -c 'import json,sys; assert json.load(open(sys.argv[1])) == {"status":"ok"}' "$log_dir/proxy-health.json"
 E2E_PHASE=create npm --prefix src/web run e2e
 python3 scripts/report.py e2e-create
-kill "$api_pid"
-wait "$api_pid" || true
+stop_processes "$api_pid"
 pids=("$web_pid")
 start_api
 E2E_PHASE=restart npm --prefix src/web run e2e
