@@ -66,6 +66,8 @@ test('project pages and scoped tasks persist through UI reload and API restart',
     await page.reload();
     await expect(page.getByText('1 of 2 tasks complete.')).toBeVisible();
     await page.getByRole('link', { name: 'Back to projects' }).click();
+    // Both pages have a Project name field; wait for the destination before filling it.
+    await expect(page.getByRole('heading', { name: 'Projects', exact: true })).toBeVisible();
     await page.getByLabel('Project name').fill('Separate project');
     await page.getByRole('button', { name: 'Create project' }).click();
     await page.getByRole('link', { name: 'Separate project' }).click();
