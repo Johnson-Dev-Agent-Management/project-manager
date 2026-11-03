@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   errorMessage,
   jsonRequest,
@@ -8,6 +8,9 @@ import {
   type ProjectTask,
 } from './api';
 import TaskForm from './TaskForm';
+import { localDay, useLocalDay } from '../today/dates';
+import TaskMeta from '../today/TaskMeta';
+import SelectionButton from '../today/SelectionButton';
 
 export default function ProjectPage({ projectId }: { projectId: string }) {
   const [project, setProject] = useState<ProjectDetail | null>(null);
@@ -19,25 +22,50 @@ export default function ProjectPage({ projectId }: { projectId: string }) {
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState('');
   const [saved, setSaved] = useState(false);
+  const initialized = useRef(false);
+  // A read started before any successful mutation is no longer authoritative.
+  const mutationVersion = useRef(0);
+  const day = useLocalDay();
+  const [loadedDay, setLoadedDay] = useState('');
   const url = `/api/projects/${projectId}`;
   useEffect(() => {
     const controller = new AbortController();
-    void request<ProjectDetail>(url, 'Could not load project.', { signal: controller.signal })
+    const version = mutationVersion.current;
+    void request<ProjectDetail>(`${url}?day=${day}`, 'Could not load project.', {
+      signal: controller.signal,
+    })
       .then((value) => {
         if (controller.signal.aborted) return;
+        if (version !== mutationVersion.current) {
+          // Keep saved data and drafts visible; fetch a snapshot taken after the save.
+          setLoading(true);
+          setAttempt((value) => value + 1);
+          return;
+        }
         setProject(value);
-        setName(value.name);
-        setDescription(value.description ?? '');
+        setLoadError('');
+        setLoading(false);
+        setLoadedDay(day);
+        if (!initialized.current) {
+          setName(value.name);
+          setDescription(value.description ?? '');
+          initialized.current = true;
+        }
       })
       .catch((reason: unknown) => {
-        if (!controller.signal.aborted)
+        if (!controller.signal.aborted) {
           setLoadError(errorMessage(reason, 'Could not load project.'));
-      })
-      .finally(() => {
-        if (!controller.signal.aborted) setLoading(false);
+          setLoading(false);
+        }
       });
     return () => controller.abort();
-  }, [url, attempt]);
+  }, [url, day, attempt]);
+
+  function retryLoad() {
+    setLoadError('');
+    setLoading(true);
+    setAttempt((value) => value + 1);
+  }
 
   async function saveProject() {
     setSaving(true);
@@ -49,6 +77,7 @@ export default function ProjectPage({ projectId }: { projectId: string }) {
         'Could not save project.',
         jsonRequest('PUT', { name, description }),
       );
+      mutationVersion.current += 1;
       setProject((current) => current && { ...current, ...value });
       setName(value.name);
       setDescription(value.description ?? '');
@@ -61,6 +90,7 @@ export default function ProjectPage({ projectId }: { projectId: string }) {
   }
 
   function taskSaved(task: ProjectTask) {
+    mutationVersion.current += 1;
     setProject(
       (current) =>
         current && {
@@ -75,21 +105,22 @@ export default function ProjectPage({ projectId }: { projectId: string }) {
   return (
     <main>
       <a href="#/">Back to projects</a>
-      {loading ? (
+      {project && loadError && (
+        <div>
+          <p role="alert">Could not refresh this project. Your edits are still here. {loadError}</p>
+          <button onClick={retryLoad}>Try again</button>
+        </div>
+      )}
+      {project && !loadError && (loading || loadedDay !== day) && (
+        <p role="status">Refreshing today's selections…</p>
+      )}
+      {!project && loading ? (
         <p role="status">Loading project…</p>
-      ) : loadError ? (
+      ) : !project && loadError ? (
         <>
           <h1>Project unavailable</h1>
           <p role="alert">{loadError}</p>
-          <button
-            onClick={() => {
-              setLoadError('');
-              setLoading(true);
-              setAttempt((value) => value + 1);
-            }}
-          >
-            Try again
-          </button>
+          <button onClick={retryLoad}>Try again</button>
         </>
       ) : (
         project && (
@@ -139,6 +170,32 @@ export default function ProjectPage({ projectId }: { projectId: string }) {
                 <ul className="task-list">
                   {project.tasks.map((task) => (
                     <li key={task.id}>
+                      <TaskMeta task={task} day={day} />
+                      {(task.status !== 'Done' || project.selectedTaskIds.includes(task.id)) && (
+                        <SelectionButton
+                          key={day}
+                          taskId={task.id}
+                          day={day}
+                          selected={project.selectedTaskIds.includes(task.id)}
+                          disabled={loadedDay !== day}
+                          onSaved={(selected) => {
+                            if (day !== localDay()) return;
+                            mutationVersion.current += 1;
+                            setProject(
+                              (current) =>
+                                current && {
+                                  ...current,
+                                  selectedTaskIds: selected
+                                    ? [
+                                        ...current.selectedTaskIds.filter((id) => id !== task.id),
+                                        task.id,
+                                      ]
+                                    : current.selectedTaskIds.filter((id) => id !== task.id),
+                                },
+                            );
+                          }}
+                        />
+                      )}
                       <TaskForm projectId={projectId} task={task} onSaved={taskSaved} />
                     </li>
                   ))}

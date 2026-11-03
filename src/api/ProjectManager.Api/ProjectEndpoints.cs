@@ -17,12 +17,16 @@ public static class ProjectEndpoints
             await db.SaveChangesAsync();
             return Results.Created($"/api/projects/{project.Id}", new { project.Id, project.Name });
         });
-        projects.MapGet("/{id:int}", async (int id, ProjectDb db) =>
+        projects.MapGet("/{id:int}", async (int id, string? day, ProjectDb db) =>
         {
             var project = await db.Projects.FindAsync(id);
             if (project is null) return Results.NotFound();
+            if (day is not null && !TaskPlanning.IsDate(day)) return Required("day", "Use a valid local calendar day (YYYY-MM-DD).");
+            var selectedTaskIds = await db.TodaySelections.Where(selection => selection.Day == day)
+                .Where(selection => db.Tasks.Any(task => task.Id == selection.TaskId && task.ProjectId == id))
+                .Select(selection => selection.TaskId).ToListAsync();
             var tasks = await db.Tasks.Where(task => task.ProjectId == id).OrderBy(task => task.Id).ToListAsync();
-            return Results.Ok(new { project.Id, project.Name, project.Description, Tasks = tasks });
+            return Results.Ok(new { project.Id, project.Name, project.Description, Tasks = tasks, SelectedTaskIds = selectedTaskIds });
         });
         projects.MapPut("/{id:int}", async (int id, EditProject input, ProjectDb db) =>
         {
@@ -38,7 +42,9 @@ public static class ProjectEndpoints
         {
             if (!await db.Projects.AnyAsync(project => project.Id == projectId)) return Results.NotFound();
             if (string.IsNullOrWhiteSpace(input.Title)) return Required("title", "Task title is required.");
-            var task = new ProjectTask { ProjectId = projectId, Title = input.Title.Trim(), Notes = input.Notes };
+            var errors = TaskPlanning.Validate(input.Priority, input.DueDate);
+            if (errors.Count > 0) return Results.ValidationProblem(errors);
+            var task = new ProjectTask { ProjectId = projectId, Title = input.Title.Trim(), Notes = input.Notes, Priority = input.Priority!, DueDate = input.DueDate };
             db.Tasks.Add(task);
             await db.SaveChangesAsync();
             return Results.Created($"/api/projects/{projectId}/tasks/{task.Id}", task);
@@ -52,14 +58,16 @@ public static class ProjectEndpoints
         {
             var task = await db.Tasks.SingleOrDefaultAsync(task => task.ProjectId == projectId && task.Id == taskId);
             if (task is null) return Results.NotFound();
-            var errors = new Dictionary<string, string[]>();
+            var errors = TaskPlanning.Validate(input.Priority, input.DueDate);
             if (string.IsNullOrWhiteSpace(input.Title)) errors["title"] = ["Task title is required."];
-            if (input.Status is not ("To do" or "In progress" or "Done"))
+            if (!TaskPlanning.IsStatus(input.Status))
                 errors["status"] = ["Choose To do, In progress, or Done."];
             if (errors.Count > 0) return Results.ValidationProblem(errors);
             task.Title = input.Title!.Trim();
             task.Notes = input.Notes;
             task.Status = input.Status!;
+            task.Priority = input.Priority!;
+            task.DueDate = input.DueDate;
             await db.SaveChangesAsync();
             return Results.Ok(task);
         });

@@ -2,6 +2,7 @@ import { act, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, expect, test, vi } from 'vitest';
 import App from '../App';
+import { localDay } from '../today/dates';
 import ProjectPage from './ProjectPage';
 import { type ProjectDetail, type ProjectTask } from './api';
 
@@ -11,8 +12,16 @@ const task: ProjectTask = {
   title: 'First task',
   notes: 'Remember',
   status: 'To do',
+  priority: 'None',
+  dueDate: null,
 };
-const project: ProjectDetail = { id: 1, name: 'Example', description: 'Description', tasks: [] };
+const project: ProjectDetail = {
+  id: 1,
+  name: 'Example',
+  description: 'Description',
+  tasks: [],
+  selectedTaskIds: [],
+};
 const ok = (value: unknown) => ({ ok: true, json: () => value });
 const problem = (field: string, message: string) => ({
   ok: false,
@@ -137,12 +146,17 @@ test('creates tasks only after saving, edits fields, and counts only saved Done 
   expect(create.getByRole('button', { name: 'Saving task…' })).toBeDisabled();
   expect(create.getByLabelText('Task title')).toBeDisabled();
   expect(screen.getByText('0 of 0 tasks complete.')).toBeVisible();
-  await user.click(create.getByRole('button'));
+  await user.click(create.getByRole('button', { name: 'Saving task…' }));
   expect(fetchMock).toHaveBeenCalledTimes(2);
   expect(fetchMock).toHaveBeenLastCalledWith('/api/projects/1/tasks', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ title: ' First task ', notes: 'Remember' }),
+    body: JSON.stringify({
+      title: ' First task ',
+      notes: 'Remember',
+      priority: 'None',
+      dueDate: null,
+    }),
   });
   await act(async () => {
     finishSave(ok(task));
@@ -152,11 +166,11 @@ test('creates tasks only after saving, edits fields, and counts only saved Done 
   expect(create.getByLabelText('Notes (optional)')).toHaveValue('');
   expect(screen.getByText('0 of 1 tasks complete.')).toBeVisible();
   const edit = within(screen.getByRole('form', { name: 'Edit task: First task' }));
-  expect(edit.getAllByRole('option').map((item) => item.textContent)).toEqual([
-    'To do',
-    'In progress',
-    'Done',
-  ]);
+  expect(
+    within(edit.getByLabelText('Status'))
+      .getAllByRole('option')
+      .map((item) => item.textContent),
+  ).toEqual(['To do', 'In progress', 'Done']);
   expect(edit.getByLabelText('Status')).toHaveValue('To do');
   await user.clear(edit.getByLabelText('Task title'));
   await user.type(edit.getByLabelText('Task title'), 'Edited');
@@ -171,7 +185,13 @@ test('creates tasks only after saving, edits fields, and counts only saved Done 
   expect(fetchMock).toHaveBeenLastCalledWith('/api/projects/1/tasks/3', {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ title: 'Edited', notes: 'New notes', status: 'To do' }),
+    body: JSON.stringify({
+      title: 'Edited',
+      notes: 'New notes',
+      status: 'To do',
+      priority: 'None',
+      dueDate: null,
+    }),
   });
   await user.type(create.getByLabelText('Task title'), 'Second');
   await user.click(create.getByRole('button', { name: 'Add task' }));
@@ -221,14 +241,14 @@ test('failed task edits retain drafts and saved completion count until successfu
   await user.type(edit.getByLabelText('Task title'), '   ');
   await user.selectOptions(edit.getByLabelText('Status'), 'Done');
   expect(screen.getByText('0 of 1 tasks complete.')).toBeVisible();
-  await user.click(edit.getByRole('button'));
+  await user.click(edit.getByRole('button', { name: 'Save task' }));
   expect(await screen.findByRole('alert')).toHaveTextContent('Task title is required.');
   expect(edit.getByLabelText('Task title')).toHaveValue('   ');
   expect(edit.getByLabelText('Status')).toHaveValue('Done');
   expect(screen.getByText('0 of 1 tasks complete.')).toBeVisible();
   await user.clear(edit.getByLabelText('Task title'));
   await user.type(edit.getByLabelText('Task title'), 'Retry');
-  await user.click(edit.getByRole('button'));
+  await user.click(edit.getByRole('button', { name: 'Save task' }));
   expect(await screen.findByText('1 of 1 tasks complete.')).toBeVisible();
   expect(screen.queryByRole('alert')).not.toBeInTheDocument();
   expect(edit.getByLabelText('Notes (optional)')).toHaveValue('');
@@ -284,14 +304,14 @@ test.each([
     const create = within(await screen.findByRole('form', { name: 'New task' }));
     await user.type(create.getByLabelText('Task title'), '   ');
     await user.type(create.getByLabelText('Notes (optional)'), 'Keep notes');
-    await user.click(create.getByRole('button'));
+    await user.click(create.getByRole('button', { name: 'Add task' }));
     expect(await screen.findByRole('alert')).toHaveTextContent(message);
     expect(create.getByLabelText('Task title')).toHaveValue('   ');
     expect(create.getByLabelText('Notes (optional)')).toHaveValue('Keep notes');
     expect(screen.getByText('0 of 0 tasks complete.')).toBeVisible();
     await user.clear(create.getByLabelText('Task title'));
     await user.type(create.getByLabelText('Task title'), 'First task');
-    await user.click(create.getByRole('button'));
+    await user.click(create.getByRole('button', { name: 'Add task' }));
     expect(await screen.findByText('0 of 1 tasks complete.')).toBeVisible();
     expect(screen.queryByRole('alert')).not.toBeInTheDocument();
   },
@@ -328,7 +348,7 @@ test.each(['resolve', 'reject'])(
     let resolve!: (value: unknown) => void;
     let reject!: (reason: unknown) => void;
     const fetchMock = vi.fn((url: string, options: RequestInit) => {
-      expect(url).toBe('/api/projects/1');
+      expect(url).toBe(`/api/projects/1?day=${localDay()}`);
       expect(options.signal?.aborted).toBe(false);
       return new Promise((yes, no) => {
         resolve = yes;

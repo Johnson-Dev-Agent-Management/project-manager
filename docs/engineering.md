@@ -58,15 +58,43 @@ Descriptions/notes preserve whitespace and may be omitted or null (cleared on PU
 Missing projects/tasks and task IDs belonging to another project return 404.
 There are no added length/uniqueness limits or deletion endpoints.
 
-Stage 1 uses fresh disposable development storage, with the exact path and restart
-instructions in [README](../README.md#stage-1-development-database). Existing
-project-only databases are not migrated. Tests verify new-schema persistence and
-isolation; they do not claim old-schema compatibility.
+### Stage 2 planning contracts
+
+Task JSON additionally contains `priority` (None, Low, Medium, High) and nullable
+`dueDate`. Task POST/PUT accepts these fields, defaulting omitted priority to None
+and omitted due date to null; use None/null to clear them. Explicit null or an
+unsupported priority returns `errors.priority`. Non-null due dates must be real,
+zero-padded YYYY-MM-DD dates in years 0001–9999; invalid dates return `errors.dueDate`.
+Validation is atomic with the other task fields. No timestamp conversion is used.
+
+| Endpoint                                | Behavior                                                                                                                                       |
+| --------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `GET /api/projects/{id}?day=YYYY-MM-DD` | Adds `selectedTaskIds` for that project/day. Omit day for an empty selection list.                                                             |
+| `GET /api/today/{day}`                  | `{ selected, due, completed }`, each an array of `{ task, projectName }`.                                                                      |
+| `PUT /api/today/{day}/tasks/{taskId}`   | `{ selected: boolean }` adds/removes only that day's selection; repeated requests are idempotent. Only incomplete tasks can be newly selected. |
+| `PUT /api/tasks/{taskId}/status`        | `{ status }` changes only status, preserving every other task field.                                                                           |
+
+The browser supplies its local day consistently for reads and selection writes.
+The server validates it (`errors.day`) rather than guessing from its own timezone.
+Selections use a unique `(TaskId, Day)` SQLite key and task foreign key. Today
+partitions selected tasks by Done status; Due now contains only unselected,
+incomplete tasks whose due date is at or before the requested day. Sorting and
+midnight behavior are documented in [README](../README.md#planning-today).
+Missing task IDs return 404; selecting a newly completed task returns `errors.task`.
+
+Stage 2 preserves Stage 1 development data with a transactional, additive startup
+upgrade after `EnsureCreated`. It adds Priority (None default/check constraint),
+nullable DueDate, and TodaySelections when absent. `TaskPlanningTests` upgrades a
+copy of the original Stage 1 SQLite schema with synthetic rows and verifies
+retention and repeated restarts. Fresh databases use the EF model with equivalent
+constraints. Pre-Stage-1 databases remain unsupported; use a fresh task-owned
+storage path as documented in [README](../README.md#development-database-upgrades).
 
 ### Development database schema changes
 
-The API currently calls `Database.EnsureCreated()` at startup. It creates a fresh
-SQLite schema but does not upgrade an existing database. `scripts/dev.sh` retains
+The API calls `Database.EnsureCreated()` at startup, followed by the bounded
+Stage 2 upgrade above. EnsureCreated alone only creates fresh schemas; future
+schema changes still need an explicit preservation or reset strategy. `scripts/dev.sh` retains
 synthetic data in ignored `.data/projects.db`; tests use temporary databases.
 Passing fresh-database tests alone does not establish compatibility with existing data.
 
