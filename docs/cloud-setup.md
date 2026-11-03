@@ -13,6 +13,14 @@ references below describe the bootstrap, not the current intended setup.
 See [automation-account capabilities](automation-account-setup.md) for the chosen
 outside-collaborator identity and the still-pending connection/separation checks.
 
+Current runtime follow-up: `.nvmrc` now pins **Node 26.13.0 LTS** and `.npm-version`
+pins **npm 12.2.1**. The checkout's setup automatically installs/selects versioned
+workspace tools on Linux/macOS and Windows Git Bash. Run `source scripts/common.sh`
+to select them in an interactive Bash shell. The historical bootstrap paths and
+older versions below are not current configuration instructions. This change
+does not republish the private cloud environment; follow the current README/CI
+commands and verify any separately refreshed environment before claiming success.
+
 ## Baseline verification
 
 The private `project-manager-dev` environment was published and verified in a

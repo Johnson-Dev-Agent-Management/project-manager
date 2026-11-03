@@ -11,6 +11,14 @@
   prerequisites and verified automation-authored replacement are complete.
 - Independent human reviewer/merger: Joshbomb75; no review submitted by the agent.
 
+**Current runtime/setup follow-up:** the owner subsequently requested modern
+Node/npm and passing setup. The [Node 26/npm 12 report](milestone-0-node26-setup-report.md)
+records new toolchain, cross-platform bootstrap, CI setup and regression-test
+changes. The documentation-only scope statements below describe the preceding
+continuation. The scanner fingerprint proposal remains inactive pending the
+required human approval; current full-history scanning is retained. Final
+follow-up head/tested merge and actual hosted results are recorded in PR #15.
+
 This report supersedes the October 28 current-state conclusions. Historical JSON
 and Phase A/B reports remain dated evidence. The owner reports configuring main
 and removing the owner connector. Fresh readback verifies the reported protection

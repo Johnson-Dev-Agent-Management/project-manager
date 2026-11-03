@@ -32,7 +32,7 @@ with SQLite persistence and automated unit and browser tests.
 
 - One repository: `src/web/` for React + strict TypeScript + Vite;
   `src/api/ProjectManager.Api/` for ASP.NET Core; `tests/` for backend tests.
-- Use .NET 10 LTS and Node.js 24 LTS, current supported patches.
+- Use .NET 10 LTS and Node.js 26 LTS, current supported patches.
   Record the exact tested SDK/tool versions, commit package-lock.json and NuGet lock files.
 - Start with EF Core and SQLite for development. No external database account is required.
 - Keep the API and UI small and modular. Prefer a modular monolith to services.

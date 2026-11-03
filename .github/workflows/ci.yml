@@ -98,9 +98,11 @@ jobs:
           cache: ${{ inputs.cold-cache != true }}
       - name: Rerun setup and build in Git Bash
         run: |
+          export PROJECT_NODE_DIR="$RUNNER_TEMP/native-node-bootstrap"
+          PROJECT_BOOTSTRAP_NODE=true bash scripts/setup.sh 2>&1 | tee .artifacts/setup-bootstrap.log
           bash scripts/setup.sh 2>&1 | tee .artifacts/setup-rerun.log
           bash scripts/build.sh 2>&1 | tee .artifacts/build.log
-          echo 'Windows Git Bash: setup, repeated setup, and both builds Passed' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Windows Git Bash: native workspace bootstrap, repeated setup, and both builds Passed' >> "$GITHUB_STEP_SUMMARY"
       - name: Upload Windows evidence
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7

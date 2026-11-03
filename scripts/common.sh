@@ -3,9 +3,16 @@ set -Eeuo pipefail
 ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 PROJECT_TOOLS_DIR=${PROJECT_TOOLS_DIR:-"$ROOT/.tools"}
 PROJECT_CACHE_DIR=${PROJECT_CACHE_DIR:-"$ROOT/.cache"}
+project_node_version=$(<"$ROOT/.nvmrc")
+project_npm_version=$(<"$ROOT/.npm-version")
+# Versioned directories let Windows upgrade without replacing a running node.exe.
+export PROJECT_NODE_DIR=${PROJECT_NODE_DIR:-"$PROJECT_TOOLS_DIR/node-$project_node_version-npm-$project_npm_version"}
 WINDOWS_SHELL=false
 case "$(uname -s)" in
-  MINGW*|MSYS*|CYGWIN*) WINDOWS_SHELL=true ;;
+  MINGW*|MSYS*|CYGWIN*)
+    WINDOWS_SHELL=true
+    PROJECT_NODE_DIR=$(cygpath -au "$PROJECT_NODE_DIR")
+    ;;
   *)
     # Reuse a prepared cloud image when present; hosted runners use PATH.
     prepared_root=$(dirname "$ROOT")
@@ -20,7 +27,6 @@ case "$(uname -s)" in
       export DOTNET_ROOT="$PROJECT_TOOLS_DIR/dotnet"
       export PATH="$DOTNET_ROOT:$PATH"
     fi
-    export PATH="$PROJECT_TOOLS_DIR/node_modules/.bin:$PATH"
     export DOTNET_CLI_HOME=${DOTNET_CLI_HOME:-"$PROJECT_CACHE_DIR/dotnet"}
     if [[ -z ${NUGET_PACKAGES:-} ]]; then
       if [[ -d $prepared_root/.cache/nuget ]]; then
@@ -40,6 +46,13 @@ case "$(uname -s)" in
     chmod 700 "$XDG_RUNTIME_DIR"
     ;;
 esac
+# Select workspace Node/npm in every supported Bash shell. Native node.exe must
+# precede npm's generated shims on Windows. These directories can appear in setup.
+export PATH="$PROJECT_NODE_DIR/node_modules/node/bin:$PROJECT_NODE_DIR/node_modules/.bin:$PATH"
+if [[ $WINDOWS_SHELL == true ]]; then
+  npm_config_cache=${npm_config_cache:-$(cygpath -am "$PROJECT_CACHE_DIR/npm")}
+  export npm_config_cache
+fi
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
 cd "$ROOT"
 

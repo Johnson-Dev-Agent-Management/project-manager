@@ -7,10 +7,17 @@ are proposed separately in the [owner checklist](branch-enforcement.md);
 success from still-unverified enforcement. No target probes are authorized until
 the owner approves the exact scope and identity prerequisites are verified.
 
-Run in an authorized cloud checkout. Exact Node 24.22.0, npm 11.9.0, and
+Run in an authorized cloud checkout. Exact Node 26.13.0 LTS, npm 12.2.1, and
 .NET SDK 10.0.402 remain pinned. Setup uses npm ci and locked NuGet restore;
-Linux/macOS may install runtimes under ignored `.tools`. Native Windows uses
-Git Bash and pinned tools on PATH; `cygpath -am` database conversion is preserved.
+All platforms select project Node/npm from a versioned ignored `.tools` directory
+when host versions differ. Native Windows uses Git Bash and the pinned native
+.NET SDK on PATH; `cygpath -am` database conversion is preserved. Newer host
+Node/npm can bootstrap setup without matching the project pins first.
+`PROJECT_BOOTSTRAP_NODE=true` forces a workspace installation, and
+`PROJECT_NODE_DIR` selects an isolated directory. The Windows job uses a fresh
+runner-temp directory to exercise native bootstrap, then repeats setup/build.
+The shared Actions setup publishes the selected private tool paths to later steps
+and records actual selected versions; it no longer installs npm globally.
 There is no required `/workspace` location or dependency on personal credentials.
 
 ```bash
