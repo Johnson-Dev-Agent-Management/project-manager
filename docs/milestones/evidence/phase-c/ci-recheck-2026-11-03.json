@@ -1,0 +1,281 @@
+{
+  "observed_at_utc": "2026-11-03 01:31:51 UTC",
+  "scope": "Entry head only; later final head CI is recorded in PR #15 after publication.",
+  "head_sha": "67035dfa7f0e87a6ee5ae4601515800524ed96a7",
+  "base_sha": "0a923d420c3e7c22b339c193e7ce8e14e73d03b6",
+  "tested_merge_sha": "0e29546900765364a1861d5537c83d44dc7af5ef",
+  "run_id": 40632431988,
+  "check_suite_id": 110133213288,
+  "event": "pull_request",
+  "actor": "codexcodemachine",
+  "triggering_actor": "codexcodemachine",
+  "jobs": [
+    {
+      "id": 122631678010,
+      "name": "supply-chain",
+      "status": "completed",
+      "conclusion": "success",
+      "check_source_app_id": 15368,
+      "decoded_log_read": true,
+      "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40632431988/job/122631678010"
+    },
+    {
+      "id": 122631678326,
+      "name": "windows-smoke",
+      "status": "completed",
+      "conclusion": "success",
+      "check_source_app_id": 15368,
+      "decoded_log_read": true,
+      "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40632431988/job/122631678326"
+    },
+    {
+      "id": 122631678345,
+      "name": "backend",
+      "status": "completed",
+      "conclusion": "success",
+      "check_source_app_id": 15368,
+      "decoded_log_read": true,
+      "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40632431988/job/122631678345"
+    },
+    {
+      "id": 122631678384,
+      "name": "policy",
+      "status": "completed",
+      "conclusion": "success",
+      "check_source_app_id": 15368,
+      "decoded_log_read": true,
+      "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40632431988/job/122631678384"
+    },
+    {
+      "id": 122631678388,
+      "name": "frontend",
+      "status": "completed",
+      "conclusion": "success",
+      "check_source_app_id": 15368,
+      "decoded_log_read": true,
+      "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40632431988/job/122631678388"
+    },
+    {
+      "id": 122631979534,
+      "name": "e2e",
+      "status": "completed",
+      "conclusion": "success",
+      "check_source_app_id": 15368,
+      "decoded_log_read": true,
+      "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40632431988/job/122631979534"
+    },
+    {
+      "id": 122632683173,
+      "name": "quality-gate",
+      "status": "completed",
+      "conclusion": "success",
+      "check_source_app_id": 15368,
+      "decoded_log_read": true,
+      "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40632431988/job/122632683173"
+    }
+  ],
+  "diagnostics": {
+    "supply-chain": [
+      "2026-10-28T04:28:30.5869558Z 4:28AM INF no leaks found",
+      "2026-10-28T04:28:31.0940911Z 4:28AM INF no leaks found",
+      "2026-10-28T04:28:31.0974917Z Passed: npm/NuGet advisory retrieval and blocking floors; redacted history and tracked-tree scans"
+    ],
+    "windows-smoke": [
+      "2026-10-28T04:29:12.5996809Z Build succeeded.",
+      "2026-10-28T04:29:12.5997371Z     0 Warning(s)",
+      "2026-10-28T04:29:12.5997868Z     0 Error(s)"
+    ],
+    "backend": [
+      "2026-10-28T04:28:18.1769187Z Build succeeded.",
+      "2026-10-28T04:28:18.1769804Z     0 Warning(s)",
+      "2026-10-28T04:28:18.1770345Z     0 Error(s)",
+      "2026-10-28T04:28:22.0685155Z Passed!  - Failed:     0, Passed:    10, Skipped:     0, Total:    10, Duration: 1 s - ProjectManager.Api.Tests.dll (net10.0)",
+      "2026-10-28T04:28:22.3405481Z backend: 10 tests; lines 100.00%; branches 75.00% (floors: 80% lines / 70% branches)"
+    ],
+    "policy": [
+      "2026-10-28T04:28:14.8257180Z All matched files use Prettier code style!",
+      "2026-10-28T04:28:28.9771137Z Ran 26 tests in 0.542s"
+    ],
+    "frontend": [
+      "2026-10-28T04:28:24.2551922Z frontend: 13 tests; lines 96.87%; branches 100% (floors: 80% lines / 70% branches)",
+      "2026-10-28T04:28:24.9980343Z Ran 26 tests in 0.633s"
+    ],
+    "e2e": [
+      "2026-10-28T04:30:46.4586980Z Passed: ten consecutive full executions, fresh storage, zero retries. Commit: 0e29546900765364a1861d5537c83d44dc7af5ef"
+    ],
+    "quality-gate": [
+      "2026-10-28T04:30:58.6822994Z Head commit: 67035dfa7f0e87a6ee5ae4601515800524ed96a7",
+      "2026-10-28T04:30:58.6823919Z Tested workflow commit: 0e29546900765364a1861d5537c83d44dc7af5ef",
+      "2026-10-28T04:30:58.6825548Z | frontend | success |",
+      "2026-10-28T04:30:58.6826024Z | backend | success |",
+      "2026-10-28T04:30:58.6826519Z | windows-smoke | success |",
+      "2026-10-28T04:30:58.6827023Z | e2e | success |",
+      "2026-10-28T04:30:58.6827580Z | policy | success |",
+      "2026-10-28T04:30:58.6828070Z | supply-chain | success |"
+    ]
+  },
+  "artifacts": [
+    {
+      "id": 12792570427,
+      "name": "frontend-evidence",
+      "size_in_bytes": 95151,
+      "expired": false,
+      "digest": "sha256:ef28f888e745ff7cb873aa425b97dfd9bee07366aa1f1e445e532c721493199c",
+      "expires_at": "2026-11-04T04:28:29Z",
+      "head_sha": "67035dfa7f0e87a6ee5ae4601515800524ed96a7",
+      "archive_download_reference_obtained": true,
+      "local_archive_transfer": true,
+      "limit": null,
+      "computed_digest": "sha256:ef28f888e745ff7cb873aa425b97dfd9bee07366aa1f1e445e532c721493199c",
+      "api_digest_match": true,
+      "archive_entries": 22,
+      "tested_commit_verified": "0e29546900765364a1861d5537c83d44dc7af5ef"
+    },
+    {
+      "id": 12792495613,
+      "name": "backend-evidence",
+      "size_in_bytes": 28840903,
+      "expired": false,
+      "digest": "sha256:f8c4f22cdd2b0f3cec020d42555b140a06a6f8f29b9aeff3af675f60a5a7b6d0",
+      "expires_at": "2026-11-04T04:28:27Z",
+      "head_sha": "67035dfa7f0e87a6ee5ae4601515800524ed96a7",
+      "archive_download_reference_obtained": true,
+      "local_archive_transfer": true,
+      "limit": null,
+      "computed_digest": "sha256:f8c4f22cdd2b0f3cec020d42555b140a06a6f8f29b9aeff3af675f60a5a7b6d0",
+      "api_digest_match": true,
+      "archive_entries": 55,
+      "tested_commit_verified": "0e29546900765364a1861d5537c83d44dc7af5ef"
+    },
+    {
+      "id": 12792495601,
+      "name": "api-production",
+      "size_in_bytes": 28831226,
+      "expired": false,
+      "digest": "sha256:0c4c5dc4676889012d1233c4a8da16019ba07e807e5c5ad0e48ed25e29a96208",
+      "expires_at": "2026-11-04T04:28:24Z",
+      "head_sha": "67035dfa7f0e87a6ee5ae4601515800524ed96a7",
+      "archive_download_reference_obtained": true,
+      "local_archive_transfer": true,
+      "limit": null,
+      "computed_digest": "sha256:0c4c5dc4676889012d1233c4a8da16019ba07e807e5c5ad0e48ed25e29a96208",
+      "api_digest_match": true,
+      "archive_entries": 47,
+      "production_provenance": {
+        "commit": "0e29546900765364a1861d5537c83d44dc7af5ef",
+        "run": "40632431988",
+        "output_file_count": 46,
+        "original_manifest_sha256": "f21ba786b2857afe6ebc9b9a2517251ce93766fa8eafa13cc58d8de97b2e9aa7",
+        "output_hashes_independently_verified": true,
+        "retention": "Summary only; original provenance remains in the archive identified by the retained archive digest."
+      },
+      "production_hashes_verified": true
+    },
+    {
+      "id": 12792306038,
+      "name": "web-production",
+      "size_in_bytes": 69264,
+      "expired": false,
+      "digest": "sha256:9c7ddfd7c0e92325220bb0e71d030bb645aac822405dc4ae4d16eac4110674d5",
+      "expires_at": "2026-11-04T04:28:27Z",
+      "head_sha": "67035dfa7f0e87a6ee5ae4601515800524ed96a7",
+      "archive_download_reference_obtained": true,
+      "local_archive_transfer": true,
+      "limit": null,
+      "computed_digest": "sha256:9c7ddfd7c0e92325220bb0e71d030bb645aac822405dc4ae4d16eac4110674d5",
+      "api_digest_match": true,
+      "archive_entries": 3,
+      "production_provenance": {
+        "commit": "0e29546900765364a1861d5537c83d44dc7af5ef",
+        "run": "40632431988",
+        "output_file_count": 2,
+        "original_manifest_sha256": "cf8fa1fee750639621f85e424d61f60db9c1ed0dfea20185268d8d741c6cd69d",
+        "output_hashes_independently_verified": true,
+        "retention": "Summary only; original provenance remains in the archive identified by the retained archive digest."
+      },
+      "production_hashes_verified": true
+    },
+    {
+      "id": 12792266744,
+      "name": "e2e-evidence",
+      "size_in_bytes": 33607179,
+      "expired": false,
+      "digest": "sha256:3ab02dab91259aa2f695b5fe5778e0a6cc5bf935913dffede92720162cf59b56",
+      "expires_at": "2026-11-04T04:30:46Z",
+      "head_sha": "67035dfa7f0e87a6ee5ae4601515800524ed96a7",
+      "archive_download_reference_obtained": true,
+      "local_archive_transfer": false,
+      "limit": "file exceeds the executor transfer limit of 32 MiB",
+      "api_digest_match": null
+    },
+    {
+      "id": 12792141940,
+      "name": "policy-evidence",
+      "size_in_bytes": 1885,
+      "expired": false,
+      "digest": "sha256:a5c639d8fdae48dd2fd6524b2afc4505363c7af88727ddcaba036944b834bcd6",
+      "expires_at": "2026-11-04T04:28:29Z",
+      "head_sha": "67035dfa7f0e87a6ee5ae4601515800524ed96a7",
+      "archive_download_reference_obtained": true,
+      "local_archive_transfer": true,
+      "limit": null,
+      "computed_digest": "sha256:a5c639d8fdae48dd2fd6524b2afc4505363c7af88727ddcaba036944b834bcd6",
+      "api_digest_match": true,
+      "archive_entries": 4,
+      "tested_commit_verified": "0e29546900765364a1861d5537c83d44dc7af5ef"
+    },
+    {
+      "id": 12791719266,
+      "name": "supply-chain-evidence",
+      "size_in_bytes": 3042,
+      "expired": false,
+      "digest": "sha256:a80ef3b0ddc683300aac5fab5987faf28ba5238a92aedaf71e357c8e666527ec",
+      "expires_at": "2026-11-04T04:28:31Z",
+      "head_sha": "67035dfa7f0e87a6ee5ae4601515800524ed96a7",
+      "archive_download_reference_obtained": true,
+      "local_archive_transfer": true,
+      "limit": null,
+      "computed_digest": "sha256:a80ef3b0ddc683300aac5fab5987faf28ba5238a92aedaf71e357c8e666527ec",
+      "api_digest_match": true,
+      "archive_entries": 11,
+      "tested_commit_verified": "0e29546900765364a1861d5537c83d44dc7af5ef",
+      "npm_advisory_counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "nuget_report": {
+        "version": 1,
+        "parameters": "--vulnerable --include-transitive",
+        "sources": ["https://api.nuget.org/v3/index.json"],
+        "projects": [
+          {
+            "path": "/home/runner/work/project-manager/project-manager/tests/ProjectManager.Api.Tests/ProjectManager.Api.Tests.csproj"
+          }
+        ]
+      },
+      "gitleaks_history_findings": 0,
+      "gitleaks_tree_findings": 0
+    },
+    {
+      "id": 12791653166,
+      "name": "windows-evidence",
+      "size_in_bytes": 1490,
+      "expired": false,
+      "digest": "sha256:9d2085c019f7027cc30f239b1d7b347f8ade6f62996aeae74affd29863fbdf1e",
+      "expires_at": "2026-11-04T04:29:13Z",
+      "head_sha": "67035dfa7f0e87a6ee5ae4601515800524ed96a7",
+      "archive_download_reference_obtained": true,
+      "local_archive_transfer": true,
+      "limit": null,
+      "computed_digest": "sha256:9d2085c019f7027cc30f239b1d7b347f8ade6f62996aeae74affd29863fbdf1e",
+      "api_digest_match": true,
+      "archive_entries": 5,
+      "tested_commit_verified": "0e29546900765364a1861d5537c83d44dc7af5ef"
+    }
+  ],
+  "protection_enforcement": "Unverified: CI execution and App ID are not enforcement proof; no Phase C target probes run."
+}

@@ -1,0 +1,231 @@
+{
+  "observed_at_utc": "2026-11-03 01:39:31 UTC",
+  "owner_steering": "Personal Joshbomb75 connector authorized for read-only verification if visible and live-identified; implementation publication remains codexcodemachine only; no settings writes/reviews/approvals/merges authorized",
+  "owner_connection_availability": {
+    "live_api_login": "codexcodemachine",
+    "live_api_id": 348095294,
+    "listed_accounts": ["Johnson-Dev-Agent-Management", "codexcodemachine"],
+    "listed_installations": [172621871, 175319904],
+    "account_selector_advertised": false,
+    "github_plugin_installed": true,
+    "github_plugin_enabled": true,
+    "owner_route_invoked": false,
+    "result": "Personal account not exposed by current tools. Fresh chat may refresh tools; managed administration limits may still require owner export."
+  },
+  "run_id": 41560967603,
+  "head_sha": "f21a64a6d4d858afd6fb825bc99523414a82adf0",
+  "tested_merge_sha": "7d59b4e6d1ddcbd552eb3c2bc9390365578c5c64",
+  "supply_chain_job_id": 125671200023,
+  "supply_chain_conclusion": "failure",
+  "failed_artifact": {
+    "id": 13196493831,
+    "sha256": "b889461ce4da08d84702730d0923a3e888d32ba99982083f78d1ab8c768ba392",
+    "api_digest_match": true
+  },
+  "advisory_checked_at_utc": "2026-11-03T01:38:58Z",
+  "npm_advisory_counts": {
+    "info": 0,
+    "low": 0,
+    "moderate": 14,
+    "high": 0,
+    "critical": 0,
+    "total": 14
+  },
+  "advisory": {
+    "package": "minimatch",
+    "id": "GHSA-g3hv-75wg-m249",
+    "severity": "moderate",
+    "affected": "<11.0.1",
+    "title": "Potential denial of service via globparts amplification",
+    "scope": "Development lint/parser tooling; not product runtime dependencies",
+    "reachability": "Crafted glob inputs can amplify resources; independent review needed for untrusted PR/configuration paths",
+    "remediation": "Review compatible upstream dependency updates; do not downgrade tooling or force incompatible override to hide findings",
+    "accountable_owner_and_requested_human_reviewer": "Joshbomb75",
+    "review_decision": "Pending; no accepted exception or risk waiver"
+  },
+  "gitleaks": {
+    "redaction": "scripts/security.sh --redact=100; Secret/Match fields not inspected or retained",
+    "findings": [
+      {
+        "RuleID": "generic-api-key",
+        "Description": "Detected a Generic API Key, potentially exposing access to various services and sensitive operations.",
+        "File": "docs/milestones/evidence/phase-c/retained-entry/api-production/provenance.json",
+        "StartLine": 11,
+        "EndLine": 11,
+        "Commit": "f21a64a6d4d858afd6fb825bc99523414a82adf0",
+        "Fingerprint": "f21a64a6d4d858afd6fb825bc99523414a82adf0:docs/milestones/evidence/phase-c/retained-entry/api-production/provenance.json:generic-api-key:11"
+      },
+      {
+        "RuleID": "generic-api-key",
+        "Description": "Detected a Generic API Key, potentially exposing access to various services and sensitive operations.",
+        "File": "docs/milestones/evidence/phase-c/retained-entry/api-production/provenance.json",
+        "StartLine": 12,
+        "EndLine": 12,
+        "Commit": "f21a64a6d4d858afd6fb825bc99523414a82adf0",
+        "Fingerprint": "f21a64a6d4d858afd6fb825bc99523414a82adf0:docs/milestones/evidence/phase-c/retained-entry/api-production/provenance.json:generic-api-key:12"
+      },
+      {
+        "RuleID": "generic-api-key",
+        "Description": "Detected a Generic API Key, potentially exposing access to various services and sensitive operations.",
+        "File": "docs/milestones/evidence/phase-c/retained-entry/api-production/provenance.json",
+        "StartLine": 13,
+        "EndLine": 13,
+        "Commit": "f21a64a6d4d858afd6fb825bc99523414a82adf0",
+        "Fingerprint": "f21a64a6d4d858afd6fb825bc99523414a82adf0:docs/milestones/evidence/phase-c/retained-entry/api-production/provenance.json:generic-api-key:13"
+      },
+      {
+        "RuleID": "generic-api-key",
+        "Description": "Detected a Generic API Key, potentially exposing access to various services and sensitive operations.",
+        "File": "docs/milestones/evidence/phase-c/retained-entry/api-production/provenance.json",
+        "StartLine": 14,
+        "EndLine": 14,
+        "Commit": "f21a64a6d4d858afd6fb825bc99523414a82adf0",
+        "Fingerprint": "f21a64a6d4d858afd6fb825bc99523414a82adf0:docs/milestones/evidence/phase-c/retained-entry/api-production/provenance.json:generic-api-key:14"
+      },
+      {
+        "RuleID": "generic-api-key",
+        "Description": "Detected a Generic API Key, potentially exposing access to various services and sensitive operations.",
+        "File": "docs/milestones/evidence/phase-c/retained-entry/api-production/provenance.json",
+        "StartLine": 15,
+        "EndLine": 15,
+        "Commit": "f21a64a6d4d858afd6fb825bc99523414a82adf0",
+        "Fingerprint": "f21a64a6d4d858afd6fb825bc99523414a82adf0:docs/milestones/evidence/phase-c/retained-entry/api-production/provenance.json:generic-api-key:15"
+      },
+      {
+        "RuleID": "generic-api-key",
+        "Description": "Detected a Generic API Key, potentially exposing access to various services and sensitive operations.",
+        "File": "docs/milestones/evidence/phase-c/ci-recheck-2026-11-03.json",
+        "StartLine": 174,
+        "EndLine": 174,
+        "Commit": "f21a64a6d4d858afd6fb825bc99523414a82adf0",
+        "Fingerprint": "f21a64a6d4d858afd6fb825bc99523414a82adf0:docs/milestones/evidence/phase-c/ci-recheck-2026-11-03.json:generic-api-key:174"
+      },
+      {
+        "RuleID": "generic-api-key",
+        "Description": "Detected a Generic API Key, potentially exposing access to various services and sensitive operations.",
+        "File": "docs/milestones/evidence/phase-c/ci-recheck-2026-11-03.json",
+        "StartLine": 175,
+        "EndLine": 175,
+        "Commit": "f21a64a6d4d858afd6fb825bc99523414a82adf0",
+        "Fingerprint": "f21a64a6d4d858afd6fb825bc99523414a82adf0:docs/milestones/evidence/phase-c/ci-recheck-2026-11-03.json:generic-api-key:175"
+      },
+      {
+        "RuleID": "generic-api-key",
+        "Description": "Detected a Generic API Key, potentially exposing access to various services and sensitive operations.",
+        "File": "docs/milestones/evidence/phase-c/ci-recheck-2026-11-03.json",
+        "StartLine": 176,
+        "EndLine": 176,
+        "Commit": "f21a64a6d4d858afd6fb825bc99523414a82adf0",
+        "Fingerprint": "f21a64a6d4d858afd6fb825bc99523414a82adf0:docs/milestones/evidence/phase-c/ci-recheck-2026-11-03.json:generic-api-key:176"
+      },
+      {
+        "RuleID": "generic-api-key",
+        "Description": "Detected a Generic API Key, potentially exposing access to various services and sensitive operations.",
+        "File": "docs/milestones/evidence/phase-c/ci-recheck-2026-11-03.json",
+        "StartLine": 177,
+        "EndLine": 177,
+        "Commit": "f21a64a6d4d858afd6fb825bc99523414a82adf0",
+        "Fingerprint": "f21a64a6d4d858afd6fb825bc99523414a82adf0:docs/milestones/evidence/phase-c/ci-recheck-2026-11-03.json:generic-api-key:177"
+      },
+      {
+        "RuleID": "generic-api-key",
+        "Description": "Detected a Generic API Key, potentially exposing access to various services and sensitive operations.",
+        "File": "docs/milestones/evidence/phase-c/ci-recheck-2026-11-03.json",
+        "StartLine": 178,
+        "EndLine": 178,
+        "Commit": "f21a64a6d4d858afd6fb825bc99523414a82adf0",
+        "Fingerprint": "f21a64a6d4d858afd6fb825bc99523414a82adf0:docs/milestones/evidence/phase-c/ci-recheck-2026-11-03.json:generic-api-key:178"
+      }
+    ],
+    "classification": "Evidence file SHA-256 digests; verified against original manifest and downloaded artifact bytes, not credentials. Human disposition pending.",
+    "current_tree_correction": "Retain provenance commit/run/count/manifest-digest summaries instead of raw maps. Original archive digests/inspection evidence retained.",
+    "history_limit": "Full-history scanning still includes f21a64a; ordinary follow-up cannot erase findings. No scanner weakening/suppression or shared-history rewrite.",
+    "recovery_preparation": "After documented isolation/capability prerequisites, use a clean successor based on 67035dfa7f0e87a6ee5ae4601515800524ed96a7 and independently validate/review before confirming replacement; keep #15 open.",
+    "reachable_refs_limit": "Hosted checkout fetches all branch/tag refs; --all scans every reachable commit. A clean successor alone remains blocked while any fetched old ref reaches f21a64a. After replacement authorship/content is confirmed, owner must separately review/authorize old ordinary-feature-ref disposition or another policy-preserving resolution; no cleanup performed here."
+  },
+  "probes_executed": [],
+  "settings_changed": false,
+  "permissions_changed": false,
+  "merges_performed": false,
+  "prior_run_jobs": [
+    {
+      "name": "backend",
+      "id": 125671199742,
+      "conclusion": "success",
+      "check_source_app_id": 15368,
+      "decoded_log_read": true,
+      "diagnostics": [
+        "2026-11-03T01:39:04.2877804Z Passed!  - Failed:     0, Passed:    10, Skipped:     0, Total:    10, Duration: 2 s - ProjectManager.Api.Tests.dll (net10.0)",
+        "2026-11-03T01:39:04.5243171Z backend: 10 tests; lines 100.00%; branches 75.00% (floors: 80% lines / 70% branches)"
+      ]
+    },
+    {
+      "name": "supply-chain",
+      "id": 125671200023,
+      "conclusion": "failure",
+      "check_source_app_id": 15368,
+      "decoded_log_read": true,
+      "diagnostics": [
+        "2026-11-03T01:39:03.7155556Z npm advisory counts: {'info': 0, 'low': 0, 'moderate': 14, 'high': 0, 'critical': 0, 'total': 14}",
+        "2026-11-03T01:39:03.7184604Z NuGet advisory retrieval succeeded; no high/critical findings",
+        "2026-11-03T01:39:04.2769583Z 1:39AM WRN leaks found: 10"
+      ]
+    },
+    {
+      "name": "windows-smoke",
+      "id": 125671200137,
+      "conclusion": "success",
+      "check_source_app_id": 15368,
+      "decoded_log_read": true,
+      "diagnostics": []
+    },
+    {
+      "name": "policy",
+      "id": 125671200160,
+      "conclusion": "success",
+      "check_source_app_id": 15368,
+      "decoded_log_read": true,
+      "diagnostics": ["2026-11-03T01:39:21.9829547Z Ran 26 tests in 0.580s"]
+    },
+    {
+      "name": "frontend",
+      "id": 125671200917,
+      "conclusion": "success",
+      "check_source_app_id": 15368,
+      "decoded_log_read": true,
+      "diagnostics": [
+        "2026-11-03T01:39:16.1812854Z frontend: 13 tests; lines 96.87%; branches 100% (floors: 80% lines / 70% branches)",
+        "2026-11-03T01:39:16.8716456Z Ran 26 tests in 0.577s"
+      ]
+    },
+    {
+      "name": "e2e",
+      "id": 125671774954,
+      "conclusion": "success",
+      "check_source_app_id": 15368,
+      "decoded_log_read": true,
+      "diagnostics": [
+        "2026-11-03T01:42:15.1979749Z Passed: ten consecutive full executions, fresh storage, zero retries. Commit: 7d59b4e6d1ddcbd552eb3c2bc9390365578c5c64"
+      ]
+    },
+    {
+      "name": "quality-gate",
+      "id": 125672830557,
+      "conclusion": "failure",
+      "check_source_app_id": 15368,
+      "decoded_log_read": true,
+      "diagnostics": [
+        "2026-11-03T01:42:24.9823199Z Failed: every required job must explicitly succeed",
+        "2026-11-03T01:42:24.9824082Z Head commit: f21a64a6d4d858afd6fb825bc99523414a82adf0",
+        "2026-11-03T01:42:24.9824872Z Tested workflow commit: 7d59b4e6d1ddcbd552eb3c2bc9390365578c5c64",
+        "2026-11-03T01:42:24.9826518Z | frontend | success |",
+        "2026-11-03T01:42:24.9827003Z | backend | success |",
+        "2026-11-03T01:42:24.9827529Z | windows-smoke | success |",
+        "2026-11-03T01:42:24.9828131Z | e2e | success |",
+        "2026-11-03T01:42:24.9828598Z | policy | success |",
+        "2026-11-03T01:42:24.9829129Z | supply-chain | failure |"
+      ]
+    }
+  ],
+  "prior_run_conclusion": "failure"
+}

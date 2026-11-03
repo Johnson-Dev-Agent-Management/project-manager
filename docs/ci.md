@@ -1,9 +1,24 @@
 # CI operation — Milestone 0, Phase B
 
-Run in an authorized cloud checkout. Exact Node 24.22.0, npm 11.9.0, and
+The owner approved the [bounded Phase C closeout](milestones/milestone-0.md#phase-c--bounded-ci-closeout).
+All seven jobs and their thresholds remain required. The historical disposable
+base trigger remains available, but target creation/protection or exhaustive probes
+are not needed for closeout. See the [current report](milestones/milestone-0-closeout-report.md)
+and [owner checklist](branch-enforcement.md). The ten exact historical scanner
+fingerprints are the sole active false-positive exclusion; independent merge
+review and its documented review/renewal deadline remain required.
+
+Run in an authorized cloud checkout. Exact Node 26.13.0 LTS, npm 12.2.1, and
 .NET SDK 10.0.402 remain pinned. Setup uses npm ci and locked NuGet restore;
-Linux/macOS may install runtimes under ignored `.tools`. Native Windows uses
-Git Bash and pinned tools on PATH; `cygpath -am` database conversion is preserved.
+All platforms select project Node/npm from a versioned ignored `.tools` directory
+when host versions differ. Native Windows uses Git Bash and the pinned native
+.NET SDK on PATH; `cygpath -am` database conversion is preserved. Newer host
+Node/npm can bootstrap setup without matching the project pins first.
+`PROJECT_BOOTSTRAP_NODE=true` forces a workspace installation, and
+`PROJECT_NODE_DIR` selects an isolated directory. The Windows job uses a fresh
+runner-temp directory to exercise native bootstrap, then repeats setup/build.
+The shared Actions setup publishes the selected private tool paths to later steps
+and records actual selected versions; it no longer installs npm globally.
 There is no required `/workspace` location or dependency on personal credentials.
 
 ```bash
@@ -30,7 +45,7 @@ bash scripts/e2e-qualify.sh
 
 [Engineering standards](engineering.md) specifies contracts, behavioral mapping,
 80% line / 70% branch floors per codebase, coverage scope, security triage, exact
-analysis policy, and the empty exception register. The [Phase A report](milestones/milestone-0-phase-a-report.md)
+analysis policy, and the current exception register. The [Phase A report](milestones/milestone-0-phase-a-report.md)
 is historical evidence; Phase B report records current outcomes.
 
 ## Workflows and production browser testing
@@ -41,7 +56,8 @@ and manual dispatch with `cold-cache`. No path filters. Stable check names:
 and **quality-gate**. E2E depends on frontend/backend. The always-running aggregate
 gate accepts only explicit success from all six dependencies, rejecting missing,
 failed, skipped, and cancelled jobs. Python tests exercise each dependency's
-failure outcomes. These names are not configured as required checks in Phase B.
+failure outcomes. Current main reports all seven names required from GitHub Actions (App 15368);
+detailed review/up-to-date settings require owner readback.
 
 Frontend/backend jobs publish separate production artifacts. E2E downloads only
 named artifacts from the **current workflow run**, with digest mismatch treated
@@ -107,6 +123,7 @@ The ESLint-10-compatible accessibility fork, obsolete no-floor regression test
 replacement with floor rejection tests, and repository-wide formatting are
 explicit proposals. Historical plan/report formatting changes carry no semantic
 changes. No existing behavioral assertion is removed; the old creation/list,
-validation, reload, and restart checks are retained and strengthened. There are
-no operative exceptions, suppressed rules, retries, or lowered coverage targets.
-Phase C, independent AI review, orchestration, and merge controls are outside scope.
+validation, reload, and restart checks are retained and strengthened. The later closeout adds only the ten exact historical false-positive fingerprints.
+No coverage target, security severity threshold, assertion, discovery rule or retry
+policy is relaxed. Independent AI review, orchestration and automatic merging
+remain outside M0 scope.

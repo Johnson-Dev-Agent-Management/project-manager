@@ -15,7 +15,8 @@ with SQLite persistence and automated unit and browser tests.
 - Within an assigned task, implement changes, install necessary project dependencies,
   run checks, commit, push a feature branch, and open or update a draft pull request.
 - Leave merges, releases, deployments, purchases, paid credits, and new paid services to the owner.
-- Keep the repository and development environment private. Do not broaden repository or service access.
+- The repository is intentionally public; preserve its visibility. Keep the Codex Cloud
+  development environment private. Do not broaden repository or service permissions.
 - Use synthetic development data. Never commit credentials, database files, or environment secrets.
 - These instructions guide behavior; actual access controls must be enforced in the environment and GitHub.
 
@@ -23,6 +24,9 @@ with SQLite persistence and automated unit and browser tests.
 
 - Before milestone work, read [Milestone 0: Trusted Development Foundation](docs/milestones/milestone-0.md).
 - Follow the assigned phase, its acceptance criteria, and the acceptance-report format.
+- The owner approved a CI-focused M0 closeout on November 2, 2026. Current Phase C
+  criteria supersede historical account-isolation and exhaustive-probe blockers.
+  Keep bot PR authorship, human review, required checks and coverage/security floors.
   The plan is not authorization to start another phase, merge, or change GitHub settings.
 - Treat CI configuration, test definitions, coverage thresholds, and engineering standards
   as protected policy. Explicitly identify proposed changes; never silently weaken controls.
@@ -31,7 +35,7 @@ with SQLite persistence and automated unit and browser tests.
 
 - One repository: `src/web/` for React + strict TypeScript + Vite;
   `src/api/ProjectManager.Api/` for ASP.NET Core; `tests/` for backend tests.
-- Use .NET 10 LTS and Node.js 24 LTS, current supported patches.
+- Use .NET 10 LTS and Node.js 26 LTS, current supported patches.
   Record the exact tested SDK/tool versions, commit package-lock.json and NuGet lock files.
 - Start with EF Core and SQLite for development. No external database account is required.
 - Keep the API and UI small and modular. Prefer a modular monolith to services.

@@ -1,0 +1,350 @@
+{
+  "observed_at_utc": "2026-10-28 03:38:53 UTC",
+  "scope": "Entry PR head only; does not validate the later documentation correction head. Final exact-head validation is recorded in PR #15 handoff after publication.",
+  "head_sha": "caeda8fcacbd801f0e32913a87b1f5b8673a41fd",
+  "base_sha": "0a923d420c3e7c22b339c193e7ce8e14e73d03b6",
+  "tested_merge_sha": "d3bb37207f1562e52a69bcb2f3e549e50a0d962f",
+  "run_id": 40266115882,
+  "run_url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40266115882",
+  "jobs": [
+    {
+      "id": 121388817349,
+      "name": "policy",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40266115882/job/121388817349",
+      "check_source_app_id": 15368,
+      "decoded_log_read": true
+    },
+    {
+      "id": 121388817402,
+      "name": "frontend",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40266115882/job/121388817402",
+      "check_source_app_id": 15368,
+      "decoded_log_read": true
+    },
+    {
+      "id": 121388817415,
+      "name": "windows-smoke",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40266115882/job/121388817415",
+      "check_source_app_id": 15368,
+      "decoded_log_read": true
+    },
+    {
+      "id": 121388817540,
+      "name": "backend",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40266115882/job/121388817540",
+      "check_source_app_id": 15368,
+      "decoded_log_read": true
+    },
+    {
+      "id": 121388817579,
+      "name": "supply-chain",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40266115882/job/121388817579",
+      "check_source_app_id": 15368,
+      "decoded_log_read": true
+    },
+    {
+      "id": 121389033812,
+      "name": "e2e",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40266115882/job/121389033812",
+      "check_source_app_id": 15368,
+      "decoded_log_read": true
+    },
+    {
+      "id": 121389579764,
+      "name": "quality-gate",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40266115882/job/121389579764",
+      "check_source_app_id": 15368,
+      "decoded_log_read": true
+    }
+  ],
+  "diagnostics": {
+    "policy": ["2026-10-26T03:52:18.2289322Z Ran 26 tests in 0.408s"],
+    "frontend": [
+      "2026-10-26T03:52:21.2167129Z  Test Files  2 passed (2)",
+      "2026-10-26T03:52:21.2186610Z       Tests  13 passed (13)",
+      "2026-10-26T03:52:21.3065557Z frontend: 13 tests; lines 96.87%; branches 100% (floors: 80% lines / 70% branches)",
+      "2026-10-26T03:52:22.0141067Z Ran 26 tests in 0.573s"
+    ],
+    "windows-smoke": [],
+    "backend": [
+      "2026-10-26T03:52:13.2812532Z Passed!  - Failed:     0, Passed:    10, Skipped:     0, Total:    10, Duration: 1 s - ProjectManager.Api.Tests.dll (net10.0)",
+      "2026-10-26T03:52:13.4892722Z backend: 10 tests; lines 100.00%; branches 75.00% (floors: 80% lines / 70% branches)"
+    ],
+    "supply-chain": [
+      "2026-10-26T03:52:09.9050583Z 3:52AM INF no leaks found",
+      "2026-10-26T03:52:10.2851692Z 3:52AM INF no leaks found",
+      "2026-10-26T03:52:10.2880905Z Passed: npm/NuGet advisory retrieval and blocking floors; redacted history and tracked-tree scans"
+    ],
+    "e2e": [
+      "2026-10-26T03:54:39.4099135Z Passed: ten consecutive full executions, fresh storage, zero retries. Commit: d3bb37207f1562e52a69bcb2f3e549e50a0d962f"
+    ],
+    "quality-gate": [
+      "2026-10-26T03:54:50.1574221Z Head commit: caeda8fcacbd801f0e32913a87b1f5b8673a41fd",
+      "2026-10-26T03:54:50.1575150Z Tested workflow commit: d3bb37207f1562e52a69bcb2f3e549e50a0d962f",
+      "2026-10-26T03:54:50.1577050Z | frontend | success |",
+      "2026-10-26T03:54:50.1577566Z | backend | success |",
+      "2026-10-26T03:54:50.1578062Z | windows-smoke | success |",
+      "2026-10-26T03:54:50.1578631Z | e2e | success |",
+      "2026-10-26T03:54:50.1579118Z | policy | success |",
+      "2026-10-26T03:54:50.1579660Z | supply-chain | success |"
+    ]
+  },
+  "artifacts": [
+    {
+      "id": 12626790254,
+      "name": "policy-evidence",
+      "size_in_bytes": 1886,
+      "url": "https://api.github.com/repos/Johnson-Dev-Agent-Management/project-manager/actions/artifacts/12626790254",
+      "archive_download_url": "https://api.github.com/repos/Johnson-Dev-Agent-Management/project-manager/actions/artifacts/12626790254/zip",
+      "expired": false,
+      "created_at": "2026-10-26T03:52:19Z",
+      "expires_at": "2026-11-02T03:52:18Z",
+      "updated_at": "2026-10-26T03:52:19Z",
+      "digest": "sha256:f469487af535f87e7ca9cd26ad46cdd3ac5c25823e7a8b01a10c48c45a437130",
+      "workflow_run": {
+        "id": 40266115882,
+        "repository_id": 1409806997,
+        "head_repository_id": 1409806997,
+        "head_branch": "codex/m0-phase-c",
+        "head_sha": "caeda8fcacbd801f0e32913a87b1f5b8673a41fd"
+      }
+    },
+    {
+      "id": 12626735430,
+      "name": "windows-evidence",
+      "size_in_bytes": 1491,
+      "url": "https://api.github.com/repos/Johnson-Dev-Agent-Management/project-manager/actions/artifacts/12626735430",
+      "archive_download_url": "https://api.github.com/repos/Johnson-Dev-Agent-Management/project-manager/actions/artifacts/12626735430/zip",
+      "expired": false,
+      "created_at": "2026-10-26T03:53:26Z",
+      "expires_at": "2026-11-02T03:53:26Z",
+      "updated_at": "2026-10-26T03:53:26Z",
+      "digest": "sha256:6e0551f796b5cc60f2dfc28e8a1c261818fe352f6920d9ca4bb9e7f6e06fb75f",
+      "workflow_run": {
+        "id": 40266115882,
+        "repository_id": 1409806997,
+        "head_repository_id": 1409806997,
+        "head_branch": "codex/m0-phase-c",
+        "head_sha": "caeda8fcacbd801f0e32913a87b1f5b8673a41fd"
+      }
+    },
+    {
+      "id": 12626661786,
+      "name": "e2e-evidence",
+      "size_in_bytes": 33665918,
+      "url": "https://api.github.com/repos/Johnson-Dev-Agent-Management/project-manager/actions/artifacts/12626661786",
+      "archive_download_url": "https://api.github.com/repos/Johnson-Dev-Agent-Management/project-manager/actions/artifacts/12626661786/zip",
+      "expired": false,
+      "created_at": "2026-10-26T03:54:43Z",
+      "expires_at": "2026-11-02T03:54:39Z",
+      "updated_at": "2026-10-26T03:54:43Z",
+      "digest": "sha256:d5327c69bfd91bd4fdeca8882be2795e23c013e9778522ef5a8cb91b86ae0db0",
+      "workflow_run": {
+        "id": 40266115882,
+        "repository_id": 1409806997,
+        "head_repository_id": 1409806997,
+        "head_branch": "codex/m0-phase-c",
+        "head_sha": "caeda8fcacbd801f0e32913a87b1f5b8673a41fd"
+      }
+    },
+    {
+      "id": 12626512465,
+      "name": "supply-chain-evidence",
+      "size_in_bytes": 3038,
+      "url": "https://api.github.com/repos/Johnson-Dev-Agent-Management/project-manager/actions/artifacts/12626512465",
+      "archive_download_url": "https://api.github.com/repos/Johnson-Dev-Agent-Management/project-manager/actions/artifacts/12626512465/zip",
+      "expired": false,
+      "created_at": "2026-10-26T03:52:10Z",
+      "expires_at": "2026-11-02T03:52:10Z",
+      "updated_at": "2026-10-26T03:52:10Z",
+      "digest": "sha256:bfac50912dab41b210cbb8e10dce1ef67bc56a16961fffd6f6377da9d0b35293",
+      "workflow_run": {
+        "id": 40266115882,
+        "repository_id": 1409806997,
+        "head_repository_id": 1409806997,
+        "head_branch": "codex/m0-phase-c",
+        "head_sha": "caeda8fcacbd801f0e32913a87b1f5b8673a41fd"
+      }
+    },
+    {
+      "id": 12626278226,
+      "name": "frontend-evidence",
+      "size_in_bytes": 95160,
+      "url": "https://api.github.com/repos/Johnson-Dev-Agent-Management/project-manager/actions/artifacts/12626278226",
+      "archive_download_url": "https://api.github.com/repos/Johnson-Dev-Agent-Management/project-manager/actions/artifacts/12626278226/zip",
+      "expired": false,
+      "created_at": "2026-10-26T03:52:27Z",
+      "expires_at": "2026-11-02T03:52:26Z",
+      "updated_at": "2026-10-26T03:52:27Z",
+      "digest": "sha256:2622b4aad8cb8f8672284aa1e35d7f48810095e09c6102c96026d89814713f0f",
+      "workflow_run": {
+        "id": 40266115882,
+        "repository_id": 1409806997,
+        "head_repository_id": 1409806997,
+        "head_branch": "codex/m0-phase-c",
+        "head_sha": "caeda8fcacbd801f0e32913a87b1f5b8673a41fd"
+      }
+    },
+    {
+      "id": 12626228202,
+      "name": "web-production",
+      "size_in_bytes": 69265,
+      "url": "https://api.github.com/repos/Johnson-Dev-Agent-Management/project-manager/actions/artifacts/12626228202",
+      "archive_download_url": "https://api.github.com/repos/Johnson-Dev-Agent-Management/project-manager/actions/artifacts/12626228202/zip",
+      "expired": false,
+      "created_at": "2026-10-26T03:52:25Z",
+      "expires_at": "2026-11-02T03:52:24Z",
+      "updated_at": "2026-10-26T03:52:25Z",
+      "digest": "sha256:14a54e62fa527cdf1f7ef70268e31c882997874b8fb70be4ad941d1bf95ff4e7",
+      "workflow_run": {
+        "id": 40266115882,
+        "repository_id": 1409806997,
+        "head_repository_id": 1409806997,
+        "head_branch": "codex/m0-phase-c",
+        "head_sha": "caeda8fcacbd801f0e32913a87b1f5b8673a41fd"
+      }
+    },
+    {
+      "id": 12625749679,
+      "name": "api-production",
+      "size_in_bytes": 28831221,
+      "url": "https://api.github.com/repos/Johnson-Dev-Agent-Management/project-manager/actions/artifacts/12625749679",
+      "archive_download_url": "https://api.github.com/repos/Johnson-Dev-Agent-Management/project-manager/actions/artifacts/12625749679/zip",
+      "expired": false,
+      "created_at": "2026-10-26T03:52:17Z",
+      "expires_at": "2026-11-02T03:52:15Z",
+      "updated_at": "2026-10-26T03:52:17Z",
+      "digest": "sha256:de23b79fbb1a4ddd8c056e006cb81f0004f6098a49f020b171ece19efea214ca",
+      "workflow_run": {
+        "id": 40266115882,
+        "repository_id": 1409806997,
+        "head_repository_id": 1409806997,
+        "head_branch": "codex/m0-phase-c",
+        "head_sha": "caeda8fcacbd801f0e32913a87b1f5b8673a41fd"
+      }
+    },
+    {
+      "id": 12625639867,
+      "name": "backend-evidence",
+      "size_in_bytes": 28840892,
+      "url": "https://api.github.com/repos/Johnson-Dev-Agent-Management/project-manager/actions/artifacts/12625639867",
+      "archive_download_url": "https://api.github.com/repos/Johnson-Dev-Agent-Management/project-manager/actions/artifacts/12625639867/zip",
+      "expired": false,
+      "created_at": "2026-10-26T03:52:20Z",
+      "expires_at": "2026-11-02T03:52:18Z",
+      "updated_at": "2026-10-26T03:52:20Z",
+      "digest": "sha256:254d659876a553a018f414c8c74930844d80a24eabca339b3de0770fdb19cbf0",
+      "workflow_run": {
+        "id": 40266115882,
+        "repository_id": 1409806997,
+        "head_repository_id": 1409806997,
+        "head_branch": "codex/m0-phase-c",
+        "head_sha": "caeda8fcacbd801f0e32913a87b1f5b8673a41fd"
+      }
+    }
+  ],
+  "downloaded_artifact_inspection": [
+    {
+      "id": 12626278226,
+      "name": "frontend-evidence",
+      "sha256": "2622b4aad8cb8f8672284aa1e35d7f48810095e09c6102c96026d89814713f0f",
+      "api_digest_match": true,
+      "lines": {
+        "covered": 31,
+        "total": 32
+      },
+      "branches": {
+        "covered": 24,
+        "total": 24
+      }
+    },
+    {
+      "id": 12626512465,
+      "name": "supply-chain-evidence",
+      "sha256": "bfac50912dab41b210cbb8e10dce1ef67bc56a16961fffd6f6377da9d0b35293",
+      "api_digest_match": true,
+      "npm_advisory_counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "nuget": "Expected source/project, no listed vulnerable packages; hosted uncached audit/restore and redacted Gitleaks scans passed"
+    }
+  ],
+  "main_ci": {
+    "head_sha": "0a923d420c3e7c22b339c193e7ce8e14e73d03b6",
+    "tested_sha": "0a923d420c3e7c22b339c193e7ce8e14e73d03b6",
+    "event": "push",
+    "run_id": 40223238331,
+    "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40223238331",
+    "jobs": [
+      {
+        "id": 121259144124,
+        "name": "backend",
+        "conclusion": "success",
+        "app_id": 15368,
+        "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40223238331/job/121259144124"
+      },
+      {
+        "id": 121259144282,
+        "name": "supply-chain",
+        "conclusion": "success",
+        "app_id": 15368,
+        "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40223238331/job/121259144282"
+      },
+      {
+        "id": 121259144328,
+        "name": "windows-smoke",
+        "conclusion": "success",
+        "app_id": 15368,
+        "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40223238331/job/121259144328"
+      },
+      {
+        "id": 121259144362,
+        "name": "policy",
+        "conclusion": "success",
+        "app_id": 15368,
+        "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40223238331/job/121259144362"
+      },
+      {
+        "id": 121259144364,
+        "name": "frontend",
+        "conclusion": "success",
+        "app_id": 15368,
+        "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40223238331/job/121259144364"
+      },
+      {
+        "id": 121259379410,
+        "name": "e2e",
+        "conclusion": "success",
+        "app_id": 15368,
+        "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40223238331/job/121259379410"
+      },
+      {
+        "id": 121259943973,
+        "name": "quality-gate",
+        "conclusion": "success",
+        "app_id": 15368,
+        "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/actions/runs/40223238331/job/121259943973"
+      }
+    ]
+  },
+  "protection_enforcement": "Not established by successful CI or App 15368; no Phase C probes performed"
+}

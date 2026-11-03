@@ -7,7 +7,7 @@ Authentication, shared access, deployments, and production migrations are future
 
 ## Setup and development
 
-Use Node **24.22.0**, npm **11.9.0**, and .NET SDK **10.0.402**, pinned in `.nvmrc`,
+Use Node **26.13.0 LTS**, npm **12.2.1**, and .NET SDK **10.0.402**, pinned in `.nvmrc`,
 `.npm-version`, and `global.json`. Dependencies and hashes are locked in npm and
 NuGet lockfiles. Core versions remain React 19.3.0, TypeScript 6.0.3, Vite 8.3.3,
 EF Core 10.0.9, SQLitePCLRaw 3.0.5, and Playwright 1.64.0.
@@ -23,8 +23,13 @@ bash scripts/dev.sh
 ```
 
 Setup selects exact tools, runs `npm --prefix src/web ci` and
-`dotnet restore tests/ProjectManager.Api.Tests --locked-mode`. Linux/macOS can
-install missing runtimes under ignored `.tools`; cache overrides and prepared
+`dotnet restore tests/ProjectManager.Api.Tests --locked-mode`. Setup installs
+Node/npm in a versioned directory under ignored `.tools` when host versions differ,
+including on Windows Git Bash. This also works with newer bootstrap host tools.
+The bootstrap selects the platform's prebuilt binary package with install scripts
+disabled, avoiding npm's Windows node-wrapper launcher issue.
+Versioned directories avoid replacing a running Windows executable during upgrades.
+Cache overrides and prepared
 cloud reuse are documented in [CI operation](docs/ci.md). No personal credentials
 are required. Do not modify lockfiles except for intentional reviewed updates.
 
@@ -37,11 +42,15 @@ curl -fsS http://127.0.0.1:5000/api/health
 curl -fsS http://127.0.0.1:5173/api/projects
 ```
 
-Native Windows uses **Git Bash**, Windows Node/npm/.NET at the exact versions on
-PATH, Python 3, and curl. Reopen Git Bash after installing tools, then use the same
-setup/check/dev commands. Setup reports missing tools instead of running Unix
-installers. Native cache paths and `cygpath -am` SQLite paths (including spaces)
-are preserved. Hosted Windows runs setup twice and `bash scripts/build.sh`.
+Native Windows uses **Git Bash**, bootstrap Node/npm, the pinned native .NET SDK
+on PATH, Python 3, and curl. Use the same setup/check/dev commands; setup selects
+the project Node/npm tools automatically. It reports missing .NET SDKs instead of
+running a Unix SDK installer. Native cache paths and `cygpath -am` SQLite paths
+(including spaces) are preserved. Hosted Windows tests a fresh workspace Node/npm
+bootstrap, repeated setup, and `bash scripts/build.sh`.
+`PROJECT_BOOTSTRAP_NODE=true bash scripts/setup.sh` explicitly installs workspace
+tools even when host versions match. `PROJECT_NODE_DIR` can select an isolated
+tool directory; use the same override for subsequent project commands.
 Linux x64 is the full policy/security/browser validation platform; policy-tool
 installation and Windows browser execution are not part of the Windows smoke job.
 Agent execution remains in the cloud, never on the owner's personal computer.

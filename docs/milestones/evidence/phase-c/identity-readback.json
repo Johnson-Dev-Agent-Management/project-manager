@@ -1,0 +1,58 @@
+{
+  "recorded_at_utc": "2026-10-26 03:48:10 UTC",
+  "repository": "Johnson-Dev-Agent-Management/project-manager",
+  "method": "Selected non-secret fields from read-only calls using Codex GitHub, tool account-selector metadata, and bounded cloud credential-presence checks. Not a complete settings or credential export.",
+  "selected_connection": {
+    "name": "Codex GitHub",
+    "authenticated_login": "codexcodemachine",
+    "authenticated_id": 348095294,
+    "collaborator_permission": "write",
+    "repository_permissions": {
+      "admin": false,
+      "maintain": false,
+      "pull": true,
+      "push": true,
+      "triage": true
+    },
+    "reported_org_memberships": [],
+    "scope_and_bypass_inventory": "Unverified; role and empty membership response alone are insufficient"
+  },
+  "other_exposed_connection": {
+    "name": "Primary",
+    "advertised_login": "Joshbomb75",
+    "advertised_id": 71676474,
+    "invoked_in_resumed_session": false,
+    "owner_route_exclusion": "Not satisfied: owner-linked account remains selectable; no live authentication test performed"
+  },
+  "cloud_git": {
+    "public_fetch": "Passed; does not establish an authenticated push actor",
+    "restored_source_sha": "cd408a4fa4147afb760e96d96ad1333eeaa313b6",
+    "identity_command": "gh api user --jq '{login: .login, id: .id}'",
+    "identity_result": "Forbidden",
+    "GH_TOKEN": "set; value not read or printed",
+    "GITHUB_TOKEN": "unset",
+    "known_helper_settings": "credential.helper, core.askPass, http.extraHeader and credential.username not configured",
+    "standard_credential_file_presence": "No hosts.yml, .git-credentials, .netrc, id_rsa or id_ed25519 found in standard user locations; contents not read",
+    "authenticated_push_actor": "Unverified; no push attempted in resumed session",
+    "workflow_file_write": "Unverified; no capability test run",
+    "complete_credential_exclusion": "Unverified; bounded presence checks do not establish all routes"
+  },
+  "protection_readback": {
+    "main_sha": "0a923d420c3e7c22b339c193e7ce8e14e73d03b6",
+    "main_reported_protected": false,
+    "listed_rulesets_including_parents": [],
+    "detailed_protection": "403 Resource not accessible by integration",
+    "allow_auto_merge": false,
+    "visibility": "public"
+  },
+  "existing_pr": {
+    "number": 15,
+    "url": "https://github.com/Johnson-Dev-Agent-Management/project-manager/pull/15",
+    "author": "Joshbomb75",
+    "draft": true,
+    "replacement": "Pending verified separation prerequisites; no new PR created"
+  },
+  "phase_c_status": "Incomplete; API identity/Write/no Admin-Maintain verification passed, full C2 and enforcement remain Unverified",
+  "settings_applied": false,
+  "probes_run": false
+}

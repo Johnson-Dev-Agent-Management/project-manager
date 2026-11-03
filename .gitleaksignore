@@ -1,0 +1,14 @@
+# Ten verified historical artifact-hash false positives only.
+# Owner authorized the bounded closeout in chat on 2026-11-02 (America/Los_Angeles).
+# Independent PR review remains required; see docs/milestones/milestone-0-closeout-report.md.
+# Review/renew or remove before 2026-11-10T00:00:00Z; no general hash/path/rule exclusion.
+f21a64a6d4d858afd6fb825bc99523414a82adf0:docs/milestones/evidence/phase-c/retained-entry/api-production/provenance.json:generic-api-key:11
+f21a64a6d4d858afd6fb825bc99523414a82adf0:docs/milestones/evidence/phase-c/retained-entry/api-production/provenance.json:generic-api-key:12
+f21a64a6d4d858afd6fb825bc99523414a82adf0:docs/milestones/evidence/phase-c/retained-entry/api-production/provenance.json:generic-api-key:13
+f21a64a6d4d858afd6fb825bc99523414a82adf0:docs/milestones/evidence/phase-c/retained-entry/api-production/provenance.json:generic-api-key:14
+f21a64a6d4d858afd6fb825bc99523414a82adf0:docs/milestones/evidence/phase-c/retained-entry/api-production/provenance.json:generic-api-key:15
+f21a64a6d4d858afd6fb825bc99523414a82adf0:docs/milestones/evidence/phase-c/ci-recheck-2026-11-03.json:generic-api-key:174
+f21a64a6d4d858afd6fb825bc99523414a82adf0:docs/milestones/evidence/phase-c/ci-recheck-2026-11-03.json:generic-api-key:175
+f21a64a6d4d858afd6fb825bc99523414a82adf0:docs/milestones/evidence/phase-c/ci-recheck-2026-11-03.json:generic-api-key:176
+f21a64a6d4d858afd6fb825bc99523414a82adf0:docs/milestones/evidence/phase-c/ci-recheck-2026-11-03.json:generic-api-key:177
+f21a64a6d4d858afd6fb825bc99523414a82adf0:docs/milestones/evidence/phase-c/ci-recheck-2026-11-03.json:generic-api-key:178

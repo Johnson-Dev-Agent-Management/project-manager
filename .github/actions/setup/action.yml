@@ -29,8 +29,10 @@ runs:
       run: |
         mkdir -p .artifacts
         git rev-parse HEAD > .artifacts/tested-commit.txt
-        npm install --global "npm@$(cat .npm-version)"
         bash scripts/setup.sh 2>&1 | tee .artifacts/setup.log
+        source scripts/common.sh
+        native_path "$PROJECT_NODE_BIN" >> "$GITHUB_PATH"
+        native_path "$PROJECT_NODE_DIR/node_modules/.bin" >> "$GITHUB_PATH"
         {
           node --version
           npm --version

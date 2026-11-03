@@ -1,0 +1,8 @@
+{
+  "commit": "0e29546900765364a1861d5537c83d44dc7af5ef",
+  "run": "40632431988",
+  "output_file_count": 2,
+  "original_manifest_sha256": "cf8fa1fee750639621f85e424d61f60db9c1ed0dfea20185268d8d741c6cd69d",
+  "output_hashes_independently_verified": true,
+  "retention": "Summary only; original provenance remains in the archive identified by the retained archive digest."
+}

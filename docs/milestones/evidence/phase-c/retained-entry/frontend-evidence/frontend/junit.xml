@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="13" failures="0" errors="0" time="1.334719311">
+    <testsuite name="src/App.test.tsx" timestamp="2026-10-28T04:28:24.169Z" hostname="runnervmtai0g" tests="8" failures="0" errors="0" skipped="0" time="0.983456637">
+        <testcase classname="src/App.test.tsx" name="loading disables submission; empty state becomes a saved project and clears the input" time="0.405495055">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="loads existing projects in server order and appends a successful creation" time="0.071810053">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="shows server validation, preserves input and list, and allows a successful retry" time="0.111606065">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="shows HTTP problem without name, preserves input and list, and allows a successful retry" time="0.082632904">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="shows HTTP problem without errors, preserves input and list, and allows a successful retry" time="0.085691186">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="shows HTTP problem with empty name errors, preserves input and list, and allows a successful retry" time="0.0842936">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="handles creation network rejection Error: Network unavailable" time="0.070853159">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="handles creation network rejection disconnected" time="0.068738987">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/loading.test.ts" timestamp="2026-10-28T04:28:24.171Z" hostname="runnervmtai0g" tests="5" failures="0" errors="0" skipped="0" time="0.351262674">
+        <testcase classname="src/loading.test.ts" name="loading HTTP failure ends loading and presents a useful error" time="0.241617785">
+        </testcase>
+        <testcase classname="src/loading.test.ts" name="loading network error ends loading and presents a useful error" time="0.070533537">
+        </testcase>
+        <testcase classname="src/loading.test.ts" name="loading non-Error rejection ends loading and presents a useful error" time="0.02697091">
+        </testcase>
+        <testcase classname="src/loading.test.ts" name="unmount aborts pending load before it can resolve" time="0.005117552">
+        </testcase>
+        <testcase classname="src/loading.test.ts" name="unmount aborts pending load before it can reject" time="0.005001726">
+        </testcase>
+    </testsuite>
+</testsuites>

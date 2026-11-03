@@ -1,0 +1,96 @@
+{
+  "observed_at_utc": "2026-11-03 01:48:17 UTC",
+  "authorization": "Latest user steering permits identified personal connector read-only verification; implementation publication remains codexcodemachine-only",
+  "owner_connection": {
+    "expected_owner_identity_confirmed": true,
+    "owner_route_selectable": true,
+    "owner_writes_performed": false,
+    "private_metadata_omitted": "Personal email, profile details and full owner administrative response are not published."
+  },
+  "implementation_identity": {
+    "login": "codexcodemachine",
+    "id": 348095294
+  },
+  "implementation_repository_permissions": {
+    "admin": false,
+    "maintain": false,
+    "push": true,
+    "pull": true,
+    "triage": true
+  },
+  "main": {
+    "sha": "0a923d420c3e7c22b339c193e7ce8e14e73d03b6",
+    "protected": true,
+    "protection": {
+      "enabled": true,
+      "required_status_checks": {
+        "enforcement_level": "everyone",
+        "contexts": [
+          "backend",
+          "quality-gate",
+          "frontend",
+          "windows-smoke",
+          "e2e",
+          "policy",
+          "supply-chain"
+        ],
+        "checks": [
+          {
+            "context": "backend",
+            "app_id": 15368
+          },
+          {
+            "context": "quality-gate",
+            "app_id": 15368
+          },
+          {
+            "context": "frontend",
+            "app_id": 15368
+          },
+          {
+            "context": "windows-smoke",
+            "app_id": 15368
+          },
+          {
+            "context": "e2e",
+            "app_id": 15368
+          },
+          {
+            "context": "policy",
+            "app_id": 15368
+          },
+          {
+            "context": "supply-chain",
+            "app_id": 15368
+          }
+        ]
+      }
+    }
+  },
+  "detailed_protection_read": {
+    "http_status": 403,
+    "message": "Resource not accessible by integration",
+    "control_values": "Unverified"
+  },
+  "listed_rulesets_including_parents": [],
+  "C2": {
+    "outcome": "Failed for this context",
+    "reason": "Owner review/administration connection is selectable and was used only for authorized read-only verification. Separate supported implementation isolation is required; Git/scope/bypass remain Unverified."
+  },
+  "unavailable_controls": [
+    "strict up-to-date requirement",
+    "PR/review settings",
+    "review dismissal and protected updates",
+    "admin enforcement and bypass lists",
+    "force/deletion flags",
+    "classic rule IDs"
+  ],
+  "operations": {
+    "settings_changed": false,
+    "permissions_changed": false,
+    "owner_writes": [],
+    "probes": [],
+    "reviews_approvals_merges": []
+  },
+  "connection_refresh": "The personal selector appeared during this chat; no new chat needed to select it. The detailed protection read remains inaccessible."
+}

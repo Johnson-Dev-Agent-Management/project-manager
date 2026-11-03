@@ -3,15 +3,15 @@
 source "$(dirname "$0")/common.sh"
 required_node_version=$(<"$ROOT/.nvmrc")
 required_npm_version=$(<"$ROOT/.npm-version")
-if [[ $(node --version 2>/dev/null || true) != "v$required_node_version" || $(npm --version 2>/dev/null || true) != "$required_npm_version" ]]; then
-  if [[ $WINDOWS_SHELL == true ]]; then
-    echo "Node.js $required_node_version and npm $required_npm_version are required. Install/select them on Windows, reopen Git Bash, and rerun bash scripts/setup.sh." >&2
-    exit 1
-  fi
-  # The cloud image supplies bootstrap Node/npm; keep the project runtime in
-  # the writable workspace. No additional download domain is required.
-  npm install --prefix "$PROJECT_TOOLS_DIR" --no-save --package-lock=false \
-    --no-audit --no-fund "node@$required_node_version" "npm@$required_npm_version"
+if [[ ${PROJECT_BOOTSTRAP_NODE:-false} == true || $(node --version 2>/dev/null || true) != "v$required_node_version" || $(npm --version 2>/dev/null || true) != "$required_npm_version" ]]; then
+  # Bootstrap exact project tools in the writable checkout on every platform,
+  # including Windows Git Bash. The host supplies Node/npm only for this install.
+  # Install the native binary package directly: the node wrapper's preinstall
+  # mutates its Windows bin target after npm has already generated launchers.
+  npm install --prefix "$PROJECT_NODE_DIR" --no-save --package-lock=false \
+    --ignore-scripts --no-audit --no-fund \
+    "$project_node_package@$required_node_version" "npm@$required_npm_version"
+  export PATH="$PROJECT_NODE_BIN:$PROJECT_NODE_DIR/node_modules/.bin:$PATH"
   hash -r
 fi
 [[ $(node --version) == "v$required_node_version" ]] || {
