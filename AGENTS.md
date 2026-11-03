@@ -20,22 +20,28 @@ with SQLite persistence and automated unit and browser tests.
 - Use synthetic development data. Never commit credentials, database files, or environment secrets.
 - These instructions guide behavior; actual access controls must be enforced in the environment and GitHub.
 
-## Milestone planning
+## Start here for routine development
 
-- Before milestone work, read [Milestone 0: Trusted Development Foundation](docs/milestones/milestone-0.md).
-- Follow the assigned phase, its acceptance criteria, and the acceptance-report format.
-- The owner approved a CI-focused M0 closeout on November 2, 2026. Current Phase C
-  criteria supersede historical account-isolation and exhaustive-probe blockers.
-  Keep bot PR authorship, human review, required checks and coverage/security floors.
-  The plan is not authorization to start another phase, merge, or change GitHub settings.
-- Treat CI configuration, test definitions, coverage thresholds, and engineering standards
-  as protected policy. Explicitly identify proposed changes; never silently weaken controls.
+Read this file, [engineering standards](docs/engineering.md), and
+[CI operation](docs/ci.md), then use the [PR template](.github/pull_request_template.md).
+These are the standing instructions for assigned feature, fix, and documentation work.
+Start from the owner's specified branch or current main and the task's observable acceptance criteria; resolve routine
+implementation choices within that scope without seeking permission at each step.
+
+Milestone 0 is complete for supervised development. Its [plan](docs/milestones/milestone-0.md)
+and phase reports retain historical implementation steps and evidence, not a checklist
+to repeat for each feature. Read them for milestone work or relevant historical context.
+Their old no-coverage-floor steps, bootstrap assignments, and pending enforcement
+statements do not override the standing instructions. No additional infrastructure
+phase, credential-isolation certification, or exhaustive adversarial testing is a
+prerequisite to assigned application work. Plans do not authorize new phases or settings changes.
 
 ## Architecture
 
 - One repository: `src/web/` for React + strict TypeScript + Vite;
   `src/api/ProjectManager.Api/` for ASP.NET Core; `tests/` for backend tests.
-- Use .NET 10 LTS and Node.js 26 LTS, current supported patches.
+- Use the repository's exact .NET 10 LTS, Node.js 26 LTS, and npm pins.
+  Propose supported patch updates intentionally rather than upgrading during unrelated work.
   Record the exact tested SDK/tool versions, commit package-lock.json and NuGet lock files.
 - Start with EF Core and SQLite for development. No external database account is required.
 - Keep the API and UI small and modular. Prefer a modular monolith to services.
@@ -49,8 +55,12 @@ with SQLite persistence and automated unit and browser tests.
 
 Read [engineering standards](docs/engineering.md) and [CI operation](docs/ci.md)
 for required checks, behavioral test mapping, protected coverage floors, security
-triage, and exception rules. Changes to these controls require independent human
-review; Phase B adds checks but does not establish Phase C enforcement.
+triage, and exception rules. Tests, fixtures, CI configuration, thresholds, and
+standards are protected policy. Adding or updating meaningful tests for an assigned
+feature is authorized implementation work; describe the changes and rationale in the
+PR for independent human review. That review is required before acceptance, not
+before writing ordinary tests. Never silently weaken controls or activate an
+unapproved exception.
 
 ## Required developer commands
 
@@ -75,10 +85,14 @@ The following root-level Bash entry points are implemented and passed cloud vali
 - `bash scripts/e2e-qualify.sh`: ten consecutive full executions using previously
   prepared output from `bash scripts/production-build.sh`; no retries.
 
-Record the underlying npm/dotnet commands and actual results in README.md.
+Keep reusable setup/usage commands in README.md and CI documentation; record task
+commands and actual results in the PR. Update durable docs when behavior, contracts,
+setup, or usage changes, not merely to append another validation log.
 Keep setup independent of personal credentials. Use npm ci and locked NuGet restore
 after generating and committing lock files. Update locks intentionally when changing dependencies.
 Run relevant tests for a change and the complete check script before handing off a PR.
+Use the [local/CI validation matrix](docs/ci.md#local-and-hosted-validation) for other
+commands and blocked local tools. All seven hosted checks remain required.
 
 ## Git workflow
 
@@ -86,6 +100,11 @@ Run relevant tests for a change and the complete check script before handing off
 - Start from the owner's specified branch or the latest main. The initial cloud-bootstrap
   branch has been merged; do not use that historical branch as the default baseline.
 - Work on a codex/<short-task-name> feature branch. Never force-push shared branches.
+- Use the existing **codexcodemachine** connection for implementation publication
+  and PR authorship; verify the connection identity and resulting PR author.
+  If that route is unavailable, report the blocker rather than publishing as the
+  owner or changing credentials/permissions. Read-only owner verification is permitted;
+  full credential-isolation certification remains deferred.
 - Keep one coherent draft PR per task. Explain the behavior, validation, and limitations.
 - Preserve existing work and the Apache license. Do not merge your own PR.
 - If parallel agents are explicitly requested, give each agent an independent branch/worktree
@@ -111,6 +130,8 @@ Run relevant tests for a change and the complete check script before handing off
   none), tests performed, and known limitations or follow-up work. Distinguish
   **Passed**, **Failed**, and **Not run** validation, including commands and reasons
   where relevant. Never claim checks passed unless their results were actually verified.
+- Follow [PR evidence and handoff](docs/engineering.md#pr-evidence-and-handoff).
+  Routine PRs use the concise template; full milestone reports are for milestone work.
 - Human-authored PRs use `Implementation type: Human` and `Implementation author: Human`.
   Never infer implementation authorship from the GitHub account opening the PR,
   and never automatically label human-authored PRs as `AI-authored`.
@@ -135,7 +156,10 @@ Preserve these verified behaviors:
 3. The project appears in the list and remains after a page reload and API restart.
 4. Invalid and whitespace-only names are rejected server-side with a useful UI error.
 5. Automated backend and frontend tests cover success and validation failure.
-6. Execute an end-to-end check in the cloud and record exact commands and results.
+6. Verify browser E2E through the cloud/hosted validation matrix and record actual results.
 
-The definition of done is tested code plus a draft PR and accurate instructions.
+Report the [handoff state](docs/engineering.md#handoff-states) precisely: draft prepared,
+validated and awaiting human review, human accepted, or owner merged. Agents may hand
+off a draft with explicit pending/blocked checks, but cannot call it validated until
+the required evidence is verified. Human acceptance and owner merging are separate.
 A submitted task, a running environment, or unexecuted tests are not proof of success.

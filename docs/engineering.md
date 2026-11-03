@@ -1,11 +1,16 @@
 # Engineering standards
 
-Phase B starts from main `688c1bd6c5fdbc5470b0c24abb41e3380a882a86`.
-Read the [milestone plan](milestones/milestone-0.md),
-[Phase A evidence](milestones/milestone-0-phase-a-report.md), and [CI operation](ci.md).
+These are the standing standards for supervised application development.
+Start with [AGENTS.md](../AGENTS.md) and [CI operation](ci.md). M0 is complete;
+the [closeout report](milestones/milestone-0-closeout-report.md) records accepted
+controls and their limits. Phase plans/reports are historical context.
 Standards, tests, fixtures, thresholds, scripts, dependency locks, and workflows
 are protected policy requiring independent human review. A green run does not
-replace that review. Phase C enforcement and identity separation are not claimed.
+replace that review. Agents may implement task-scoped test changes and propose
+policy changes in the draft PR without a separate pre-edit approval. Explain their
+effect; do not remove assertions, lower floors, hide failures, or activate exceptions
+to obtain green results. Exception activation still requires the approval below.
+Credential-isolation certification and exhaustive adversarial testing remain deferred.
 
 ## Architecture and contracts
 
@@ -21,8 +26,32 @@ CA1050 suppression; no artificial service layer or empty unit-test project is ad
 message. Success trims the name and returns 201, JSON `{ id, name }`, and
 `Location: /api/projects/{id}`. `GET /api/projects` returns projects in ID order;
 `GET /api/health` returns `{ "status": "ok" }`. Rejected requests must not write.
-No new name length/uniqueness limits are introduced. Authentication, shared access,
+These are the baseline contracts; change them only as part of assigned behavior and
+update their tests/documentation together. Do not invent name length/uniqueness limits.
+Authentication, shared access,
 deployment, and production migrations remain separate work.
+
+### Development database schema changes
+
+The API currently calls `Database.EnsureCreated()` at startup. It creates a fresh
+SQLite schema but does not upgrade an existing database. `scripts/dev.sh` retains
+synthetic data in ignored `.data/projects.db`; tests use temporary databases.
+Passing fresh-database tests alone does not establish compatibility with existing data.
+
+For a schema-changing feature, state the development-data strategy in its PR:
+
+- If data must survive, implement and test the task-scoped upgrade using a temporary
+  copy of the old schema with synthetic rows; verify retained data and new behavior.
+- If disposable development data may be reset, document that limitation and the
+  exact database path. Prefer a fresh task-owned database. Reset only a database
+  known to be disposable and within the assigned scope, after stopping its services;
+  do not delete another session's database or silently reset data at startup.
+  Confirm an empty database starts and persists the new behavior across restart.
+- If existing data ownership or preservation requirements are unclear, continue
+  against isolated synthetic storage and obtain that decision before modifying it.
+
+Document the chosen setup/reset or upgrade steps when they affect development.
+This is scoped feature work; a production migration platform is not a prerequisite.
 
 ## Testing and measured coverage
 
@@ -47,10 +76,11 @@ backend `*Tests.cs` class, and browser spec must appear in its report. Keep back
 suite filenames equal to their class names, with an explicit namespace; report
 inventory checks this convention. Empty or missing suites/reports fail.
 
-Review found baseline coverage already exceeded the planned floors but left
-saving, abort, error fallbacks, and API contracts weakly asserted. Tests address
-those behaviors before introducing **80% lines / 70% branches independently for
-each production codebase**. There is no revision to the planned floors. Vitest
+Add behavioral coverage for changed requirements using existing suites. A copy-only
+or documentation change need not invent new tests; update affected assertions when
+needed and explain applicability in the PR. Preserve existing regression coverage.
+The enforced floors remain **80% lines / 70% branches independently for each
+production codebase**. Vitest
 V8 enforces the frontend floors; the shared evidence reader independently checks
 both codebases without rounding values up. Regression tests exercise each floor,
 missing suites/files, stale output, incomplete audits, and aggregate failures.
@@ -61,8 +91,9 @@ unimported `main.tsx`. Only `.test.ts`/`.test.tsx`, `test-setup.ts`, and type-on
 Backend Coverlet instruments the whole API assembly; generated `obj`, tests, and
 third-party assemblies remain outside scope. Auto-properties stay included;
 default Coverlet attribute handling is unchanged, and no authored coverage
-exclusion attributes are present. Formatting changes line denominators, so compare
-both counts and percentages in the acceptance report.
+exclusion attributes are present. Formatting changes line denominators; when coverage
+changes, explain the relevant counts/percentages in PR evidence. Unchanged results
+may be linked from the current CI summaries instead of copied into a new report.
 
 SQLite fixtures own unique temporary directories and use `Pooling=False`.
 Dispose HTTP clients and factories before deleting their database. No global
@@ -105,6 +136,8 @@ fails the parser; high/critical advisories block. Medium/low findings must be
 listed and triaged with reachability/impact, remediation, owner, and review decision
 in the PR. NuGet warnings-as-errors currently blocks medium findings too until
 reviewed. Do not treat unavailable advisory data as clean.
+For unchanged findings, link the existing disposition and confirm the current audit
+still matches its scope and review/expiry conditions; triage new or changed findings.
 
 Gitleaks scans full checked-out history and a temporary copy of tracked working-tree
 files using upstream default rules and 100% redaction. The only active false-positive exclusion is the ten exact historical fingerprints
@@ -126,7 +159,32 @@ removal/retest plan. Until approved it is a blocking proposal, never an operativ
 suppression. Broad exclusions and thresholds lowered to obtain green results
 are not acceptable. Expired exceptions fail the definition of done.
 
-Done means meaningful regression coverage, all required commands and CI results
-for the exact tested commit, accurate Passed/Failed/Not run evidence, current
-advisory retrieval, documented policy changes, no unresolved blocking findings,
-and independent human review. Owner acceptance/merge remains separate.
+## PR evidence and handoff
+
+Routine feature, fix, and documentation PRs use the [PR template](../.github/pull_request_template.md).
+Include the behavior/scope, issue or None, exact attribution fields, validation
+commands/results, current head and tested CI commit/run links, and limitations.
+Identify changed tests/policy and their rationale. Link current CI summaries for
+counts, coverage, security, and Windows results; copying every value is unnecessary.
+Screenshots help review visible UI changes; use synthetic data. For nonvisual work,
+omit screenshots or briefly explain why they are not applicable. They never replace tests.
+
+Keep task evidence in the PR. Update README and other durable documentation only
+when contracts, behavior, setup, usage, or policy changes. A full requirement-ID
+acceptance report and next-phase recommendation are not required for routine work;
+use the [milestone report](milestones/milestone-0.md#standard-acceptance-report) for
+assigned milestone work. Record important conclusions in text with immutable links
+so they remain understandable after CI artifacts expire.
+
+### Handoff states
+
+| State                            | Required evidence and responsibility                                                                                                                                                                                                                                                                                     |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Draft prepared                   | Agent has implemented the scoped change and opened a draft PR with accurate Passed/Failed/Not run results, pending CI and blockers. This is not a validation or acceptance claim.                                                                                                                                        |
+| Validated; awaiting human review | Agent has verified meaningful applicable tests, relevant docs, all seven required CI jobs for the current PR head/tested merge, current advisory data, and no unresolved blocking findings or expired exceptions. Local limitations and matching hosted evidence follow the CI matrix. Leave the PR draft for the owner. |
+| Human accepted                   | Independent human review approves the current change, including test/policy changes. The agent does not supply this approval.                                                                                                                                                                                            |
+| Owner merged                     | Owner performs the merge after required checks/reviews; verify resulting-main CI when assigned, distinguishing a completed merge from post-merge validation.                                                                                                                                                             |
+
+Report the actual state when handing off; the agent can finish its assigned work
+while human review/merge remains pending. A new push requires current validation
+and applicable renewed review before acceptance; historical green runs do not count.

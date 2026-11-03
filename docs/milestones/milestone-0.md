@@ -2,6 +2,13 @@
 
 ## Status and purpose
 
+**For routine work:** follow [AGENTS.md](../../AGENTS.md),
+[engineering standards](../engineering.md), and the [CI validation matrix](../ci.md#local-and-hosted-validation).
+This completed milestone retains its historical assessment, phase tasks, criteria,
+and assignment example for traceability. They are not recurring feature requirements;
+in particular, Phase A's no-floor instruction does not override today's enforced floors.
+Routine PRs use the concise PR template, not the full milestone report below.
+
 On November 2, 2026 (America/Los_Angeles), the owner approved a bounded,
 CI-focused closeout and instructed the agent to proceed. M0's goal is a reliable
 pipeline for supervised application development: required CI, meaningful tests,
@@ -31,6 +38,8 @@ closeout. Preserve existing stronger protections. Product features begin in the
 next assigned task after closeout, not as part of this implementation.
 
 ## Repository assessment and evidence limits
+
+Historical planning snapshot; current commands, controls, and evidence are linked above.
 
 Planning baseline: main at
 [653ade674f81f90598f4dd92894705834ca007ed](https://github.com/Johnson-Dev-Agent-Management/project-manager/tree/653ade674f81f90598f4dd92894705834ca007ed).
@@ -69,12 +78,16 @@ assuming permission to execute on the owner's computer.
 - Keep all validation on synthetic data, isolated services, and temporary databases.
 - Make failures, missing evidence, and infrastructure limitations visible.
 - Control runner usage, concurrency, artifact retention, and external-service costs.
-- Produce an understandable acceptance report for every phase and implementation PR.
+- Produce an understandable acceptance report for every M0 phase and implementation PR.
 
 Do not add product features, independent AI review, agent orchestration, automatic
 merging, deployment infrastructure, or a broad architectural rewrite in M0.
 
 ## Owner decisions and configuration boundaries
+
+The timing column records M0 setup decisions, not prerequisites to repeat for each
+feature. Standing authorization/publication rules are in AGENTS.md; the closeout
+report records completed verification and the current exception register.
 
 | Decision/action                      | Recommended direction                                                                                                                                                                                         | Timing and evidence                                                                                                                |
 | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
@@ -106,6 +119,8 @@ Follow the [current handoff](milestone-0-phase-c-owner-handoff.md); do not chang
 roles, memberships, credential permissions, costs, visibility or protections.
 
 ## Phase A — Foundational CI
+
+Completed milestone implementation record; do not rerun these tasks for routine work.
 
 ### Scope and ordered tasks
 
@@ -181,7 +196,8 @@ claim required-check enforcement.
 
 ## Phase B — Testing and security hardening
 
-Depends on accepted Phase A and authorization for B.
+Completed milestone implementation record. At implementation time this depended
+on accepted Phase A and authorization for B. Its implemented checks remain in force.
 
 ### Scope and ordered tasks
 
@@ -259,12 +275,16 @@ Before C, this is a review obligation, not a claim of server-enforced protection
 In C, protect policy through required reviews and CODEOWNERS, including ownership
 of CODEOWNERS itself and a fallback owner for newly added files.
 
-Definition of done for implementation: approved scope/criteria, meaningful tests
-and regression coverage, relevant documentation, successful validation for the
-current commit, an honest acceptance report, and independent approval without
-unresolved blocking findings. Owner merging is a separate action.
+For current work, use the [handoff states](../engineering.md#handoff-states): draft
+prepared, validated and awaiting human review, human accepted, and owner merged.
+Independent approval remains required for acceptance; agents may hand off accurately
+reported work while review is pending. Owner merging is a separate action.
 
 ## Phase C — Bounded CI closeout
+
+Completed milestone implementation record. The revised criteria document accepted
+scope; publication replacement, protection readback, and regression exercises below
+are not recurring assignments for feature PRs.
 
 ### Scope and ordered tasks
 
@@ -329,8 +349,10 @@ owner credentials, adversarial workflow resistance, automatic merging or deploym
 
 ## Standard acceptance report
 
-Attach this concise report to each implementation PR and phase handoff. Extend the
-existing PR template; retain its exact attribution fields. Store durable milestone
+Use this report for assigned milestone implementation and phase handoffs. Routine
+feature, fix, and documentation PRs follow [PR evidence and handoff](../engineering.md#pr-evidence-and-handoff)
+and the existing PR template; no requirement-ID table or next-phase recommendation
+is needed. For milestone work, extend that template and retain its exact attribution fields. Store durable milestone
 evidence in the repository when appropriate and link the PR/workflow artifacts.
 Artifact retention alone is not permanent proof.
 
@@ -401,6 +423,8 @@ Subsequent milestones:
    effectiveness is measured; add merge_group checks if introducing a merge queue.
 
 ## Phase A assignment for a fresh chat
+
+Historical assignment example for the completed phase, not a current task or startup checklist.
 
 > Implement Milestone 0 Phase A in Johnson-Dev-Agent-Management/project-manager
 > from current main. Read AGENTS.md and docs/milestones/milestone-0.md. Preserve

@@ -42,6 +42,10 @@ curl -fsS http://127.0.0.1:5000/api/health
 curl -fsS http://127.0.0.1:5173/api/projects
 ```
 
+Startup creates a fresh schema; it does not upgrade an existing SQLite database.
+For schema-changing features, follow [development database guidance](docs/engineering.md#development-database-schema-changes)
+and document the data-preservation or disposable-data reset strategy.
+
 Native Windows uses **Git Bash**, bootstrap Node/npm, the pinned native .NET SDK
 on PATH, Python 3, and curl. Use the same setup/check/dev commands; setup selects
 the project Node/npm tools automatically. It reports missing .NET SDKs instead of
@@ -71,7 +75,9 @@ npm --prefix src/web run dev -- --port 5173 --strictPort
 ## Validation and engineering standards
 
 Read [AGENTS.md](AGENTS.md), [engineering standards](docs/engineering.md),
-[CI commands](docs/ci.md), and the [Milestone 0 plan](docs/milestones/milestone-0.md).
+[CI commands and validation matrix](docs/ci.md#local-and-hosted-validation), and the
+[PR template](.github/pull_request_template.md) for routine work. The completed
+[Milestone 0 plan](docs/milestones/milestone-0.md) provides historical context.
 `check.sh` runs lint, complete authored TypeScript/config checking, frontend build,
 Vitest V8 coverage, .NET build, xUnit/SQLite/Coverlet, report integrity checks, and
 Python attribution/policy regression tests. `policy.sh` runs Prettier, .NET format,
@@ -93,7 +99,7 @@ for verified controls, remaining evidence and the exception register.
 ```bash
 # Build frontend production output and publish Release API, then test both phases:
 bash scripts/e2e.sh
-# Reuse verified output from this commit; ten full runs with fresh SQLite each time:
+# CI always qualifies ten runs; also use locally for harness/reliability changes:
 bash scripts/e2e-qualify.sh
 ```
 
@@ -103,8 +109,10 @@ It cleans up its processes/database and retains each run's diagnostics/screensho
 under ignored `.artifacts`. CI uses matched Chromium; restricted cloud runs report
 any system Chromium fallback explicitly. There are no browser retries.
 
-Actual commands, counts, coverage before/after, tested commits, security results,
-screenshots, CI links, and unresolved risks are in the
+Record each task's commands/results, current CI links, and handoff state in its PR.
+Update this README for durable setup/usage changes rather than per-task test logs.
+Historical M0 commands, counts, coverage, tested commits, security results,
+screenshots, CI links, and risks are in the
 [M0 closeout report](docs/milestones/milestone-0-closeout-report.md).
 [Phase A](docs/milestones/milestone-0-phase-a-report.md) and
 [Phase B](docs/milestones/milestone-0-phase-b-report.md) reports are historical snapshots.
