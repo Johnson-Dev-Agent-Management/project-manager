@@ -2,9 +2,10 @@
 
 **Ready for owner action; Milestone 0 is not complete.**
 The agent publishes only as codexcodemachine. Latest steering authorizes the
-personal owner connector for read-only verification if available and live-identified;
-the current tools still expose only codexcodemachine. No owner credential,
-permission change, merge or mutation/destructive probe is used in this continuation.
+personal owner connector for read-only verification. It subsequently appeared;
+Joshbomb75 identity and codexcodemachine/Write were live-verified. Owner detailed
+protection GET also returned 403. No owner write, permission change, merge or
+mutation/destructive probe is used in this continuation.
 
 ## 1. Completed work and evidence
 
@@ -14,9 +15,10 @@ Whole-repository `* @Joshbomb75` CODEOWNERS, all existing tests/checks and the
 protection proposal are preserved. API identity **codexcodemachine / 348095294**,
 Write, admin=false, maintain=false and reported empty memberships were rechecked.
 Git transport identity, full credential scope/bypass and fresh isolation remain
-Unverified. Fresh connector account/installations no longer list Joshbomb75 and
-no account selector is advertised. The unidentified cloud GH_TOKEN remains unused;
-complete scope/bypass and whole-context isolation are not established.
+Unverified. The owner reconnected Personal / Joshbomb75 after initial account
+removal; the selector is now exposed and live-verified, so C2 owner-route exclusion
+is Failed here. The unidentified cloud GH_TOKEN remains unused. See the
+[owner readback](evidence/phase-c/owner-reconnected-readback.json).
 
 Freshly rechecked entry head `67035dfa7f0e87a6ee5ae4601515800524ed96a7`,
 tested merge `0e29546900765364a1861d5537c83d44dc7af5ef`, passed all seven jobs in
@@ -33,7 +35,7 @@ See the [acceptance report](milestone-0-phase-c-report.md),
 
 Provide supported non-secret metadata proving this **fresh implementation context**
 has only codexcodemachine API and Git routes; owner credentials must be outside
-it. Connector account removal is observed, but no credential binding identifies
+it. Current owner-route exclusion fails here after reconnection, and no binding identifies
 the cloud GH_TOKEN. Do not invoke it to discover an unknown identity. Keep the
 owner's separate browser/session for administration/review.
 Do not create accounts, change roles/membership, broaden credential permissions,
@@ -158,7 +160,7 @@ readback is configuration evidence, not behavior/enforcement evidence.
 | Criterion | Status     | Reason and next action                                                                                                                         |
 | --------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
 | C1        | Unverified | Protected main/seven App-bound checks/auto-merge off verified; return missing detailed settings and rule IDs in §4                             |
-| C2        | Unverified | API role verified, Git/scope/isolation not; complete §2                                                                                        |
+| C2        | Failed     | Personal owner selector/live identity now exposed; establish a separate fresh implementation context and verify Git/scope/bypass in §2         |
 | C3        | Failed     | Base CODEOWNERS absent and bootstrap review missing; verify details, complete independent replacement/review/bootstrap and observe enforcement |
 | C4        | Unverified | Every probe is unrun; complete prerequisites and obtain exact target/scope authorization                                                       |
 | C5        | Passed     | Recovery/exception/evidence procedures documented; no silent bypass or operative exception                                                     |
@@ -183,10 +185,10 @@ independent C1–C6/probe verification and owner acceptance.
 **Smallest ordered owner checklist:**
 
 1. Return the current UTC-dated protection/rule-ID/effective-rule/bypass export in
-   §4, retaining any earlier before/after exports if available. A fresh chat may
-   expose the reconnected personal account; its managed connector may still lack
-   administration read access, so a complete owner export remains the reliable
-   fallback. No repeat settings
+   §4, retaining any earlier before/after exports if available. The reconnected
+   personal account is now selectable, with live owner identity verified, but detailed
+   GET still returns 403. A complete owner export remains necessary; no new chat
+   is needed just to select the owner account. No repeat settings
    write is needed for evidence. Retain the full entry E2E artifact before
    **2026-11-04 04:30:46 UTC**; executor transfer is blocked by the 32 MiB limit.
 2. Return supported non-secret connection/runtime scope and isolation metadata
@@ -199,7 +201,11 @@ independent C1–C6/probe verification and owner acceptance.
    new moderate minimatch advisory and the evidence-hash Gitleaks findings described
    in the report. Current full-history CI stays blocked; do not suppress or rewrite
    shared history. A clean successor based before the evidence-hash commit needs
-   the same isolation/replacement prerequisites and independent validation.
+   the same isolation/replacement prerequisites and independent validation. The
+   scanner fetches all branch/tag refs and scans --all: the owner must separately
+   review/authorize disposition of old ordinary feature refs after replacement
+   authorship/content confirmation. No cleanup is performed here; keep scanner
+   scope intact. A clean successor alone does not clear reachable old findings.
 4. Separately decide reviewed target source/creation/equivalent protection and
    each exact probe scope; C15b needs its own valid reviewed PR/owner-merge approval.
    After any authorized owner merge, verify seven checks on exact resulting main,

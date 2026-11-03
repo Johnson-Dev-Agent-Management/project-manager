@@ -1,6 +1,6 @@
 # Automation-account capabilities and isolation — Phase C
 
-Status: **API identity/Write role verified; isolated implementation path Unverified.**
+Status: **API identity/Write verified; C2 owner-route exclusion Failed in this context.**
 The account already exists and is connected. Do not recreate/invite it, change
 roles/membership, spend money or broaden credentials. Preserve public repository
 visibility and private cloud development.
@@ -11,20 +11,21 @@ Use the [fresh context readback](milestones/evidence/phase-c/fresh-context-readb
 and [ordered owner handoff](milestones/milestone-0-phase-c-owner-handoff.md) for the
 current assignment. Earlier snapshots remain historical. Publication uses only
 codexcodemachine. Latest owner steering authorizes an identified personal
-connector for read-only verification, but this chat still exposes no owner route.
-No owner connection or unidentified Git/CLI credential is invoked.
+connector for read-only verification. That selector subsequently appeared, and
+expected Joshbomb75 identity was live-verified. Its detailed GET remains 403.
+No owner write or unidentified Git/CLI credential is invoked.
 
-| Item                          | Direct observation                                                                                                  | Limit                                                                                                   |
-| ----------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| Implementation API identity   | Codex GitHub authenticates codexcodemachine, ID 348095294                                                           | Does not identify Git transport credentials                                                             |
-| Repository authorization      | Collaborator write; push=true, admin=false, maintain=false                                                          | Role does not inventory complete scope/bypass exposure                                                  |
-| Organization membership       | API reports []                                                                                                      | Repository-only grants, outside-collaborator status and billing are not independently established       |
-| Owner administration identity | Historical Joshbomb75 / 71676474 / Admin only; no current owner selector advertised                                 | Owner identity is not invoked in this continuation                                                      |
-| Installation metadata         | The automation connection lists the organization installation; repository_selection=all, viewer_can_administer=null | Installation selection is not effective token scope                                                     |
-| Owner route                   | Current accounts/installations list organization and codexcodemachine only; Joshbomb75 absent                       | Whole-context exclusion remains Unverified: unbound CLI credential and incomplete scope/bypass metadata |
-| Cloud readiness               | No ready outbound identities, secret bindings or runtime variables                                                  | GH_TOKEN is present; value/identity/scope unknown and never inspected                                   |
-| Git/API transport             | Historical public fetch/CLI denial; no verified codexcodemachine Git transport                                      | API host absent from enforced allowlist; authenticated Git push actor unknown                           |
-| Current PR                    | #15 remains open/draft and Joshbomb75-authored; AI label description verified                                       | Updating its branch/body cannot change authenticated author                                             |
+| Item                          | Direct observation                                                                                                  | Limit                                                                                                        |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| Implementation API identity   | Codex GitHub authenticates codexcodemachine, ID 348095294                                                           | Does not identify Git transport credentials                                                                  |
+| Repository authorization      | Collaborator write; push=true, admin=false, maintain=false                                                          | Role does not inventory complete scope/bypass exposure                                                       |
+| Organization membership       | API reports []                                                                                                      | Repository-only grants, outside-collaborator status and billing are not independently established            |
+| Owner administration identity | Live expected owner identity; Personal selector now exposed                                                         | Authorized read-only use only; protection GET still 403                                                      |
+| Installation metadata         | The automation connection lists the organization installation; repository_selection=all, viewer_can_administer=null | Installation selection is not effective token scope                                                          |
+| Owner route                   | Personal owner account is selectable and used for authorized read-only verification                                 | C2 owner-route exclusion Failed in this context; independent credential scope/bypass also remains Unverified |
+| Cloud readiness               | No ready outbound identities, secret bindings or runtime variables                                                  | GH_TOKEN is present; value/identity/scope unknown and never inspected                                        |
+| Git/API transport             | Historical public fetch/CLI denial; no verified codexcodemachine Git transport                                      | API host absent from enforced allowlist; authenticated Git push actor unknown                                |
+| Current PR                    | #15 remains open/draft and Joshbomb75-authored; AI label description verified                                       | Updating its branch/body cannot change authenticated author                                                  |
 
 The automation connector can read exact-head check/job metadata and decoded logs;
 seven entry-run archives were downloaded and matched their API digests. The E2E
@@ -42,7 +43,8 @@ absence of every owner-capable route. Never inspect secret values to diagnose it
 
 Only codexcodemachine is authorized for publication in this continuation.
 Owner-connector read-only verification is separately authorized if live-identified
-and available; the present snapshot still identifies only codexcodemachine.
+and available; it subsequently became selectable and was live-identified. No new
+chat was needed to select it. C2 requires a separate isolated implementation context.
 The owner performs main administration in their separate session;
 the [handoff](milestones/milestone-0-phase-c-owner-handoff.md) contains exact UI/CLI
 steps and readback. Account Admin status does not add connector capabilities;
@@ -115,6 +117,7 @@ defect probes or administration bypass.
    content/authorship/attribution. **Keep #15 open until confirmed.** Joshbomb75
    provides genuine independent review; no agent review or approval.
 
-The former advertised owner connector is no longer present in fresh metadata,
-but this continuation does not establish complete credential separation. Successful
+Initial metadata excluded the owner connector, but the later reconnection now
+exposes it. This context fails owner-route exclusion and does not establish
+complete credential separation. Successful
 API reads, documentation publication and green CI cannot establish C2 or Phase C.

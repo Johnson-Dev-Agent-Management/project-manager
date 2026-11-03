@@ -140,7 +140,8 @@
     "classification": "Evidence file SHA-256 digests; verified against original manifest and downloaded artifact bytes, not credentials. Human disposition pending.",
     "current_tree_correction": "Retain provenance commit/run/count/manifest-digest summaries instead of raw maps. Original archive digests/inspection evidence retained.",
     "history_limit": "Full-history scanning still includes f21a64a; ordinary follow-up cannot erase findings. No scanner weakening/suppression or shared-history rewrite.",
-    "recovery_preparation": "After documented isolation/capability prerequisites, use a clean successor based on 67035dfa7f0e87a6ee5ae4601515800524ed96a7 and independently validate/review before confirming replacement; keep #15 open."
+    "recovery_preparation": "After documented isolation/capability prerequisites, use a clean successor based on 67035dfa7f0e87a6ee5ae4601515800524ed96a7 and independently validate/review before confirming replacement; keep #15 open.",
+    "reachable_refs_limit": "Hosted checkout fetches all branch/tag refs; --all scans every reachable commit. A clean successor alone remains blocked while any fetched old ref reaches f21a64a. After replacement authorship/content is confirmed, owner must separately review/authorize old ordinary-feature-ref disposition or another policy-preserving resolution; no cleanup performed here."
   },
   "probes_executed": [],
   "settings_changed": false,

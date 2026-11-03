@@ -16,30 +16,33 @@ and Phase A/B reports remain dated evidence. The owner reports configuring main
 and removing the owner connector. Fresh readback verifies the reported protection
 and account-list changes below; it does not verify inaccessible detailed settings.
 No permissions, protections, credential configuration or target refs were changed.
-No owner/unidentified credential, review, approval or merge was invoked.
+No unidentified Git/CLI credential, review, approval or merge was invoked. After
+later authorization, the owner connector was used only for read-only verification.
 
-**Later owner steering:** the user reconnected their personal GitHub account and
-authorized it for read-only verification. Rechecking live profile, account and
-installation metadata still returns only codexcodemachine and the organization,
-with no account selector. Plugin discovery confirms GitHub is installed/enabled
-but exposes no additional route. A fresh chat may refresh connection tools;
-managed connector administration restrictions may still require an owner export.
-Publication remains codexcodemachine-only. If an owner route becomes exposed,
-this verification context cannot establish isolated implementation C2.
+**Later owner steering:** the user reconnected the personal account and authorized
+read-only verification. The account selector appeared during this chat; no new
+chat was needed. At **2026-11-03 01:48:17 UTC**, live profiles verified
+the expected personal identity and codexcodemachine / 348095294 with Write,
+admin=false, maintain=false. The owner's detailed protection GET also returned
+403 Resource not accessible by integration. Admin role does not add excluded App
+administration permission. [Reconnected-owner readback](evidence/phase-c/owner-reconnected-readback.json)
+records the evidence. Publication stays codexcodemachine-only. The exposed owner
+route is a verified separation gap: C2 is Failed for this context; separate fresh
+implementation isolation remains required.
 
 ## Acceptance status
 
 Passed means directly verified within the stated scope; Failed means an observed
 requirement is unmet; Unverified means evidence is missing or execution is pending.
 
-| Criterion | Outcome        | Evidence, reason and next action                                                                                                                                                                                                                                                                                                                                                                                                      |
-| --------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| C1        | **Unverified** | Main is protected; all seven required checks are bound to App 15368; auto-merge is false. Detailed protection GET is 403. Strictness, PR/review requirements, restrictions, admin enforcement, force/deletion settings, rule IDs and bypass lists need complete owner export.                                                                                                                                                         |
-| C2        | **Unverified** | Live API ID 348095294, Write, push=true, admin=false, maintain=false and reported memberships [] verified. Joshbomb75 is absent from current connector accounts/installations and no account selector is advertised. Complete scope/bypass and cloud credential isolation remain unverified: GH_TOKEN is present without a declared binding and is not invoked. Git identity/push/workflow write/remote push actor remain unverified. |
-| C3        | **Failed**     | Exact base tree contains no CODEOWNERS and #15 has no submitted reviews. Required check/source configuration is verified, but independent policy ownership/enforcement is unmet. Complete identity prerequisites, replacement and genuine human bootstrap review; verify GitHub-validated ownership on actual base after separately authorized merge.                                                                                 |
-| C4        | **Unverified** | Every one of the 31 planned rows and its grouped subcases remains unrun. Target/source/creation/protection/exact scope are not authorized. Each case retains its reason and next action in the probe ledger.                                                                                                                                                                                                                          |
-| C5        | **Passed**     | Recovery, exception and evidence-retention procedures are documented. No operative exception, silent bypass or relaxation. Human acceptance remains C6.                                                                                                                                                                                                                                                                               |
-| C6        | **Unverified** | Owner acceptance and any separately authorized merge, resulting-main checks, protections/base ownership readback and private cloud baseline refresh remain pending.                                                                                                                                                                                                                                                                   |
+| Criterion | Outcome        | Evidence, reason and next action                                                                                                                                                                                                                                                                                                                                                                  |
+| --------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| C1        | **Unverified** | Main is protected; all seven required checks are bound to App 15368; auto-merge is false. Detailed protection GET is 403. Strictness, PR/review requirements, restrictions, admin enforcement, force/deletion settings, rule IDs and bypass lists need complete owner export.                                                                                                                     |
+| C2        | **Failed**     | Owner identity Joshbomb75 is now selectable and was live-verified for authorized read-only checks. This context fails owner-route exclusion. Machine API Write/admin=false/maintain=false remains verified; Git identity, scope/bypass and unknown CLI binding remain Unverified. Establish a separate fresh implementation context without owner routes before bounded capabilities/replacement. |
+| C3        | **Failed**     | Exact base tree contains no CODEOWNERS and #15 has no submitted reviews. Required check/source configuration is verified, but independent policy ownership/enforcement is unmet. Complete identity prerequisites, replacement and genuine human bootstrap review; verify GitHub-validated ownership on actual base after separately authorized merge.                                             |
+| C4        | **Unverified** | Every one of the 31 planned rows and its grouped subcases remains unrun. Target/source/creation/protection/exact scope are not authorized. Each case retains its reason and next action in the probe ledger.                                                                                                                                                                                      |
+| C5        | **Passed**     | Recovery, exception and evidence-retention procedures are documented. No operative exception, silent bypass or relaxation. Human acceptance remains C6.                                                                                                                                                                                                                                           |
+| C6        | **Unverified** | Owner acceptance and any separately authorized merge, resulting-main checks, protections/base ownership readback and private cloud baseline refresh remain pending.                                                                                                                                                                                                                               |
 
 [Fresh context readback](evidence/phase-c/fresh-context-readback.json) records the
 observed fields and missing values explicitly. [Probe status](milestone-0-phase-c-probes.md#probe-acceptance-status)
@@ -52,10 +55,11 @@ permission denials and failed leases do not prove the intended control.
 The verified connector reports codexcodemachine, collaborator Write, repository
 admin=false and maintain=false. Organization and membership calls both report
 `[]`; this is a reported membership result, not proof of every grant or billing
-status. Current account metadata lists only Johnson-Dev-Agent-Management and
-codexcodemachine; installations are **172621871** and **175319904**. Joshbomb75's
-previously listed installation/account is absent. The current tool schemas expose
-no owner account selector. No owner connection was invoked.
+status. Initial metadata listed only Johnson-Dev-Agent-Management and
+codexcodemachine, installations **172621871** and **175319904**. That observation
+remains historical: after the owner's later reconnection, current tool metadata
+exposes Personal / Joshbomb75 and Codex GitHub / codexcodemachine selectors, and
+both live identities were verified. Owner calls were read-only and authorized.
 
 Both installations report repository_selection=all and viewer_can_administer=null.
 These fields do not inventory the effective connection's credential permissions,
@@ -66,8 +70,8 @@ Cloud readiness is current and enforced, with no declared secret/runtime/outboun
 identity bindings. A presence-only check finds GH_TOKEN; its value is never read,
 printed or used. No Git credential helper, askpass or SSH command is configured;
 standard hosts.yml, .git-credentials and .netrc are absent. These bounded checks
-leave whole-context owner-route exclusion **Unverified**, rather than asserting
-the former owner selector remains exposed.
+do not establish complete credential scope/bypass. Independently of those unknowns,
+the newly exposed owner route makes owner-route exclusion **Failed** here.
 
 Public Git fetch succeeded with helper, askpass and authorization headers disabled.
 The initial sandbox socket denial was resolved using supported per-command network
@@ -87,7 +91,8 @@ each with **app_id 15368**, enforcement_level=everyone. Repository auto-merge is
 false. The ruleset collection including parents is empty. This is consistent
 with classic protection; an empty ruleset collection is not a protection failure.
 
-Detailed protection GET returns **403 Resource not accessible by integration**.
+Detailed protection GET returns **403 Resource not accessible by integration**
+through both live-verified machine and owner connections.
 Effective branch-rule and CODEOWNERS-error URLs are rejected by this connector's
 endpoint allowlist. These are access limitations. They do not establish any
 missing setting's value. The following remain **Unverified**:
@@ -189,6 +194,14 @@ pre-evidence-hash head can be independently validated and reviewed as the
 replacement; keep #15 open until confirmation. These incidental scanner findings
 are not authorized Phase C probes or an enforcement pass.
 
+The hosted supply-chain checkout fetches **all branch and tag refs**, and Gitleaks
+uses **--all**. A clean successor alone therefore cannot clear findings while an
+old fetched ref still reaches the evidence-hash commit. After replacement
+authorship/content is confirmed, the owner must separately review and authorize
+the disposition of the old ordinary feature refs, or another policy-preserving
+resolution, then independently validate the replacement. No such cleanup is
+authorized or performed here. Main and target refs remain untouched.
+
 Final published head, tested merge, all seven jobs/sources, logs and relevant
 artifacts are inspected after publication and recorded in PR #15, avoiding an
 untested self-referential evidence commit. Entry CI never validates later edits.
@@ -208,7 +221,7 @@ are preserved. The trigger does not authorize target creation or any probe.
 implementation isolation/Git/workflow/remote-actor verification, automation-authored
 replacement and genuine independent human policy/bootstrap review at the exact
 green head. Keep #15 open until replacement confirmation. Never submit human
-review, merge, relax protection or use owner credentials in this session.
+review, merge, relax protection or use the owner connection for publication/settings.
 
 **M0 completion recommendation: incomplete.** Every probe remains Unverified.
 Only future target is **codex/m0-phase-c-target**; reviewed source/initial SHA is

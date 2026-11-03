@@ -2,8 +2,8 @@
 
 Status: **Not run; all Phase C probe outcomes Unverified.**
 The agent publishes only as codexcodemachine; latest steering also allows an
-identified personal owner connector for read-only verification. It is not exposed
-in this tool snapshot. Main administration stays in the owner session.
+identified personal owner connector for read-only verification. It is now exposed
+and live-verified; this context fails C2 owner-route exclusion. Main administration stays in the owner session.
 Main now reports protected with all seven checks
 bound to App 15368; detailed settings remain Unverified. Equivalent target
 settings, reviewed source SHA, creation and precise probe scope still require
@@ -42,9 +42,10 @@ Before execution, fill these fields with owner approval evidence:
 - Independent human reviewer / owner merger: owner-confirmed **Joshbomb75**;
   implementation API connection **Codex GitHub / codexcodemachine** is present.
 - Credential separation in a fresh implementation context and absence of
-  owner-capable routes/bypass: **Unverified**. Joshbomb75 is absent from fresh
-  connector accounts/installations and no selector is advertised; unidentified
-  cloud GH_TOKEN and incomplete scope/bypass metadata still prevent a C2 claim.
+  owner-capable routes: **Failed in this context** after the owner reconnected the
+  selectable Personal / Joshbomb75 route; live read-only verification is authorized.
+  Full credential scope/bypass remains **Unverified**, along with the unidentified
+  cloud GH_TOKEN. A separate fresh isolated implementation context is required.
   Git push/workflow-comment/draft-PR capability verification
   remains Not run until supported isolation prerequisites hold.
 

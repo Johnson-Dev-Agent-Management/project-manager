@@ -7,15 +7,15 @@ See the [report](milestones/milestone-0-phase-c-report.md) and
 Implementation publication uses **only codexcodemachine**. The latest owner
 steering also authorizes the personal Joshbomb75 connector for **read-only
 verification** if exposed and live-identified; it does not authorize settings
-writes or reviews/merges. Current tools still expose only codexcodemachine and
-no owner selector. Use the [ordered owner handoff](milestones/milestone-0-phase-c-owner-handoff.md).
+writes or reviews/merges. The owner selector subsequently appeared and live
+Joshbomb75 identity was verified; its detailed GET also returns 403. Use the [ordered owner handoff](milestones/milestone-0-phase-c-owner-handoff.md).
 
 ## Authorization and identities
 
 The owner performs the already-approved main configuration in their separate session.
 The agent uses `codexcodemachine` for preparation, validation and PR updates.
 Only separately identified owner-connector read-only verification is now authorized;
-no owner route is currently exposed or invoked. No reviews, approvals, merges,
+the owner route is now exposed and used only for those authorized reads. No reviews, approvals, merges,
 mutation/destructive probes, accounts, collaborator/organization changes, visibility
 changes, purchases or broader credential permissions are authorized. Preserve public
 source and private cloud development; never inspect or retain secret values.
@@ -23,10 +23,11 @@ source and private cloud development; never inspect or retain secret values.
 Use `codexcodemachine` (ID `348095294`) for implementation publication and future
 PR authorship. API identity, collaborator Write, push=true, admin=false,
 maintain=false and reported empty organization memberships are verified. Role
-does not inventory credential scope or prove absence of bypass. Fresh account and
-installation metadata no longer list Joshbomb75; current tools advertise no account
-selector. Complete isolation remains unverified because cloud GH_TOKEN has no
-supported identity binding and scope/bypass readback is incomplete. Verify full
+does not inventory credential scope or prove absence of bypass. Initial account
+removal was observed, then the owner reconnected Personal / Joshbomb75. Its live
+identity is verified and selectable here, so C2 owner-route exclusion
+is Failed in this context. Cloud GH_TOKEN has no supported identity binding and
+scope/bypass readback is incomplete. Verify full
 separation in a fresh implementation context without owner-capable routes;
 selecting a different account here is insufficient. See [account isolation](automation-account-setup.md).
 
@@ -79,8 +80,9 @@ an owner-authored bootstrap PR.
 ## Administration capability and safe application
 
 Historical owner identity and Admin role readback do **not** establish app permission.
-The newly authorized read-only owner connection is not exposed or invoked in
-this tool snapshot; current live identity remains codexcodemachine.
+The newly authorized read-only owner connection is now exposed and live-verified
+as expected Joshbomb75 identity. Its detailed protection GET also returns 403;
+no owner write is attempted.
 The managed connector explicitly excludes administration access; the earlier
 detailed protection GET returned **403 Resource not accessible by integration**.
 It exposes no protection/ruleset/repository-settings write operation. Effective
