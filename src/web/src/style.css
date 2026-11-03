@@ -121,3 +121,64 @@ nav {
 .item-notes {
   white-space: pre-wrap;
 }
+
+main:has(.project-board) {
+  max-width: 76rem;
+}
+.view-switch {
+  display: flex;
+  gap: 0.5rem;
+}
+.view-switch [aria-pressed='false'] {
+  background: white;
+  color: #165b9c;
+  box-shadow: inset 0 0 0 1px #165b9c;
+}
+.project-board {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.board-column {
+  min-width: 0;
+  border: 2px solid #ccd3dc;
+  border-radius: 0.5rem;
+  background: #edf0f4;
+  padding: 0.75rem;
+}
+.board-column h3 {
+  margin: 0 0 1rem;
+}
+.column-count,
+.empty-column {
+  color: #4b596b;
+}
+.drop-target {
+  border-color: #165b9c;
+  background: #e0edf9;
+}
+.board-card {
+  background: white;
+  border: 1px solid #ccd3dc;
+  border-radius: 0.4rem;
+  padding: 0.75rem;
+  margin: 0.75rem 0;
+  overflow-wrap: anywhere;
+}
+.board-card[draggable='true'] {
+  cursor: grab;
+}
+.board-card h4 {
+  font-size: 1.1rem;
+  margin: 0;
+}
+.board-card button {
+  width: 100%;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 52rem) {
+  .project-board {
+    grid-template-columns: 1fr;
+  }
+}

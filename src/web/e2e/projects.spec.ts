@@ -87,7 +87,7 @@ test('project pages and scoped tasks persist through UI reload and API restart',
   await expect(page.getByRole('listitem')).toHaveText([
     'Cloud persistence project — planned',
     'Separate project',
-    ...(process.env.E2E_PHASE === 'restart' ? ['Captured work'] : []),
+    ...(process.env.E2E_PHASE === 'restart' ? ['Captured work', 'Board work'] : []),
   ]);
   await page.getByRole('link', { name: 'Cloud persistence project — planned' }).click();
   await expect(page.getByLabel('Project name')).toHaveValue('Cloud persistence project — planned');
@@ -189,7 +189,10 @@ test('project pages and scoped tasks persist through UI reload and API restart',
   await expect(page.getByRole('region', { name: 'Due now' }).getByRole('listitem')).toHaveCount(0);
   await expect(
     page.getByRole('region', { name: 'Completed today' }).getByRole('heading', { level: 3 }),
-  ).toHaveText(['Draft outline revised']);
+  ).toHaveText([
+    ...(process.env.E2E_PHASE === 'restart' ? ['Board delivery'] : []),
+    'Draft outline revised',
+  ]);
   // Refreshing A's selection must leave B's unsaved status in place.
   const otherDraft = selectedToday.getByLabel('Status for Other project task');
   await otherDraft.selectOption('In progress');
@@ -341,5 +344,123 @@ test('quick capture, Inbox edits and atomic filing preserve content across reloa
     await expect(page.getByText('1 of 1 tasks complete.')).toBeVisible();
     await expect(task.getByLabel('Priority')).toHaveValue('High');
     await expect(task.getByLabel('Due date (optional)')).toHaveValue('2026-11-03');
+  }
+});
+
+test('project board supports drag, keyboard and touch moves with saved counts and restart persistence', async ({
+  page,
+  browser,
+}, info) => {
+  await page.clock.setFixedTime(new Date('2026-11-04T01:30:00Z'));
+  await page.goto('/');
+  const title = 'Board delivery';
+  const notes = 'Preserve board notes\nAcross every move.';
+  if (process.env.E2E_PHASE === 'create') {
+    await page.getByLabel('Project name').fill('Board work');
+    await page.getByRole('button', { name: 'Create project' }).click();
+  }
+  await page.getByRole('link', { name: 'Board work', exact: true }).click();
+  await page.getByRole('button', { name: 'Board', exact: true }).click();
+  const todo = page.getByRole('region', { name: 'To do', exact: true });
+  const progress = page.getByRole('region', { name: 'In progress', exact: true });
+  const done = page.getByRole('region', { name: 'Done', exact: true });
+  const card = page.getByRole('listitem', { name: title, exact: true });
+  if (process.env.E2E_PHASE === 'create') {
+    for (const status of ['To do', 'In progress', 'Done'])
+      await expect(page.getByRole('heading', { name: `${status} (0)` })).toBeVisible();
+    const create = page.getByRole('form', { name: 'New task' });
+    await create.getByLabel('Task title').fill(title);
+    await create.getByLabel('Notes (optional)').fill(notes);
+    await create.getByLabel('Priority').selectOption('High');
+    await create.getByLabel('Due date (optional)').fill('2026-11-03');
+    await create.getByRole('button', { name: 'Add task' }).click();
+    await expect(todo.getByRole('listitem', { name: title })).toBeVisible();
+    await card.getByRole('button', { name: 'Add to today' }).click();
+    await expect(card.getByRole('button', { name: 'Remove from today' })).toBeVisible();
+    await create.getByLabel('Task title').fill('Board backlog');
+    await create.getByRole('button', { name: 'Add task' }).click();
+    await expect(todo.getByRole('heading', { name: 'To do (2)' })).toBeVisible();
+    // A failed status request cannot move the card or inflate completion counts.
+    await page.route('**/api/tasks/*/status', (route) => route.fulfill({ status: 503 }), {
+      times: 1,
+    });
+    await card.getByLabel(`Status for ${title}`).selectOption('Done');
+    await expect(page.getByRole('alert')).toContainText('remains in To do');
+    await expect(todo.getByRole('listitem', { name: title })).toBeVisible();
+    await expect(page.getByText('0 of 2 tasks complete.')).toBeVisible();
+    await card.getByRole('heading', { name: title }).dragTo(progress);
+    await expect(progress.getByRole('listitem', { name: title })).toBeVisible();
+    await expect(progress.getByRole('heading', { name: 'In progress (1)' })).toBeVisible();
+    await expect(todo.getByRole('heading', { name: 'To do (1)' })).toBeVisible();
+    await expect(page.getByRole('alert')).toHaveCount(0);
+    // Real keyboard input on the native status control; focus follows the moved card.
+    await card.getByLabel(`Status for ${title}`).focus();
+    await page.keyboard.press('End');
+    await page.keyboard.press('Tab');
+    await expect(done.getByRole('listitem', { name: title })).toBeVisible();
+    await expect(page.getByText('1 of 2 tasks complete.')).toBeVisible();
+    await card.getByRole('heading', { name: title }).dragTo(todo);
+    await expect(todo.getByRole('listitem', { name: title })).toBeVisible();
+    await expect(card.getByText(/Due today/)).toBeVisible();
+    await card.getByLabel(`Status for ${title}`).selectOption('Done');
+    await expect(done.getByRole('listitem', { name: title })).toBeVisible();
+  }
+  await expect(done.getByRole('heading', { name: 'Done (1)' })).toBeVisible();
+  await expect(progress.getByRole('heading', { name: 'In progress (0)' })).toBeVisible();
+  await expect(todo.getByRole('heading', { name: 'To do (1)' })).toBeVisible();
+  await expect(page.getByRole('listitem')).toHaveCount(2);
+  await expect(card.getByText(/Priority: High/)).toContainText('2026-11-03');
+  await expect(card.getByText(/Due today/)).toHaveCount(0);
+  await expect(card.getByRole('button', { name: 'Remove from today' })).toBeVisible();
+  await page.screenshot({
+    path: info.outputPath(`${process.env.E2E_PHASE ?? 'invalid'}-board.png`),
+    fullPage: true,
+  });
+  const projectUrl = page.url();
+  await card.getByRole('button', { name: `Edit task: ${title}` }).click();
+  const edit = page.getByRole('form', { name: `Edit task: ${title}` });
+  await expect(edit.getByLabel('Task title')).toBeFocused();
+  await expect(edit.getByLabel('Notes (optional)')).toHaveValue(notes);
+  await expect(edit.getByLabel('Status')).toHaveValue('Done');
+  await expect(edit.getByLabel('Priority')).toHaveValue('High');
+  await expect(edit.getByLabel('Due date (optional)')).toHaveValue('2026-11-03');
+  await page.reload();
+  await expect(edit.getByLabel('Status')).toHaveValue('Done');
+  await expect(page.getByText('1 of 2 tasks complete.')).toBeVisible();
+  await page.getByRole('link', { name: 'Today', exact: true }).click();
+  await expect(
+    page.getByRole('region', { name: 'Completed today' }).getByRole('listitem', { name: title }),
+  ).toBeVisible();
+
+  const mobile = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+    hasTouch: true,
+    timezoneId: 'America/Los_Angeles',
+  });
+  try {
+    const touch = await mobile.newPage();
+    await touch.clock.setFixedTime(new Date('2026-11-04T01:30:00Z'));
+    await touch.goto(projectUrl);
+    await touch.getByRole('button', { name: 'Board', exact: true }).tap();
+    const status = touch.getByLabel(`Status for ${title}`);
+    await status.tap();
+    await status.selectOption('In progress');
+    await expect(
+      touch
+        .getByRole('region', { name: 'In progress', exact: true })
+        .getByRole('listitem', { name: title }),
+    ).toBeVisible();
+    await expect(touch.getByText('0 of 2 tasks complete.')).toBeVisible();
+    expect(
+      await touch.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
+    ).toBe(true);
+    await touch.screenshot({
+      path: info.outputPath(`${process.env.E2E_PHASE ?? 'invalid'}-board-mobile.png`),
+      fullPage: true,
+    });
+    await status.selectOption('Done');
+    await expect(touch.getByText('1 of 2 tasks complete.')).toBeVisible();
+  } finally {
+    await mobile.close();
   }
 });

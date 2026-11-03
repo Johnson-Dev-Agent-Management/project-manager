@@ -124,6 +124,26 @@ confirmation, navigation, and stale reads. Browser tests retain both earlier
 stages and add capture → edit → failed/successful move → project task, plus
 unassigned and assigned content after reload and a real API restart.
 
+### Stage 4A project board
+
+The project List/Board views share the saved `ProjectDetail.tasks` snapshot.
+Board columns derive counts and membership from the existing three statuses and
+sort by ascending task ID. No board records, schema changes or new endpoints are
+introduced. Moves use `PUT /api/tasks/{taskId}/status`; same-column drops do not
+write. The UI waits for the saved response before changing placement and counts.
+Per-task save guards coordinate status moves, task edits and Today selection;
+quick capture and new-task drafts remain independently usable. The retained List
+forms synchronize externally saved status without resetting other draft fields.
+Native drag-and-drop supplements a labeled native select, with live feedback,
+focus restoration and stacked columns on narrow screens; no dependency is added.
+
+`ProjectBoard.test.tsx` covers grouping/order/counts, creation, both move paths,
+no-op/cancelled/external drops, pending/failure/retry, drafts and quick-capture focus.
+`TaskPlanningTests` checks all directed transitions, rejected status bodies, every
+retained field and Today membership across SQLite restarts. Browser coverage
+exercises pointer dragging, keyboard/touch controls, failure, list/Today consistency,
+responsive layout, reload and the harness's actual API process restart.
+
 ### Development database schema changes
 
 The API calls `Database.EnsureCreated()` at startup, followed by the bounded
