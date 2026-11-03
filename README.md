@@ -1,8 +1,10 @@
 # project-manager
 
 Project management app built with React, strict TypeScript, Vite, ASP.NET Core,
-EF Core, and SQLite. The interface creates/lists projects; the server trims names
-and rejects blank names with useful validation errors. Data is synthetic.
+EF Core, and SQLite. Create a project, open its page, edit its name/description,
+and track tasks with titles, optional notes, and To do / In progress / Done statuses.
+Only Done tasks count as complete. Names and task titles are trimmed; blank values
+are rejected with useful validation errors. Data is synthetic.
 Authentication, shared access, deployments, and production migrations are future work.
 
 ## Setup and development
@@ -57,9 +59,38 @@ curl -fsS http://127.0.0.1:5000/api/health
 curl -fsS http://127.0.0.1:5173/api/projects
 ```
 
-Startup creates a fresh schema; it does not upgrade an existing SQLite database.
-For schema-changing features, follow [development database guidance](docs/engineering.md#development-database-schema-changes)
-and document the data-preservation or disposable-data reset strategy.
+### Stage 1 development database
+
+Stage 1 adds project descriptions and a Tasks table. Startup uses `EnsureCreated`:
+it creates a fresh schema but **does not upgrade an existing database**. Old
+project-only databases (normally `.data/projects.db`) are incompatible with the
+Stage 1 app. They are never automatically reset or modified to the
+new schema. No preservation/production migration is included in this stage.
+
+For an existing checkout, stop its development services and select a fresh,
+task-owned directory for disposable synthetic data:
+
+```bash
+PROJECT_DEV_DATA_DIR="$PWD/.data/stage-1" bash scripts/dev.sh
+```
+
+Use that same override on later starts to retain progress in
+`.data/stage-1/projects.db`. Choose another unused directory if that path already
+contains an old-schema database. This leaves `.data/projects.db` and other sessions'
+data untouched; no deletion is needed. A fresh checkout may use the default path.
+Backend and browser tests use isolated empty SQLite files and verify project edits,
+tasks, notes, and statuses across an API restart. See the
+[database guidance](docs/engineering.md#development-database-schema-changes).
+
+### Using project pages
+
+Click a project name to open its bookmarkable `/#/projects/{id}` page. Use
+**Back to projects** to return to the list. Edit the project name and optional
+description, then choose **Save project**. Add tasks using **New task**; new tasks
+start in **To do**. Edit a task's title, notes, or status and choose **Save task**.
+Changes and completion counts update after a successful save. Failed saves retain
+your inputs so you can correct them or retry. Reloading or leaving a page discards
+unsaved edits. A missing project provides a message and navigation back to the list.
 
 Native Windows uses **Git Bash**, bootstrap Node/npm, the pinned native .NET SDK
 on PATH, Python 3, and curl. Use the same setup/check/dev commands; setup selects
@@ -125,7 +156,8 @@ bash scripts/e2e-qualify.sh
 ```
 
 E2E owns loopback ports 5001/5174, rejects occupied ports, verifies the build/proxy,
-and tests validation, trimming, create/reload, and API restart persistence.
+and tests project/task validation, trimming, edits, status transitions, completion
+counts, cross-project isolation, direct-page reload, and API restart persistence.
 It cleans up its processes/database and retains each run's diagnostics/screenshots
 under ignored `.artifacts`. CI uses matched Chromium; restricted cloud runs report
 any system Chromium fallback explicitly. There are no browser retries.

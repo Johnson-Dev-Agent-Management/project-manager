@@ -31,6 +31,38 @@ update their tests/documentation together. Do not invent name length/uniqueness 
 Authentication, shared access,
 deployment, and production migrations remain separate work.
 
+### Stage 1 project/task contracts
+
+The create/list/health contracts above remain unchanged. Project pages use hash
+URLs (`/#/projects/{id}`) so bookmarks and reloads work without a hosting rewrite
+or an additional router dependency.
+
+| Endpoint                                | Behavior                                                                        |
+| --------------------------------------- | ------------------------------------------------------------------------------- |
+| `GET /api/projects/{id}`                | `{ id, name, description, tasks }`; tasks in ID order, scoped to the project    |
+| `PUT /api/projects/{id}`                | Accepts `{ name, description? }`; returns the saved `{ id, name, description }` |
+| `POST /api/projects/{id}/tasks`         | Accepts `{ title, notes? }`; returns 201, the saved task, and its Location      |
+| `GET /api/projects/{id}/tasks/{taskId}` | Returns the task only when it belongs to that project                           |
+| `PUT /api/projects/{id}/tasks/{taskId}` | Accepts `{ title, notes?, status }`; returns the saved task                     |
+
+Task JSON is `{ id, projectId, title, notes, status }`. Status strings are exactly
+`To do`, `In progress`, and `Done`; creation always defaults to `To do`. All
+transitions are allowed. Only saved `Done` tasks count toward completion; the UI
+derives completed/total from its saved task list. No tasks displays `0 of 0` plus
+an explicit empty state. SQLite enforces the project foreign key and valid statuses.
+
+Project names and task titles are trimmed and required. Blank values return 400
+validation problems with `errors.name` / `errors.title`; an invalid update status
+returns `errors.status`. Validation failures do not change any saved fields.
+Descriptions/notes preserve whitespace and may be omitted or null (cleared on PUT).
+Missing projects/tasks and task IDs belonging to another project return 404.
+There are no added length/uniqueness limits or deletion endpoints.
+
+Stage 1 uses fresh disposable development storage, with the exact path and restart
+instructions in [README](../README.md#stage-1-development-database). Existing
+project-only databases are not migrated. Tests verify new-schema persistence and
+isolation; they do not claim old-schema compatibility.
+
 ### Development database schema changes
 
 The API currently calls `Database.EnsureCreated()` at startup. It creates a fresh
@@ -55,15 +87,16 @@ This is scoped feature work; a production migration platform is not a prerequisi
 
 ## Testing and measured coverage
 
-| Requirement or gap            | Behavioral evidence                                                                                                                                     |
-| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Loading, empty, existing list | `App.test.tsx` and ordinary TS `loading.test.ts`: visible states, submission disabled while loading, server ordering                                    |
-| Saving/success                | Real user-event typing/clicking; saving disabled, no duplicate POST, exact request contract, trimmed response displayed, field cleared, appended list   |
-| Validation and retry          | All name-error fallback shapes, preserved input/list, re-enabled submission, successful retry clears error                                              |
-| HTTP/network errors           | Loading HTTP failure, Error/non-Error rejection; creation Error/non-Error rejection; abort signal on unmount                                            |
-| API contracts and no writes   | xUnit validates status/content type/body/Location; blank/null/whitespace and malformed/missing/wrong-type bodies; prior data survives rejection         |
-| Ordering, health, restart     | Real SQLite empty state, ID/insertion ordering, health body, trimmed name and ID retained after factory restart                                         |
-| Production integration        | Playwright checks hashed frontend assets, preview API proxy, whitespace validation, trimming, create/reload, and API restart using the same SQLite file |
+| Requirement or gap            | Behavioral evidence                                                                                                                                                                                        |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Loading, empty, existing list | `App.test.tsx` and ordinary TS `loading.test.ts`: visible states, submission disabled while loading, server ordering                                                                                       |
+| Saving/success                | Real user-event typing/clicking; saving disabled, no duplicate POST, exact request contract, trimmed response displayed, field cleared, appended list                                                      |
+| Validation and retry          | All name-error fallback shapes, preserved input/list, re-enabled submission, successful retry clears error                                                                                                 |
+| HTTP/network errors           | Loading HTTP failure, Error/non-Error rejection; creation Error/non-Error rejection; abort signal on unmount                                                                                               |
+| API contracts and no writes   | xUnit validates status/content type/body/Location; blank/null/whitespace and malformed/missing/wrong-type bodies; prior data survives rejection                                                            |
+| Ordering, health, restart     | Real SQLite empty state, ID/insertion ordering, health body, trimmed name and ID retained after factory restart                                                                                            |
+| Project pages and tasks       | `ProjectPage.test.tsx` covers navigation, forms, loading/saving/errors, retries and saved counts; `ProjectTasksTests` uses SQLite for validation, all status transitions, scoping, and restart persistence |
+| Production integration        | Playwright checks hashed assets/proxy, project/task validation and edits, counts, isolation, reload, and API restart using the same SQLite file                                                            |
 
 Vitest discovers `src/**/*.test.{ts,tsx}`. TypeScript checks app/tests, E2E, all
 root TS configs, and the authored JS ESLint config (`allowJs`/`checkJs`).

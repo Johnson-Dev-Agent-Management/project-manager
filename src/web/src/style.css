@@ -1,0 +1,82 @@
+:root {
+  font-family: system-ui, sans-serif;
+  color: #233142;
+  background: #f6f7f9;
+  line-height: 1.5;
+}
+body {
+  margin: 0;
+}
+main {
+  max-width: 46rem;
+  margin: 2rem auto;
+  padding: 0 1rem 3rem;
+}
+h1 {
+  overflow-wrap: anywhere;
+}
+a {
+  color: #165b9c;
+}
+form {
+  margin: 1rem 0;
+}
+fieldset {
+  border: 1px solid #ccd3dc;
+  border-radius: 0.4rem;
+  background: white;
+  padding: 1rem;
+  min-width: 0;
+}
+legend {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+  max-width: 100%;
+}
+label {
+  display: block;
+  margin-top: 0.5rem;
+}
+input,
+textarea,
+select,
+button {
+  font: inherit;
+}
+input,
+textarea,
+select {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #758294;
+  border-radius: 0.25rem;
+}
+textarea {
+  min-height: 5rem;
+  resize: vertical;
+}
+button {
+  margin-top: 0.75rem;
+  padding: 0.5rem 0.9rem;
+  background: #165b9c;
+  color: white;
+  border: 0;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+button:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+:focus-visible {
+  outline: 3px solid #bd6c00;
+  outline-offset: 3px;
+}
+[role='alert'] {
+  color: #a41f24;
+}
+.task-list {
+  list-style: none;
+  padding: 0;
+}
