@@ -364,6 +364,78 @@ test('removal confirms task preservation, retries failure, coordinates saves, an
   expect(screen.getByLabelText('Capture title')).toHaveFocus();
 });
 
+test('removing the saved milestone preserves a draft reassignment and submits it before changing progress', async () => {
+  const user = userEvent.setup();
+  const nextMilestone = { ...milestone, id: 4, title: 'Next outcome' };
+  const draft = {
+    title: 'Deliver revised',
+    notes: 'Keep notes and this draft',
+    status: 'Done' as const,
+    priority: 'Medium' as const,
+    dueDate: '2026-11-04',
+    milestoneId: nextMilestone.id,
+  };
+  let finishSave!: (value: unknown) => void;
+  const fetchMock = vi
+    .fn()
+    .mockResolvedValueOnce(ok({ ...project, milestones: [milestone, nextMilestone] }))
+    .mockResolvedValueOnce(ok({ id: milestone.id }))
+    .mockImplementationOnce(
+      () =>
+        new Promise((resolve) => {
+          finishSave = resolve;
+        }),
+    );
+  vi.stubGlobal('fetch', fetchMock);
+  render(<ProjectPage projectId="1" />);
+  await screen.findByRole('heading', { name: 'Work' });
+  const form = taskForm();
+  await user.selectOptions(form.getByLabelText('Milestone (optional)'), String(nextMilestone.id));
+  await user.clear(form.getByLabelText('Task title'));
+  await user.type(form.getByLabelText('Task title'), draft.title);
+  await user.type(form.getByLabelText('Notes (optional)'), ' and this draft');
+  await user.selectOptions(form.getByLabelText('Status'), draft.status);
+  await user.selectOptions(form.getByLabelText('Priority'), draft.priority);
+  fireEvent.change(form.getByLabelText('Due date (optional)'), {
+    target: { value: draft.dueDate },
+  });
+  expect(region().getByRole('status')).toHaveTextContent('0 of 1 tasks complete');
+  expect(region(nextMilestone.title).getByRole('status')).toHaveTextContent('No tasks assigned');
+
+  await user.click(region().getByRole('button', { name: 'Remove milestone' }));
+  await user.click(region().getByRole('button', { name: 'Confirm removal' }));
+  expect(
+    screen.queryByRole('region', { name: `Milestone: ${milestone.title}` }),
+  ).not.toBeInTheDocument();
+  expect(form.getByLabelText('Milestone (optional)')).toHaveValue(String(nextMilestone.id));
+  expect(form.getByLabelText('Task title')).toHaveValue(draft.title);
+  expect(form.getByLabelText('Notes (optional)')).toHaveValue(draft.notes);
+  expect(form.getByLabelText('Status')).toHaveValue(draft.status);
+  expect(form.getByLabelText('Priority')).toHaveValue(draft.priority);
+  expect(form.getByLabelText('Due date (optional)')).toHaveValue(draft.dueDate);
+  expect(screen.getByRole('button', { name: 'Remove from today' })).toBeVisible();
+  expect(region(nextMilestone.title).getByRole('status')).toHaveTextContent('No tasks assigned');
+  expect(screen.getByText('0 of 1 tasks complete.')).toBeVisible();
+
+  await user.click(form.getByRole('button', { name: 'Save task' }));
+  expect(fetchMock).toHaveBeenLastCalledWith(
+    '/api/projects/1/tasks/3',
+    expect.objectContaining({
+      method: 'PUT',
+      body: JSON.stringify(draft),
+    }),
+  );
+  expect(region(nextMilestone.title).getByRole('status')).toHaveTextContent('No tasks assigned');
+  await act(async () => {
+    finishSave(ok({ ...task, ...draft }));
+    await Promise.resolve();
+  });
+  expect(region(nextMilestone.title).getByRole('status')).toHaveTextContent(
+    '1 of 1 tasks complete · Complete',
+  );
+  expect(screen.getByText('1 of 1 tasks complete.')).toBeVisible();
+});
+
 test('failed membership saves retain task drafts and progress; pending task writes prevent milestone removal', async () => {
   const user = userEvent.setup();
   let finish!: (value: unknown) => void;

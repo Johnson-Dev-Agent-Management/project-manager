@@ -24,10 +24,11 @@ export default function TaskForm({
   const [dueDate, setDueDate] = useState(task?.dueDate ?? '');
   const [milestoneId, setMilestoneId] = useState(task?.milestoneId ?? null);
   const [savedMilestoneId, setSavedMilestoneId] = useState(task?.milestoneId);
-  // Removal clears only membership; keep unrelated unsaved fields intact.
+  // Follow saved changes only for an unedited selection; preserve draft reassignments.
+  // The option check below still clears a selection whose milestone was removed.
   if (task?.milestoneId !== savedMilestoneId) {
     setSavedMilestoneId(task?.milestoneId);
-    setMilestoneId(task?.milestoneId ?? null);
+    if (milestoneId === (savedMilestoneId ?? null)) setMilestoneId(task?.milestoneId ?? null);
   }
   const selectedMilestoneId = milestones.some((item) => item.id === milestoneId)
     ? milestoneId
