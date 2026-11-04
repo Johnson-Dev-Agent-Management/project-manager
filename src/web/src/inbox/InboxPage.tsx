@@ -81,6 +81,7 @@ export default function InboxPage({ captureVersion }: { captureVersion: number }
       {projectError && <p role="alert">{projectError} Your captured items are still here.</p>}
       {(error || projectError) && (
         <button
+          data-variant="secondary"
           onClick={() => {
             setLoading(true);
             setAttempt((value) => value + 1);

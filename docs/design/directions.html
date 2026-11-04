@@ -155,9 +155,9 @@
         --muted: #a8b1c3;
         --line: #353d4d;
         --control: #758298;
-        --accent: #b8a8f5;
-        --accent-ink: #201935;
-        --tint: #302b45;
+        --accent: #63cbb7;
+        --accent-ink: #102923;
+        --tint: #203c38;
         --radius: 7px;
         --space: 22px;
         color-scheme: dark;
@@ -789,19 +789,19 @@
         <a href="?compare=1">Compare all three →</a>
       </div>
       <div class="choices" role="group" aria-label="Design direction">
-        <button class="choice" data-choice="calm" aria-pressed="true">
+        <button class="choice" data-choice="calm" aria-pressed="false">
           <strong>A · Calm workspace</strong><small>Clear · light · balanced</small>
         </button>
         <button class="choice" data-choice="notebook" aria-pressed="false">
           <strong>B · Warm notebook</strong><small>Personal · thoughtful · soft</small>
         </button>
-        <button class="choice" data-choice="studio" aria-pressed="false">
+        <button class="choice" data-choice="studio" aria-pressed="true">
           <strong>C · Dark studio</strong><small>Focused · compact · precise</small>
         </button>
       </div>
       <p class="description" id="theme-description"></p>
     </header>
-    <div class="app" id="app" data-theme="calm">
+    <div class="app" id="app" data-theme="studio">
       <aside class="sidebar">
         <div class="brand"><span class="brandmark" aria-hidden="true">p.</span>Project Manager</div>
         <nav aria-label="Preview navigation">
@@ -816,8 +816,8 @@
       <main id="content"></main>
     </div>
     <p class="footer">
-      Design study · Synthetic examples · Changes in this preview reset on reload. Layout, colors,
-      and typography are proposals.
+      Design study · Synthetic examples · Changes in this preview reset on reload. Graphite + teal
+      is selected; page layouts remain proposals.
     </p>
     <section class="comparison" aria-label="Three design directions">
       <p class="eyebrow">PROJECT MANAGER / DIRECTION STUDY</p>
@@ -854,14 +854,14 @@
           </div>
           <h2>C · Dark studio</h2>
           <p>
-            Graphite, lavender, and tighter rows. A focused feel for scanning tasks and moving
-            between projects.
+            Graphite, teal, and tighter rows. A focused feel for scanning tasks and moving between
+            projects.
           </p>
         </article>
       </div>
       <p style="margin-top: 24px">
-        Provisional concepts · Synthetic data ·
-        <a href="?theme=calm">Explore the interactive previews →</a>
+        Graphite + teal selected · Synthetic data ·
+        <a href="?theme=studio">Explore the interactive previews →</a>
       </p>
     </section>
     <script>
@@ -869,11 +869,11 @@
       const app = document.getElementById('app');
       const content = document.getElementById('content');
       const themes = {
-        calm: 'Recommended starting point: soft white surfaces, a quiet blue accent, and clear separation between projects. Comfortable for both planning and capturing ideas.',
+        calm: 'Earlier alternative: soft white surfaces, a quiet blue accent, and clear separation between projects. Comfortable for both planning and capturing ideas.',
         notebook:
           'Warm paper surfaces, forest green, and serif page headings. A more personal place to think, with generous spacing and simple lists.',
         studio:
-          'Graphite surfaces, lavender accents, and more compact rows. Useful if you prefer a tool-like workspace with more information visible at once.',
+          'Selected direction: graphite surfaces, restrained teal accents, and compact readable rows. The shared foundation implements this palette; page layouts remain concepts.',
       };
       let view = 'projects';
       let projectIndex = 0;
@@ -914,7 +914,7 @@
         return element.innerHTML;
       }
       function setTheme(theme) {
-        if (!Object.hasOwn(themes, theme)) theme = 'calm';
+        if (!Object.hasOwn(themes, theme)) theme = 'studio';
         app.dataset.theme = theme;
         document.getElementById('theme-description').textContent = themes[theme];
         document
@@ -1097,7 +1097,7 @@
         window.addEventListener('resize', scaleFrames);
         scaleFrames();
       } else document.querySelectorAll('iframe').forEach((frame) => frame.remove());
-      setTheme(params.get('theme') || 'calm');
+      setTheme(params.get('theme') || 'studio');
       render(
         ['projects', 'project', 'today', 'inbox'].includes(params.get('view'))
           ? params.get('view')

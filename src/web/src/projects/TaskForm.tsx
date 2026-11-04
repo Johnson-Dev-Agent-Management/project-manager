@@ -139,6 +139,7 @@ export default function TaskForm({
           onChange={(event) => setDueDate(event.target.value)}
         />
         <button
+          data-variant="quiet"
           type="button"
           disabled={!dueDate}
           onClick={() => {

@@ -1,8 +1,12 @@
 # Design audit and direction brief
 
-Status: focused audit and provisional concepts, November 4, 2026.
-The owner has not selected a visual direction. This brief informs future UI work;
-it does not change the running application or supersede engineering standards.
+Status: **C1 · Graphite + Teal selected**, November 4, 2026.
+The owner chose the compact Dark studio direction with teal replacing purple.
+Use the [design foundations](foundations.md) for implemented tokens and control
+patterns, and the [live component reference](foundations.html) to inspect them.
+Steps 1–2 record the direction and establish shared styles; page restructuring
+and Quick capture relocation remain part of the later Projects pilot. Engineering
+standards still apply.
 
 ## Product intent and settled preferences
 
@@ -15,7 +19,8 @@ ideas. The owner wants a polished, modern experience and values quick capture.
   direction; the current app still renders it globally.
 - Make projects easy to return to, ideas easy to find, and daily work easy to scan.
 - Keep Projects, Today, and Inbox as understandable destinations.
-- Decide the visual direction through examples before standardizing a theme.
+- Use graphite surfaces, restrained teal accents, system sans-serif text, and
+  compact readable rows. Keep primary actions distinct from secondary controls.
 
 A useful definition of polished here: consistent alignment, readable hierarchy,
 clear action priority, predictable interactions, and visible save/failure states.
@@ -55,7 +60,11 @@ a complete accessibility audit, or a production-browser certification.
 - Milestone creation and Inbox editing already demonstrate selective disclosure.
   Extend that pattern to the rest of the application.
 
-## Findings and priorities
+## Baseline findings and priorities
+
+These findings describe the audited baseline. The shared theme and action variants
+now address the styling foundation; page composition and workflow findings remain
+for the pilot and later refactors.
 
 High means a direct obstacle to the main personal workflow. Medium means a
 consistency or scaling problem worth addressing with the design foundations.
@@ -78,7 +87,7 @@ and project layouts did not horizontally overflow at 390 px; Projects also fit
 at 320 px. The main mobile concern observed is the long sequence of forms, not
 an established general reflow failure.
 
-## Three visual directions
+## Concept exploration and chosen direction
 
 Open the [interactive comparison](directions.html?compare=1) to view the three
 concepts side by side. The HTML also supports exploring each direction at full size.
@@ -101,18 +110,18 @@ python3 -m http.server 5180 --bind 127.0.0.1 --directory docs/design
 | ------------------ | ---------------------------------------------------------------------------------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------- |
 | A · Calm workspace | Soft white, restrained blue, system sans-serif, moderate spacing, distinct project cards | A balanced home for projects, daily work, and capture | Cards take more space as the project count grows; a list may eventually be better           |
 | B · Warm notebook  | Warm paper, forest green, serif page headings, sans-serif controls, simple project rows  | A personal thinking space with a reflective tone      | More generous spacing; serif headings need care with long names                             |
-| C · Dark studio    | Graphite, lavender, sans-serif, compact rows, subtle separators                          | Frequent scanning and a tool-like feel                | Dark appearance and tighter density are preferences, not universal readability improvements |
+| C · Dark studio    | Graphite, teal, sans-serif, compact rows, subtle separators                              | Frequent scanning and a tool-like feel                | Dark appearance and tighter density are preferences, not universal readability improvements |
 
-**Recommendation to discuss:** start with A's structure and restraint. Borrow B's
-warmer surfaces if the cool white feels too administrative. Keep comfortable task
-rows even if C's colors appeal. Palette, density, typography, and navigation can
-be selected independently; these concepts are starting points, not fixed bundles.
+**Selected: C1 · Graphite + Teal.** The owner preferred C's dark, compact feel
+and selected teal after comparing teal, amber, and blue alternatives. The concept
+explorer now defaults to the teal version of C. A and B remain comparison
+references, not competing implementation directions.
 
 All three use the same information architecture so comparison stays useful.
 The sample desktop sidebar is a proposal, not a requirement; a compact top bar
 could be enough for the current three destinations. Mobile uses a visible top nav.
 
-The [calm project example](directions.html?theme=calm&view=project) shows how compact
+The [selected project concept](directions.html?theme=studio&view=project) shows how compact
 summaries bring tasks forward. The preview intentionally omits full task editing,
 Board, milestone management, server requests, and their failure states. Production
 must retain those capabilities. Project descriptions and Inbox counts shown on
@@ -141,25 +150,23 @@ They inform the concepts; they are not a request to clone a product or buy it.
   spacing. Prefer roughly 40–44 px high frequent controls for this app's comfort;
   that preference is not a restatement of the AA minimum.
 
-## Refactoring sequence after choosing a direction
+## Implementation sequence
 
-1. **Capture placement and page states.** Limit capture to Projects; keep its
-   validation, retained text, feedback, and refocus behavior. Update the Inbox
-   empty state to link back to Projects. Revisit navigation with an unsaved
-   capture draft. Update README and affected unit/browser tests, which currently
-   expect capture on other pages. Separately fix the misleading load/empty state.
-2. **Design foundations and Projects pilot.** Define semantic color, spacing,
-   typography, radius, focus, and layout tokens. Build shared page headers and
-   action variants. Apply them to Projects and its loading/empty/error states.
-3. **Project/task readability.** Replace permanently expanded forms with task
-   summaries and explicit editors. Keep New task, List/Board, milestone actions,
-   status, priority, due date, and Today selection available. Preserve drafts on
-   view/filter changes and the current saved-state/race protections.
-4. **Today and Inbox.** Reuse those patterns for focused daily work and idea
-   organization. Keep confirmations and failure recovery close to each action.
-5. **Document the proven standards.** Promote chosen tokens and demonstrated
-   component/state examples into a short design guide, linked from AGENTS.md.
-   A guide is more reliable once tested on a representative feature.
+1. **Record the direction (implemented).** C1 · Graphite + Teal is the selected
+   visual language; this brief and AGENTS.md point to the shared foundations.
+2. **Shared foundation (implemented).** Semantic tokens and native-control
+   patterns cover typography, spacing, surfaces, actions, fields, navigation,
+   selected/disabled/error/focus states, reduced motion, and forced colors.
+   Existing screens inherit these styles while keeping their layout and behavior.
+3. **Projects pilot (next).** Bring capture and projects forward, reveal project
+   creation on demand, and limit capture to Projects. Update Inbox's empty state
+   and affected capture tests/docs. Review navigation with an unsaved capture
+   draft. Separately fix the misleading Projects load/empty state.
+4. **Review and refine.** Exercise the pilot at desktop and phone widths, with
+   realistic content, keyboard input, and loading/empty/error/saving states.
+5. **Extend proven patterns.** Compact project/task summaries and explicit
+   editors come next, then Today and Inbox. Preserve New task, List/Board,
+   milestones, planning controls, drafts, and saved-state/race protections.
 
 For each implementation, review real screens at desktop and narrow widths,
 keyboard focus/order, long content, empty/loading/error/saving states, and content
@@ -167,12 +174,9 @@ contrast. Keep board keyboard/touch alternatives. Verify the existing meaningful
 behavior tests and add targeted coverage when interactions change. Screenshots
 support review; they do not establish accessibility compliance or persistence.
 
-## Decisions for the next discussion
+## Remaining product decisions
 
-1. Which feels most natural to open every day: A, B, C, or a combination?
-2. Would you prefer roomy project cards or a more compact project list?
-3. Should thoughts remain in Inbox until actionable, or eventually have a home
-   inside a project without becoming tasks?
-
-Only the first decision is needed to begin a small visual pilot. The third can
-remain open while the existing capture and project workflows are improved.
+The visual direction is selected. Refine the exact project-list density and
+navigation layout during the pilot. Whether thoughts eventually need a home
+inside a project without becoming tasks can remain open while the current
+capture and project workflows are improved.

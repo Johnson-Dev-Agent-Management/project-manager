@@ -149,7 +149,9 @@ function DailyPlan({ day }: { day: string }) {
       {error && (
         <div>
           <p role="alert">{error}</p>
-          <button onClick={reload}>Try again</button>
+          <button data-variant="secondary" onClick={reload}>
+            Try again
+          </button>
         </div>
       )}
       {plan &&

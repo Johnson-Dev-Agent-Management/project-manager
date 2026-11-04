@@ -106,7 +106,9 @@ export default function ProjectPage({ projectId }: { projectId: string }) {
       {project && loadError && (
         <div>
           <p role="alert">Could not refresh this project. Your edits are still here. {loadError}</p>
-          <button onClick={retryLoad}>Try again</button>
+          <button data-variant="secondary" onClick={retryLoad}>
+            Try again
+          </button>
         </div>
       )}
       {project && !loadError && (loading || loadedDay !== day) && (
@@ -118,7 +120,9 @@ export default function ProjectPage({ projectId }: { projectId: string }) {
         <>
           <h1>Project unavailable</h1>
           <p role="alert">{loadError}</p>
-          <button onClick={retryLoad}>Try again</button>
+          <button data-variant="secondary" onClick={retryLoad}>
+            Try again
+          </button>
         </>
       ) : (
         project && (

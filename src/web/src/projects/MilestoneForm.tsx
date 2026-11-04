@@ -86,14 +86,19 @@ export default function MilestoneForm({
           value={targetDate}
           onChange={(event) => setTargetDate(event.target.value)}
         />
-        <button type="button" disabled={!targetDate} onClick={() => setTargetDate('')}>
+        <button
+          data-variant="quiet"
+          type="button"
+          disabled={!targetDate}
+          onClick={() => setTargetDate('')}
+        >
           Clear target date
         </button>{' '}
         <button>
           {saving ? 'Saving milestone…' : milestone ? 'Save milestone' : 'Add milestone'}
         </button>{' '}
         {onCancel && (
-          <button type="button" onClick={onCancel}>
+          <button data-variant="secondary" type="button" onClick={onCancel}>
             Cancel edit
           </button>
         )}
