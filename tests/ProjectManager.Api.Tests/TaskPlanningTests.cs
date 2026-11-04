@@ -230,6 +230,59 @@ public sealed class TaskPlanningTests
         }
     }
 
+    [Fact]
+    public async Task BoardStatusTransitionsPreserveAllFieldsAndSelectionsAcrossRestartsAndRejectedWrites()
+    {
+        using var scenario = new Scenario();
+        int projectId, taskId;
+        const string day = "2028-02-29";
+        using (var app = scenario.Start())
+        using (var client = app.CreateClient())
+        {
+            projectId = await CreateProject(client, "Board");
+            using var create = await client.PostAsJsonAsync($"/api/projects/{projectId}/tasks",
+                new { title = "Keep title", notes = "Keep notes\nSecond line", priority = "High", dueDate = day });
+            create.EnsureSuccessStatusCode();
+            taskId = Assert.IsType<ProjectTask>(await create.Content.ReadFromJsonAsync<ProjectTask>()).Id;
+            await Select(client, taskId, day);
+        }
+        // Every directed transition, including both ways of reopening Done, crosses a real restart.
+        foreach (var status in new[] { "In progress", "To do", "Done", "In progress", "Done", "To do" })
+        {
+            using (var app = scenario.Start())
+            using (var client = app.CreateClient())
+            {
+                using var move = await client.PutAsJsonAsync($"/api/tasks/{taskId}/status", new { status });
+                Assert.Equal(HttpStatusCode.OK, move.StatusCode);
+                Assert.Equal(status, (await move.Content.ReadFromJsonAsync<ProjectTask>())?.Status);
+                foreach (var body in new[] { "{\"status\":\"invalid\"}", "{\"status\":null}", "{\"status\":42}", "{}", "{" })
+                {
+                    using var content = new StringContent(body, Encoding.UTF8, "application/json");
+                    using var rejected = await client.PutAsync($"/api/tasks/{taskId}/status", content);
+                    Assert.Equal(HttpStatusCode.BadRequest, rejected.StatusCode);
+                }
+            }
+            using (var app = scenario.Start())
+            using (var client = app.CreateClient())
+            {
+                var detail = Assert.IsType<Detail>(await client.GetFromJsonAsync<Detail>($"/api/projects/{projectId}?day={day}"));
+                var saved = Assert.Single(detail.Tasks);
+                Assert.Equal(taskId, saved.Id);
+                Assert.Equal(projectId, saved.ProjectId);
+                Assert.Equal("Keep title", saved.Title);
+                Assert.Equal("Keep notes\nSecond line", saved.Notes);
+                Assert.Equal("High", saved.Priority);
+                Assert.Equal(day, saved.DueDate);
+                Assert.Equal(status, saved.Status);
+                Assert.Equal([taskId], detail.SelectedTaskIds);
+                var plan = await Plan(client, day);
+                Assert.Empty(plan.Due);
+                Assert.Equal(status, Assert.Single(status == "Done" ? plan.Completed : plan.Selected).Task.Status);
+                Assert.Empty(status == "Done" ? plan.Selected : plan.Completed);
+            }
+        }
+    }
+
     [Theory]
     [InlineData("2026-02-29")]
     [InlineData("2026-11-03T00:00:00Z")]

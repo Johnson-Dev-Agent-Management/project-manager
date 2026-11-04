@@ -100,6 +100,29 @@ Changes and completion counts update after a successful save. Failed saves retai
 your inputs so you can correct them or retry. Reloading or leaving a page discards
 unsaved edits. A missing project provides a message and navigation back to the list.
 
+### Project board
+
+Choose **Board** on a project page to see **To do**, **In progress**, and **Done**
+with counts, including empty columns. **List** returns to the existing task forms;
+switching views preserves unsaved task and new-task drafts. Each card shows its
+saved title, priority and optional due date, with the same due-today/overdue labels
+for incomplete tasks. **Edit task** opens and focuses its form in List view.
+**New task** and Quick capture remain available in either view.
+
+Drag a card into another column or choose its labeled **Status** control to save
+immediately, including reopening Done tasks. The native selector supports keyboard
+and touch; on narrow screens columns stack vertically. A drop into the current
+column does nothing. Cards sort by task ID within each column; manual ordering is
+not supported. List is the default when opening or reloading a project.
+
+Placement and completion counts change only after a successful save. A pending
+save disables conflicting controls for that task and the view switch. Failures
+leave the last confirmed placement visible with an error so you can retry. Move
+results are announced, and keyboard focus follows a moved task unless you have
+focused another control. Moves change only status and retain Today selection;
+selected Done tasks appear in **Completed today** when Today is visited.
+Stage 4A adds no schema, API contract, dependency or database reset.
+
 ### Quick capture and Inbox
 
 **Quick capture** is available on Projects, project pages, Today, and Inbox. Enter

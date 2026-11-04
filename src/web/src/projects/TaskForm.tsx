@@ -1,11 +1,15 @@
-import { useId, useState } from 'react';
+import { useId, useRef, useState } from 'react';
 import { errorMessage, jsonRequest, request, type ProjectTask } from './api';
 
 export default function TaskForm({
   projectId,
   task,
   onSaved,
+  disabled = false,
+  onSavingChange,
 }: {
+  disabled?: boolean;
+  onSavingChange?: (saving: boolean) => void;
   projectId: string;
   task?: ProjectTask;
   onSaved: (task: ProjectTask) => void;
@@ -17,9 +21,19 @@ export default function TaskForm({
   const [priority, setPriority] = useState<ProjectTask['priority']>(task?.priority ?? 'None');
   const [dueDate, setDueDate] = useState(task?.dueDate ?? '');
   const [saving, setSaving] = useState(false);
+  const busy = useRef(false);
+  const [savedStatus, setSavedStatus] = useState(task?.status);
+  // A saved board move updates only the status draft; preserve all other edits.
+  if (task?.status !== savedStatus) {
+    setSavedStatus(task?.status);
+    setStatus(task?.status ?? 'To do');
+  }
   const [error, setError] = useState('');
   const [saved, setSaved] = useState(false);
   async function save() {
+    if (busy.current || disabled) return;
+    busy.current = true;
+    onSavingChange?.(true);
     setSaving(true);
     setError('');
     setSaved(false);
@@ -46,6 +60,8 @@ export default function TaskForm({
     } catch (reason) {
       setError(errorMessage(reason, fallback));
     } finally {
+      busy.current = false;
+      onSavingChange?.(false);
       setSaving(false);
     }
   }
@@ -58,7 +74,7 @@ export default function TaskForm({
       }}
       onChange={() => setSaved(false)}
     >
-      <fieldset disabled={saving}>
+      <fieldset disabled={saving || disabled}>
         <legend>{task ? task.title : 'New task'}</legend>
         <label htmlFor={`${id}-title`}>Task title</label>
         <input

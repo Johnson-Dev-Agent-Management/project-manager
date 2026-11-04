@@ -7,10 +7,8 @@ import {
   type ProjectDetail,
   type ProjectTask,
 } from './api';
-import TaskForm from './TaskForm';
+import ProjectTasks from './ProjectTasks';
 import { localDay, useLocalDay } from '../today/dates';
-import TaskMeta from '../today/TaskMeta';
-import SelectionButton from '../today/SelectionButton';
 
 export default function ProjectPage({ projectId }: { projectId: string }) {
   const [project, setProject] = useState<ProjectDetail | null>(null);
@@ -158,51 +156,27 @@ export default function ProjectPage({ projectId }: { projectId: string }) {
               {saveError && <p role="alert">{saveError}</p>}
               {saved && <p role="status">Project saved.</p>}
             </form>
-            <section aria-labelledby="tasks-heading">
-              <h2 id="tasks-heading">Tasks</h2>
-              <p role="status">
-                {project.tasks.filter((task) => task.status === 'Done').length} of{' '}
-                {project.tasks.length} tasks complete.
-              </p>
-              {project.tasks.length === 0 ? (
-                <p>No tasks yet. Add your first task below.</p>
-              ) : (
-                <ul className="task-list">
-                  {project.tasks.map((task) => (
-                    <li key={task.id}>
-                      <TaskMeta task={task} day={day} />
-                      {(task.status !== 'Done' || project.selectedTaskIds.includes(task.id)) && (
-                        <SelectionButton
-                          key={day}
-                          taskId={task.id}
-                          day={day}
-                          selected={project.selectedTaskIds.includes(task.id)}
-                          disabled={loadedDay !== day}
-                          onSaved={(selected) => {
-                            if (day !== localDay()) return;
-                            mutationVersion.current += 1;
-                            setProject(
-                              (current) =>
-                                current && {
-                                  ...current,
-                                  selectedTaskIds: selected
-                                    ? [
-                                        ...current.selectedTaskIds.filter((id) => id !== task.id),
-                                        task.id,
-                                      ]
-                                    : current.selectedTaskIds.filter((id) => id !== task.id),
-                                },
-                            );
-                          }}
-                        />
-                      )}
-                      <TaskForm projectId={projectId} task={task} onSaved={taskSaved} />
-                    </li>
-                  ))}
-                </ul>
-              )}
-              <TaskForm projectId={projectId} onSaved={taskSaved} />
-            </section>
+            <ProjectTasks
+              projectId={projectId}
+              tasks={project.tasks}
+              selectedTaskIds={project.selectedTaskIds}
+              day={day}
+              selectionsReady={loadedDay === day}
+              onTaskSaved={taskSaved}
+              onSelectionSaved={(taskId, selected) => {
+                if (day !== localDay()) return;
+                mutationVersion.current += 1;
+                setProject(
+                  (current) =>
+                    current && {
+                      ...current,
+                      selectedTaskIds: selected
+                        ? [...current.selectedTaskIds.filter((id) => id !== taskId), taskId]
+                        : current.selectedTaskIds.filter((id) => id !== taskId),
+                    },
+                );
+              }}
+            />
           </>
         )
       )}
