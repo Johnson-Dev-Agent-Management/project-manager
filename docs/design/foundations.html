@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Graphite + teal · Foundation reference</title>
+    <link rel="stylesheet" href="../../src/web/src/ui/foundations.css" />
+    <style>
+      main {
+        max-width: 70rem;
+        margin: var(--space-7) auto;
+        padding: 0 var(--space-5) var(--space-7);
+      }
+      header {
+        margin-bottom: var(--space-7);
+      }
+      header p {
+        max-width: 65ch;
+        color: var(--color-text-muted);
+      }
+      .eyebrow {
+        color: var(--color-accent);
+        font-size: var(--font-size-small);
+        font-weight: var(--font-weight-medium);
+      }
+      h1 {
+        margin: var(--space-2) 0 var(--space-4);
+      }
+      h2 {
+        margin-top: 0;
+      }
+      .specimens {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: var(--space-5);
+      }
+      section {
+        min-width: 0;
+        padding: var(--space-5);
+        background: var(--color-surface);
+        border: var(--border-width) solid var(--color-border);
+        border-radius: var(--radius-surface);
+      }
+      .wide {
+        grid-column: 1 / -1;
+      }
+      .swatches {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: var(--space-4);
+      }
+      .swatch {
+        height: 3rem;
+        border-radius: var(--radius-control);
+        border: var(--border-width) solid var(--color-control-border);
+        margin-bottom: var(--space-2);
+      }
+      .swatches p {
+        margin: 0;
+        font-size: var(--font-size-small);
+      }
+      .swatches code {
+        display: block;
+        color: var(--color-text-muted);
+      }
+      .form-hint {
+        margin-top: var(--space-2);
+      }
+      .app-nav {
+        margin-block: var(--space-5);
+      }
+      .sample-status {
+        color: var(--color-text-muted);
+      }
+      progress {
+        width: 100%;
+      }
+      @media (max-width: 48rem) {
+        .specimens {
+          grid-template-columns: 1fr;
+        }
+        .swatches {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        main {
+          margin-top: var(--space-6);
+          padding-inline: var(--space-4);
+        }
+        section {
+          padding: var(--space-4);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <span class="eyebrow">PROJECT MANAGER / DESIGN FOUNDATIONS</span>
+        <h1>Graphite + teal</h1>
+        <p>
+          A calm, compact foundation for projects and ideas. These specimens use the same tokens and
+          native-control styles as the application.
+        </p>
+        <p>
+          Reference only: sample controls do not save data. Tab through the page to inspect focus.
+          Navigation examples link to the sections below.
+        </p>
+      </header>
+      <div class="specimens">
+        <section class="wide" aria-labelledby="palette-heading">
+          <h2 id="palette-heading">Palette</h2>
+          <div class="swatches">
+            <div>
+              <div class="swatch" style="background: var(--color-canvas)"></div>
+              <p>Canvas<code>#191c23</code></p>
+            </div>
+            <div>
+              <div class="swatch" style="background: var(--color-surface)"></div>
+              <p>Surface<code>#22262f</code></p>
+            </div>
+            <div>
+              <div class="swatch" style="background: var(--color-accent)"></div>
+              <p>Teal<code>#63cbb7</code></p>
+            </div>
+            <div>
+              <div class="swatch" style="background: var(--color-text)"></div>
+              <p>Text<code>#ebedf4</code></p>
+            </div>
+            <div>
+              <div class="swatch" style="background: var(--color-danger)"></div>
+              <p>Danger<code>#ffa399</code></p>
+            </div>
+          </div>
+        </section>
+        <section aria-labelledby="actions-heading">
+          <h2 id="actions-heading">Action hierarchy</h2>
+          <div class="button-row">
+            <button type="button">Save task</button>
+            <button type="button" data-variant="secondary">Edit task</button>
+            <button type="button" data-variant="quiet">Clear date</button>
+            <button type="button" data-variant="danger">Confirm discard</button>
+          </div>
+          <h3>Unavailable and pending</h3>
+          <div class="button-row">
+            <button type="button" disabled>Saving task…</button>
+            <button type="button" data-variant="secondary" disabled>Edit task</button>
+          </div>
+          <p class="sample-status">Saving keeps the current text visible.</p>
+          <h3>View selection</h3>
+          <div class="button-row" role="group" aria-label="Sample view selection">
+            <button type="button" aria-pressed="true">List</button>
+            <button type="button" aria-pressed="false">Board</button>
+          </div>
+        </section>
+        <section aria-labelledby="fields-heading">
+          <h2 id="fields-heading">Fields</h2>
+          <label for="sample-title">Task title</label>
+          <input
+            id="sample-title"
+            placeholder="A clear next step…"
+            aria-describedby="sample-hint"
+          />
+          <p id="sample-hint" class="form-hint">Keep the title short enough to scan.</p>
+          <label for="sample-status">Status</label>
+          <select id="sample-status">
+            <option>To do</option>
+            <option>In progress</option>
+            <option>Done</option>
+          </select>
+          <label for="sample-notes">Notes (optional)</label>
+          <textarea id="sample-notes" placeholder="Room for the details."></textarea>
+          <label for="sample-date">Due date (optional)</label>
+          <input id="sample-date" type="date" />
+        </section>
+        <section aria-labelledby="navigation-heading">
+          <h2 id="navigation-heading">Navigation and progress</h2>
+          <nav class="app-nav" aria-label="Navigation specimen">
+            <a href="#actions-heading" aria-current="page">Projects</a
+            ><a href="#fields-heading">Today</a><a href="#states-heading">Inbox</a>
+          </nav>
+          <h3>A clear direction</h3>
+          <p class="form-hint">1 of 6 tasks complete</p>
+          <progress value="1" max="6" aria-label="Sample milestone progress"></progress>
+          <details>
+            <summary>Optional details</summary>
+            <p>Native disclosure keeps keyboard support and visible focus.</p>
+          </details>
+        </section>
+        <section aria-labelledby="states-heading">
+          <h2 id="states-heading">Field states</h2>
+          <label for="invalid-title">Task title</label>
+          <input id="invalid-title" value="" aria-invalid="true" aria-describedby="title-error" />
+          <p id="title-error" class="field-error">Enter a task title.</p>
+          <label for="readonly-title">Readonly title</label>
+          <input id="readonly-title" value="Review the main screens" readonly />
+          <fieldset disabled>
+            <legend>Saving changes</legend>
+            <label for="disabled-title">Task title</label
+            ><input id="disabled-title" value="Your text stays here" /><button type="button">
+              Saving…
+            </button>
+          </fieldset>
+        </section>
+      </div>
+    </main>
+  </body>
+</html>

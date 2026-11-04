@@ -168,6 +168,7 @@ export default function ProjectBoard({
                     </select>
                     {selection(task)}
                     <button
+                      data-variant="secondary"
                       type="button"
                       disabled={busyIds.length > 0}
                       onClick={() => onEdit(task.id)}

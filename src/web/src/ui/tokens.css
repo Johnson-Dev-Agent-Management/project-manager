@@ -1,0 +1,90 @@
+/* Graphite + teal: the shared source of truth. See docs/design/foundations.md. */
+:root {
+  color-scheme: dark;
+  --color-canvas: #191c23;
+  --color-surface: #22262f;
+  --color-surface-raised: #2b313c;
+  --color-surface-hover: #343d49;
+  --color-navigation: #14171e;
+  --color-text: #ebedf4;
+  --color-text-muted: #a8b1c3;
+  --color-border: #3b4351;
+  --color-control-border: #8593a8;
+  --color-accent: #63cbb7;
+  --color-accent-hover: #83d9c9;
+  --color-on-accent: #102923;
+  --color-accent-surface: #203c38;
+  --color-danger: #ffa399;
+  --color-danger-hover: #ffbcb4;
+  --color-on-danger: #301a17;
+  --color-success: #a3d5a7;
+  --color-warning: #e4b36f;
+  --color-disabled-surface: #292e38;
+  --color-disabled-text: #929bad;
+  --color-disabled-border: #505a6b;
+  --color-focus: var(--color-accent);
+
+  --font-body: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-size-small: 0.875rem;
+  --font-size-body: 1rem;
+  --font-size-title: 2rem;
+  --font-size-section: 1.5rem;
+  --font-size-subheading: 1.125rem;
+  --font-weight-normal: 400;
+  --font-weight-medium: 600;
+  --font-weight-strong: 700;
+  --line-height-body: 1.5;
+  --line-height-heading: 1.25;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --radius-control: 0.375rem;
+  --radius-surface: 0.5rem;
+  --border-width: 1px;
+  --focus-width: 3px;
+  --focus-offset: 3px;
+  --control-height: 2.75rem;
+  --layout-content: 48rem;
+  --layout-board: 78rem;
+  --page-gutter: var(--space-4);
+  --duration-feedback: 120ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-feedback: 0ms;
+  }
+}
+
+/* Preserve system colors and visible boundaries in high-contrast modes. */
+@media (forced-colors: active) {
+  :root {
+    --color-canvas: Canvas;
+    --color-surface: Canvas;
+    --color-surface-raised: Canvas;
+    --color-surface-hover: Canvas;
+    --color-navigation: Canvas;
+    --color-text: CanvasText;
+    --color-text-muted: CanvasText;
+    --color-border: CanvasText;
+    --color-control-border: ButtonText;
+    --color-accent: LinkText;
+    --color-accent-hover: LinkText;
+    --color-on-accent: Canvas;
+    --color-accent-surface: Canvas;
+    --color-danger: LinkText;
+    --color-danger-hover: LinkText;
+    --color-on-danger: Canvas;
+    --color-success: CanvasText;
+    --color-warning: CanvasText;
+    --color-disabled-surface: Canvas;
+    --color-disabled-text: GrayText;
+    --color-disabled-border: GrayText;
+    --color-focus: Highlight;
+  }
+}

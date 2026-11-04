@@ -25,9 +25,10 @@ with SQLite persistence and automated unit and browser tests.
 Read this file, [engineering standards](docs/engineering.md), and
 [CI operation](docs/ci.md), then use the [PR template](.github/pull_request_template.md).
 These are the standing instructions for assigned feature, fix, and documentation work.
-For UI work, also read the [design audit and direction brief](docs/design/README.md).
-It records the owner's workflow preferences and provisional visual options;
-the theme is not selected, and the concept preview is not production behavior.
+For UI work, read the [design brief](docs/design/README.md) and
+[graphite + teal foundations](docs/design/foundations.md). The owner selected C1:
+Graphite + Teal. Reuse the shared tokens and native control patterns. Concept
+layouts are references; the Projects pilot and capture relocation are later work.
 Start from the owner's specified branch or current main and the task's observable acceptance criteria; resolve routine
 implementation choices within that scope without seeking permission at each step.
 

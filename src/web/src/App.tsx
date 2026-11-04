@@ -16,7 +16,7 @@ export default function App() {
   }, []);
   const navigation = (
     <>
-      <nav aria-label="Main navigation">
+      <nav className="app-nav" aria-label="Main navigation">
         <a href="#/" aria-current={route !== '#/today' && route !== '#/inbox' ? 'page' : undefined}>
           Projects
         </a>

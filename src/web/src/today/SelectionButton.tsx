@@ -47,7 +47,12 @@ export default function SelectionButton({
   }
   return (
     <div>
-      <button type="button" disabled={saving || disabled} onClick={() => void save()}>
+      <button
+        data-variant="secondary"
+        type="button"
+        disabled={saving || disabled}
+        onClick={() => void save()}
+      >
         {saving ? 'Updating today…' : selected ? 'Remove from today' : 'Add to today'}
       </button>
       {error && <p role="alert">{error}</p>}
