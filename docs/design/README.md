@@ -4,9 +4,9 @@ Status: **C1 · Graphite + Teal selected**, November 4, 2026.
 The owner chose the compact Dark studio direction with teal replacing purple.
 Use the [design foundations](foundations.md) for implemented tokens and control
 patterns, and the [live component reference](foundations.html) to inspect them.
-Steps 1–2 record the direction and establish shared styles; page restructuring
-and Quick capture relocation remain part of the later Projects pilot. Engineering
-standards still apply.
+Steps 1–2 establish shared styles. The Projects pilot in steps 3–4 brings capture
+and the project collection forward, with project creation on demand. Engineering
+standards still apply; the broader project/task, Today, and Inbox refactors remain later work.
 
 ## Product intent and settled preferences
 
@@ -16,7 +16,7 @@ ideas. The owner wants a polished, modern experience and values quick capture.
 - Keep capture fast: a title is enough; organizing can happen later.
 - **Show Quick capture on the main Projects page only.** Its presence on individual
   projects, Today, and Inbox adds unwanted clutter. This is the owner's requested
-  direction; the current app still renders it globally.
+  direction and is implemented in the Projects pilot.
 - Make projects easy to return to, ideas easy to find, and daily work easy to scan.
 - Keep Projects, Today, and Inbox as understandable destinations.
 - Use graphite surfaces, restrained teal accents, system sans-serif text, and
@@ -63,8 +63,9 @@ a complete accessibility audit, or a production-browser certification.
 ## Baseline findings and priorities
 
 These findings describe the audited baseline. The shared theme and action variants
-now address the styling foundation; page composition and workflow findings remain
-for the pilot and later refactors.
+now address the styling foundation. The Projects pilot addresses capture placement,
+project creation/list hierarchy, and distinct load/empty/error states. Other page
+composition and workflow findings remain for later refactors.
 
 High means a direct obstacle to the main personal workflow. Medium means a
 consistency or scaling problem worth addressing with the design foundations.
@@ -158,12 +159,17 @@ They inform the concepts; they are not a request to clone a product or buy it.
    patterns cover typography, spacing, surfaces, actions, fields, navigation,
    selected/disabled/error/focus states, reduced motion, and forced colors.
    Existing screens inherit these styles while keeping their layout and behavior.
-3. **Projects pilot (next).** Bring capture and projects forward, reveal project
-   creation on demand, and limit capture to Projects. Update Inbox's empty state
-   and affected capture tests/docs. Review navigation with an unsaved capture
-   draft. Separately fix the misleading Projects load/empty state.
-4. **Review and refine.** Exercise the pilot at desktop and phone widths, with
-   realistic content, keyboard input, and loading/empty/error/saving states.
+3. **Projects pilot (implemented).** Capture sits beneath the Projects heading;
+   project names are full-row links and New project reveals the creation form.
+   Capture is absent elsewhere; Inbox's empty state links back to Projects.
+   Capture drafts and pending requests survive in-app navigation. Project load
+   failures have a retry action and never masquerade as an empty collection;
+   creation failures stay local to the form.
+4. **Review and refine (implemented; owner review pending).** Browser coverage
+   exercises desktop and 390/320 px layouts, 200% text, long names, keyboard
+   disclosure, capture navigation, and loading/empty/error/saving states. Retain
+   the compact top navigation for the current three destinations. See the pilot
+   PR for actual validation and local inspection evidence.
 5. **Extend proven patterns.** Compact project/task summaries and explicit
    editors come next, then Today and Inbox. Preserve New task, List/Board,
    milestones, planning controls, drafts, and saved-state/race protections.

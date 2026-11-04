@@ -28,7 +28,9 @@ These are the standing instructions for assigned feature, fix, and documentation
 For UI work, read the [design brief](docs/design/README.md) and
 [graphite + teal foundations](docs/design/foundations.md). The owner selected C1:
 Graphite + Teal. Reuse the shared tokens and native control patterns. Concept
-layouts are references; the Projects pilot and capture relocation are later work.
+layouts are references. The Projects pilot puts capture only on Projects, retains
+capture drafts across in-app navigation, and reveals project creation on demand.
+Compact task summaries and other page refactors remain later work.
 Start from the owner's specified branch or current main and the task's observable acceptance criteria; resolve routine
 implementation choices within that scope without seeking permission at each step.
 

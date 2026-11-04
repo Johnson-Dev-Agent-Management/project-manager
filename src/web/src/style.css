@@ -1,6 +1,6 @@
 @import './ui/foundations.css';
 
-/* Existing feature layouts. Page composition is refined in the Projects pilot. */
+/* Feature layouts use the shared graphite + teal foundations. */
 main {
   max-width: var(--layout-content);
   margin: var(--space-6) auto;
@@ -25,9 +25,7 @@ main {
   overflow-wrap: anywhere;
 }
 .quick-capture {
-  max-width: var(--layout-content);
-  margin: var(--space-4) auto;
-  padding: 0 var(--page-gutter);
+  margin: var(--space-5) 0 var(--space-6);
 }
 .capture-controls {
   display: flex;
@@ -43,6 +41,93 @@ main {
 .capture-controls button {
   margin: 0;
   flex-shrink: 0;
+}
+/* Projects pilot: one capture composer and a compact collection of real project names. */
+.projects-page {
+  padding-inline: min(var(--page-gutter), 4vw);
+}
+.projects-page fieldset {
+  padding: min(var(--space-4), 4vw);
+}
+.page-heading h1 {
+  margin-bottom: var(--space-2);
+}
+.page-heading p,
+.collection-hint {
+  color: var(--color-text-muted);
+}
+.page-heading p {
+  margin-top: 0;
+}
+.capture-inbox-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--control-height);
+  margin-top: var(--space-1);
+}
+.collection-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+.collection-heading h2,
+.collection-heading button {
+  margin: 0;
+}
+.project-create {
+  margin-bottom: var(--space-5);
+}
+.collection-state {
+  padding: var(--space-5) var(--space-4);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-surface);
+}
+.collection-state p:first-child {
+  margin-top: 0;
+}
+.collection-state p:last-child {
+  margin-bottom: 0;
+}
+.project-collection {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-surface);
+  background: var(--color-surface);
+}
+.project-collection li + li {
+  border-top: var(--border-width) solid var(--color-border);
+}
+.project-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: min(var(--space-4), 4vw);
+  min-height: 4rem;
+  padding: min(var(--space-4), 4vw);
+  border-radius: var(--radius-control);
+  color: var(--color-text);
+  font-weight: var(--font-weight-medium);
+  text-decoration: none;
+}
+.project-link > span:first-child {
+  min-width: 0;
+}
+.project-link:hover {
+  background: var(--color-surface-hover);
+}
+.project-arrow {
+  flex: 0 0 0.5rem;
+  height: 0.5rem;
+  margin-right: var(--space-1);
+  border-top: 2px solid currentColor;
+  border-right: 2px solid currentColor;
+  transform: rotate(45deg);
+  color: var(--color-text-muted);
 }
 .inbox-item {
   border-bottom: var(--border-width) solid var(--color-border);

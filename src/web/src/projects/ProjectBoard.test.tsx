@@ -189,7 +189,7 @@ test('dragging uses the same status API; same-column, cancelled and external dra
   expect(column('In progress').getByRole('listitem', { name: task.title })).toBeVisible();
 });
 
-test('quick capture stays usable during a move and keeps its input focus after the move finishes', async () => {
+test('project details stay usable during a move and keep the chosen input focus after it finishes', async () => {
   let finish!: (value: unknown) => void;
   const fetchMock = vi
     .fn()
@@ -200,23 +200,26 @@ test('quick capture stays usable during a move and keeps its input focus after t
           finish = resolve;
         }),
     )
-    .mockResolvedValueOnce(ok({ id: 1, title: 'Idea' }));
+    .mockResolvedValueOnce(ok({ id: 1, name: 'Work revised', description: null }));
   vi.stubGlobal('fetch', fetchMock);
   window.history.replaceState(null, '', '/#/projects/1');
   const user = userEvent.setup();
   render(<App />);
   await user.click(await screen.findByRole('button', { name: 'Board' }));
   await user.selectOptions(within(card()).getByRole('combobox'), 'Done');
-  const capture = screen.getByLabelText('Capture title');
-  await user.type(capture, 'Idea{Enter}');
-  expect(await screen.findByText(/Captured “Idea”/)).toBeVisible();
-  expect(capture).toHaveFocus();
+  expect(screen.queryByRole('form', { name: 'Quick capture' })).not.toBeInTheDocument();
+  const details = screen.getByLabelText('Project name');
+  await user.type(details, ' revised{Enter}');
+  expect(await screen.findByText('Project saved.')).toBeVisible();
+  await user.click(details);
+  expect(details).toHaveFocus();
   await act(async () => {
     finish(ok({ ...task, status: 'Done' }));
     await Promise.resolve();
   });
   expect(await screen.findByText('Moved “Plan work” to Done.')).toBeVisible();
-  expect(capture).toHaveFocus();
+  expect(details).toHaveFocus();
+  expect(details).toHaveValue('Work revised');
 });
 
 test('a saved board status survives later detail edits and Today selection serializes with moves', async () => {
@@ -342,7 +345,7 @@ for (const duplicateTitles of [false, true]) {
   }
 }
 
-test.each(['Capture title', 'Task title', 'Project name'])(
+test.each(['Description (optional)', 'Task title', 'Project name'])(
   'visiting %s relinquishes the pending move focus claim, even if focus later falls to body',
   async (label) => {
     let finish!: (value: unknown) => void;
@@ -366,7 +369,7 @@ test.each(['Capture title', 'Task title', 'Project name'])(
     const input =
       label === 'Task title'
         ? within(screen.getByRole('form', { name: 'New task' })).getByLabelText(label)
-        : screen.getByLabelText(label);
+        : within(screen.getByRole('group', { name: 'Project details' })).getByLabelText(label);
     await user.click(input);
     await user.type(input, ' draft');
     input.blur();

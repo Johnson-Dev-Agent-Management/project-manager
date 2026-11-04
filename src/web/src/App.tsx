@@ -5,9 +5,11 @@ import './style.css';
 import TodayPage from './today/TodayPage';
 import QuickCapture from './inbox/QuickCapture';
 import InboxPage from './inbox/InboxPage';
+import useQuickCapture from './inbox/useQuickCapture';
 
 export default function App() {
   const [captureVersion, setCaptureVersion] = useState(0);
+  const captureDraft = useQuickCapture(() => setCaptureVersion((value) => value + 1));
   const [route, setRoute] = useState(window.location.hash);
   useEffect(() => {
     const navigate = () => setRoute(window.location.hash);
@@ -27,7 +29,6 @@ export default function App() {
           Inbox
         </a>
       </nav>
-      <QuickCapture onCaptured={() => setCaptureVersion((value) => value + 1)} />
     </>
   );
   if (route === '#/inbox')
@@ -48,7 +49,7 @@ export default function App() {
     return (
       <>
         {navigation}
-        <ProjectList />
+        <ProjectList capture={<QuickCapture draft={captureDraft} />} />
       </>
     );
   const match = /^#\/projects\/([1-9]\d*)$/.exec(route);

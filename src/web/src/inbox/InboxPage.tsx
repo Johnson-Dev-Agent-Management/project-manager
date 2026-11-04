@@ -97,7 +97,11 @@ export default function InboxPage({ captureVersion }: { captureVersion: number }
           items will stay here.
         </p>
       )}
-      {items?.length === 0 && <p>Your inbox is clear. Use Quick capture to save a task or idea.</p>}
+      {items?.length === 0 && (
+        <p>
+          Your inbox is clear. <a href="#/">Capture on Projects</a> to save a task or idea.
+        </p>
+      )}
       {items && (
         <ul className="task-list">
           {items.map((item) => (

@@ -132,7 +132,8 @@ sort by ascending task ID. No board records, schema changes or new endpoints are
 introduced. Moves use `PUT /api/tasks/{taskId}/status`; same-column drops do not
 write. The UI waits for the saved response before changing placement and counts.
 Per-task save guards coordinate status moves, task edits and Today selection;
-quick capture and new-task drafts remain independently usable. The retained List
+project-details and new-task drafts remain independently usable. Quick capture
+is now limited to Projects; its in-app navigation draft is owned by the app. The retained List
 forms synchronize externally saved status without resetting other draft fields.
 Native drag-and-drop supplements a labeled native select, with live feedback,
 focus restoration and stacked columns on narrow screens; no dependency is added.
@@ -144,7 +145,7 @@ real Tab/arrow keys in both response orders with distinct and duplicate titles;
 unit tests also account for jsdom retaining disabled focus.
 
 `ProjectBoard.test.tsx` covers grouping/order/counts, creation, both move paths,
-no-op/cancelled/external drops, pending/failure/retry, drafts and quick-capture focus.
+no-op/cancelled/external drops, pending/failure/retry, drafts and independent project-details focus.
 `TaskPlanningTests` checks all directed transitions, rejected status bodies, every
 retained field and Today membership across SQLite restarts. Browser coverage
 exercises pointer dragging, keyboard/touch controls, failure, list/Today consistency,
@@ -177,14 +178,14 @@ The project UI derives milestone totals/completed counts from its saved task
 snapshot, counting only Done. Completion requires a nonempty assignment set.
 Milestone inspection filters the existing task list/board, retaining hidden task
 drafts and the full project completion count. Pending milestone mutations and task
-writes coordinate to prevent stale responses restoring removed membership; Quick
-capture remains independent. Project mutation versions reject older refresh reads.
+writes coordinate to prevent stale responses restoring removed membership.
+Project-details editing remains independent; capture is on Projects only. Project mutation versions reject older refresh reads.
 
 `MilestonesTests` covers validation, scoping, membership changes, progress inputs,
 reopening, fresh and upgraded SQLite schemas, forced removal rollback, preserved
 planning/Inbox data and repeated restarts. `ProjectMilestones.test.tsx` covers saved
 progress, empty milestones, task actions/filtering, failure/retry, confirmation,
-retained drafts and capture focus. Browser coverage adds milestone creation,
+retained task drafts and project-details focus. Browser coverage adds milestone creation,
 assignment/reassignment/clearing, list/board/Today progress, reload, actual API
 restart, editing and task-preserving removal.
 

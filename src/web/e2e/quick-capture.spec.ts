@@ -23,7 +23,9 @@ for (const width of [320, 390]) {
 
       async function expectReadableControls(state: string) {
         await expect(input).toHaveValue('Idea');
+        await input.scrollIntoViewIfNeeded();
         await expect(input).toBeInViewport();
+        await button.scrollIntoViewIfNeeded();
         await expect(button).toBeInViewport();
         const measurements = await capture.evaluate((form) => {
           const field = form.querySelector('input')!;

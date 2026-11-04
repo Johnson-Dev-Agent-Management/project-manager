@@ -55,9 +55,7 @@ test('loading, empty Inbox and no-project guidance preserve the capture workflow
     finish(ok([]));
     await Promise.resolve();
   });
-  expect(
-    screen.getByText('Your inbox is clear. Use Quick capture to save a task or idea.'),
-  ).toBeVisible();
+  expect(screen.getByRole('link', { name: 'Capture on Projects' })).toBeVisible();
   expect(screen.getByRole('link', { name: 'Create a project' })).toHaveAttribute('href', '#/');
 });
 

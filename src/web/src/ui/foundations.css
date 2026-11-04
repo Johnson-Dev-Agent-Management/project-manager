@@ -221,10 +221,17 @@ progress {
 }
 @media (forced-colors: active) {
   button,
+  button:not(:disabled):hover {
+    color: ButtonText;
+    background: ButtonFace;
+    border-color: ButtonText;
+  }
   .app-nav a[aria-current='page'] {
     border-color: ButtonText;
   }
   button:disabled {
+    color: GrayText;
+    background: ButtonFace;
     border-color: GrayText;
   }
 }

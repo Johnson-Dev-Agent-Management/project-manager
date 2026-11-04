@@ -310,7 +310,7 @@ test('adding incomplete work reopens a complete milestone and empty filters rema
   expect(region('Empty').getByRole('status')).toHaveTextContent('No tasks assigned');
 });
 
-test('removal confirms task preservation, retries failure, coordinates saves, and clears assignments without losing drafts or quick capture focus', async () => {
+test('removal confirms task preservation, retries failure, coordinates saves, and clears assignments without losing task drafts or project-details focus', async () => {
   const user = userEvent.setup();
   let finish!: (value: unknown) => void;
   const fetchMock = vi
@@ -342,10 +342,10 @@ test('removal confirms task preservation, retries failure, coordinates saves, an
   expect(region().getByRole('button', { name: 'Removing milestone…' })).toBeDisabled();
   expect(form.getByRole('button', { name: 'Save task' })).toBeDisabled();
   expect(screen.getByRole('button', { name: 'Add task' })).toBeDisabled();
-  await user.type(screen.getByLabelText('Capture title'), 'A thought');
-  expect(screen.getByLabelText('Capture title')).toHaveFocus();
-  expect(screen.getByLabelText('Capture title')).toBeEnabled();
-  // Finishing a background removal must not pull focus away from capture.
+  await user.type(screen.getByLabelText('Project name'), 'A thought');
+  expect(screen.getByLabelText('Project name')).toHaveFocus();
+  expect(screen.getByLabelText('Project name')).toBeEnabled();
+  // Finishing a background removal must not pull focus away from project details.
   await act(async () => {
     finish(ok({ id: 2 }));
     await Promise.resolve();
@@ -361,7 +361,8 @@ test('removal confirms task preservation, retries failure, coordinates saves, an
   expect(screen.getByRole('button', { name: 'Remove from today' })).toBeVisible();
   expect(screen.getByText('0 of 1 tasks complete.')).toBeVisible();
   expect(screen.getByText(/Removed “First usable version”/)).toBeVisible();
-  expect(screen.getByLabelText('Capture title')).toHaveFocus();
+  expect(screen.getByLabelText('Project name')).toHaveFocus();
+  expect(screen.getByLabelText('Project name')).toHaveValue('WorkA thought');
 });
 
 test('removing the saved milestone preserves a draft reassignment and submits it before changing progress', async () => {

@@ -1,40 +1,13 @@
-import { useEffect, useRef, useState } from 'react';
-import { errorMessage, jsonRequest } from '../projects/api';
-import { inboxRequest, type InboxItem } from './api';
+import { useEffect, useRef } from 'react';
+import type useQuickCapture from './useQuickCapture';
 
-export default function QuickCapture({ onCaptured }: { onCaptured: () => void }) {
-  const [title, setTitle] = useState('');
-  const [saving, setSaving] = useState(false);
-  const [error, setError] = useState('');
-  const [confirmation, setConfirmation] = useState('');
-  const busy = useRef(false);
+export default function QuickCapture({ draft }: { draft: ReturnType<typeof useQuickCapture> }) {
+  const { title, saving, error, confirmation, capture, changeTitle } = draft;
   const input = useRef<HTMLInputElement>(null);
   useEffect(() => {
     if (!saving && confirmation) input.current?.focus();
   }, [saving, confirmation]);
 
-  async function capture() {
-    if (busy.current) return;
-    busy.current = true;
-    setSaving(true);
-    setError('');
-    setConfirmation('');
-    try {
-      const item = await inboxRequest<InboxItem>(
-        '/api/inbox',
-        'Could not capture item. Your text is still here; try again.',
-        jsonRequest('POST', { title }),
-      );
-      setTitle('');
-      setConfirmation(`Captured “${item.title}” in Inbox. Add another whenever you’re ready.`);
-      onCaptured();
-    } catch (reason) {
-      setError(errorMessage(reason, 'Could not capture item. Please try again.'));
-    } finally {
-      busy.current = false;
-      setSaving(false);
-    }
-  }
   return (
     <form
       className="quick-capture"
@@ -53,15 +26,16 @@ export default function QuickCapture({ onCaptured }: { onCaptured: () => void })
             ref={input}
             required
             value={title}
-            onChange={(event) => {
-              setTitle(event.target.value);
-              setConfirmation('');
-            }}
+            onChange={(event) => changeTitle(event.target.value)}
+            aria-describedby="capture-hint"
           />
-          <button>{saving ? 'Capturing…' : 'Capture'}</button>
+          <button type="submit">{saving ? 'Capturing…' : 'Capture'}</button>
         </div>
-        <small>Just a title. Choose a project later in Inbox.</small>
+        <small id="capture-hint">Just a title. Choose a project later in Inbox.</small>
       </fieldset>
+      <a className="capture-inbox-link" href="#/inbox">
+        Open Inbox
+      </a>
       {error && <p role="alert">{error}</p>}
       {confirmation && <p role="status">{confirmation}</p>}
     </form>
