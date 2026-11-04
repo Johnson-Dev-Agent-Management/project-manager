@@ -5,6 +5,7 @@ import './style.css';
 import TodayPage from './today/TodayPage';
 import QuickCapture from './inbox/QuickCapture';
 import InboxPage from './inbox/InboxPage';
+import Appearance from './ui/Appearance';
 
 export default function App() {
   const [captureVersion, setCaptureVersion] = useState(0);
@@ -26,6 +27,7 @@ export default function App() {
         <a href="#/inbox" aria-current={route === '#/inbox' ? 'page' : undefined}>
           Inbox
         </a>
+        <Appearance />
       </nav>
       <QuickCapture onCaptured={() => setCaptureVersion((value) => value + 1)} />
     </>

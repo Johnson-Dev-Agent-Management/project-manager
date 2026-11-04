@@ -1,4 +1,4 @@
-/* Graphite + teal: the shared source of truth. See docs/design/foundations.md. */
+/* Graphite with blue (default) or teal accents. See docs/design/foundations.md. */
 :root {
   color-scheme: dark;
   --color-canvas: #191c23;
@@ -10,10 +10,10 @@
   --color-text-muted: #a8b1c3;
   --color-border: #3b4351;
   --color-control-border: #8593a8;
-  --color-accent: #63cbb7;
-  --color-accent-hover: #83d9c9;
-  --color-on-accent: #102923;
-  --color-accent-surface: #203c38;
+  --color-accent: #7aa9ff;
+  --color-accent-hover: #9cc0ff;
+  --color-on-accent: #102448;
+  --color-accent-surface: #203451;
   --color-danger: #ffa399;
   --color-danger-hover: #ffbcb4;
   --color-on-danger: #301a17;
@@ -53,6 +53,14 @@
   --layout-board: 78rem;
   --page-gutter: var(--space-4);
   --duration-feedback: 120ms;
+}
+
+/* Keep specificity equal to :root so system colors below override either accent. */
+:root:where([data-accent='teal']) {
+  --color-accent: #63cbb7;
+  --color-accent-hover: #83d9c9;
+  --color-on-accent: #102923;
+  --color-accent-surface: #203c38;
 }
 
 @media (prefers-reduced-motion: reduce) {
