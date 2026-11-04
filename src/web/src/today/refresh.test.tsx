@@ -311,6 +311,79 @@ test.each(['creation', 'task edit', 'project edit'])(
   },
 );
 
+test('an older project refresh cannot restore a removed milestone or its task membership', async () => {
+  const user = userEvent.setup();
+  const milestone = {
+    id: 11,
+    projectId: 7,
+    title: 'Release',
+    description: null,
+    targetDate: null,
+  };
+  const assigned: ProjectDetail = {
+    ...project,
+    milestones: [milestone],
+    tasks: [{ ...task, milestoneId: milestone.id }],
+  };
+  const refresh = deferred();
+  const fresh = deferred();
+  const fetchMock = vi
+    .fn()
+    .mockResolvedValueOnce(ok(assigned))
+    .mockReturnValueOnce(refresh.promise)
+    .mockResolvedValueOnce(ok({ id: milestone.id }))
+    .mockReturnValueOnce(fresh.promise);
+  vi.stubGlobal('fetch', fetchMock);
+  render(<ProjectPage projectId="7" />);
+  const edit = within(await screen.findByRole('form', { name: 'Edit task: Task A' }));
+  expect(screen.getByRole('region', { name: 'Milestone: Release' })).toBeVisible();
+  expect(edit.getByLabelText('Milestone (optional)')).toHaveValue('11');
+  expect(screen.getByText('Milestone: Release')).toBeVisible();
+  await user.clear(edit.getByLabelText('Notes (optional)'));
+  await user.type(edit.getByLabelText('Notes (optional)'), 'Unsaved task notes');
+
+  midnight();
+  expect(fetchMock).toHaveBeenNthCalledWith(
+    2,
+    '/api/projects/7?day=2026-11-04',
+    expect.any(Object),
+  );
+  await user.click(screen.getByRole('button', { name: 'Remove milestone' }));
+  await user.click(screen.getByRole('button', { name: 'Confirm removal' }));
+  expect(
+    await screen.findByText('Removed “Release”. Its tasks remain in this project.'),
+  ).toBeVisible();
+  expect(fetchMock).toHaveBeenNthCalledWith(3, '/api/projects/7/milestones/11', {
+    method: 'DELETE',
+  });
+  expect(screen.queryByRole('region', { name: 'Milestone: Release' })).not.toBeInTheDocument();
+  expect(edit.getByLabelText('Milestone (optional)')).toHaveValue('');
+
+  await user.selectOptions(screen.getByLabelText('Filter tasks by milestone'), 'none');
+
+  // Check the stale snapshot before settling the replacement so it cannot hide a rollback.
+  await finish(refresh, { ...assigned, selectedTaskIds: [] });
+  expect(screen.queryByRole('region', { name: 'Milestone: Release' })).not.toBeInTheDocument();
+  expect(screen.queryByText('Milestone: Release')).not.toBeInTheDocument();
+  expect(edit.getByLabelText('Milestone (optional)')).toHaveValue('');
+  expect(screen.getByRole('form', { name: 'Edit task: Task A' })).toBeVisible();
+  expect(edit.getByLabelText('Notes (optional)')).toHaveValue('Unsaved task notes');
+  expect(fetchMock).toHaveBeenNthCalledWith(
+    4,
+    '/api/projects/7?day=2026-11-04',
+    expect.any(Object),
+  );
+  await finish(fresh, { ...project, selectedTaskIds: [] });
+  expect(screen.queryByRole('region', { name: 'Milestone: Release' })).not.toBeInTheDocument();
+  expect(screen.queryByText('Milestone: Release')).not.toBeInTheDocument();
+  expect(edit.getByLabelText('Milestone (optional)')).toHaveValue('');
+  expect(screen.getByRole('form', { name: 'Edit task: Task A' })).toBeVisible();
+  expect(edit.getByLabelText('Notes (optional)')).toHaveValue('Unsaved task notes');
+  expect(screen.getByRole('button', { name: 'Add to today' })).toBeEnabled();
+  expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+  expect(fetchMock).toHaveBeenCalledTimes(4);
+});
+
 test('confirmed Today status and selection changes survive failed follow-up reads', async () => {
   const user = userEvent.setup();
   const fetchMock = vi
