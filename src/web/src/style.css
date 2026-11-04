@@ -122,6 +122,33 @@ nav {
   white-space: pre-wrap;
 }
 
+.milestone-card {
+  margin: 1rem 0;
+  padding: 1rem;
+  background: white;
+  border: 1px solid #ccd3dc;
+  border-radius: 0.4rem;
+  overflow-wrap: anywhere;
+}
+.milestone-card h3 {
+  margin-top: 0;
+}
+.milestone-card progress {
+  width: 100%;
+  accent-color: #165b9c;
+}
+.milestone-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.milestone-membership {
+  overflow-wrap: anywhere;
+}
+summary {
+  cursor: pointer;
+}
+
 main:has(.project-board) {
   max-width: 76rem;
 }

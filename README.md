@@ -62,13 +62,14 @@ curl -fsS http://127.0.0.1:5173/api/projects
 
 ### Development database upgrades
 
-Stage 3 automatically preserves and upgrades **Stage 1 and Stage 2** SQLite
-databases at API startup. The additive transaction adds the Inbox table alongside
-any missing Stage 2 priority, due date, and daily-selection fields. Existing
-projects, descriptions, tasks, notes, statuses, planning fields and IDs are
-retained. Repeated starts are safe; no database is deleted or reset. Tests upgrade
-temporary copies of synthetic Stage 1 and Stage 2 databases and verify retained
-data, captures, edits, moves and planning across repeated restarts.
+Stage 4B automatically preserves and upgrades **Stage 1 through Stage 4A** SQLite
+databases at API startup. The additive transaction creates Milestones and a nullable
+task assignment with a foreign key that clears membership on milestone removal,
+alongside any missing earlier planning and Inbox fields. Existing projects, tasks,
+Today selections and Inbox items retain their IDs and all data. Repeated starts
+are safe; no database is deleted or reset. Tests upgrade temporary copies of the
+earlier synthetic schemas and verify new behavior, failed-removal rollback and
+retained data across repeated restarts.
 
 Stop development services before changing versions. Keep using the same
 `PROJECT_DEV_DATA_DIR` as the previous stage (the default is `.data/projects.db`; if you used
@@ -80,10 +81,10 @@ Pre-Stage-1 project-only databases remain unsupported. To leave one untouched,
 select a fresh task-owned directory rather than resetting it:
 
 ```bash
-PROJECT_DEV_DATA_DIR="$PWD/.data/stage-3" bash scripts/dev.sh
+PROJECT_DEV_DATA_DIR="$PWD/.data/stage-4b" bash scripts/dev.sh
 ```
 
-Use that same override on later starts to retain data in `.data/stage-3/projects.db`.
+Use that same override on later starts to retain data in `.data/stage-4b/projects.db`.
 Tests always use isolated temporary databases. See the
 [database guidance](docs/engineering.md#development-database-schema-changes).
 
@@ -100,12 +101,40 @@ Changes and completion counts update after a successful save. Failed saves retai
 your inputs so you can correct them or retry. Reloading or leaving a page discards
 unsaved edits. A missing project provides a message and navigation back to the list.
 
+### Project milestones
+
+Use **Create milestone** within a project to add a required title, optional
+description and optional target date. Titles are trimmed; blank titles are rejected.
+Milestones appear in creation order (ascending ID). **Edit milestone** changes
+those fields; **Clear target date** removes the date when saved. Target dates are
+calendar dates and never change task due dates.
+
+Choose a **Milestone (optional)** when adding or editing a project task, then save.
+Each task can have one milestone in its own project; **No milestone** clears it.
+List rows and board cards show saved membership. **View tasks** filters the existing
+task controls to that milestone; the filter also offers all tasks and unassigned
+tasks. Switching filters preserves drafts. Project completion always includes all
+project tasks; board column counts describe the currently filtered tasks.
+
+Progress counts only saved **Done** tasks. A milestone is complete when it has at
+least one task and all assigned tasks are Done. Empty milestones show **No tasks
+assigned**. Reopening work or adding an incomplete task updates progress. List and
+Board share the saved task state; returning from Today or reloading reads current
+tasks and milestones again.
+
+**Remove milestone** asks for confirmation and preserves its tasks in the same
+project, with their status, notes, priority, due date and Today selections intact.
+Removal and clearing assignments are atomic; a failed operation leaves both intact
+and can be retried. Quick capture remains available during milestone saves and
+removal. Inbox capture stays title-only; assign milestones after filing items into
+a project. Reloading the page refreshes choices if another session removed one.
+
 ### Project board
 
 Choose **Board** on a project page to see **To do**, **In progress**, and **Done**
 with counts, including empty columns. **List** returns to the existing task forms;
 switching views preserves unsaved task and new-task drafts. Each card shows its
-saved title, priority and optional due date, with the same due-today/overdue labels
+saved title, milestone membership, priority and optional due date, with the same due-today/overdue labels
 for incomplete tasks. **Edit task** opens and focuses its form in List view.
 **New task** and Quick capture remain available in either view.
 

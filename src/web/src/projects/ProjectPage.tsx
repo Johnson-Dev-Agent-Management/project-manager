@@ -159,6 +159,34 @@ export default function ProjectPage({ projectId }: { projectId: string }) {
             <ProjectTasks
               projectId={projectId}
               tasks={project.tasks}
+              milestones={project.milestones}
+              onMilestoneSaved={(milestone) => {
+                mutationVersion.current += 1;
+                setProject(
+                  (current) =>
+                    current && {
+                      ...current,
+                      milestones: current.milestones.some((item) => item.id === milestone.id)
+                        ? current.milestones.map((item) =>
+                            item.id === milestone.id ? milestone : item,
+                          )
+                        : [...current.milestones, milestone],
+                    },
+                );
+              }}
+              onMilestoneRemoved={(id) => {
+                mutationVersion.current += 1;
+                setProject(
+                  (current) =>
+                    current && {
+                      ...current,
+                      milestones: current.milestones.filter((item) => item.id !== id),
+                      tasks: current.tasks.map((task) =>
+                        task.milestoneId === id ? { ...task, milestoneId: null } : task,
+                      ),
+                    },
+                );
+              }}
               selectedTaskIds={project.selectedTaskIds}
               day={day}
               selectionsReady={loadedDay === day}

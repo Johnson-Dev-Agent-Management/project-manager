@@ -7,6 +7,7 @@ import ProjectPage from './ProjectPage';
 import { type ProjectDetail, type ProjectTask } from './api';
 
 const task: ProjectTask = {
+  milestoneId: null,
   id: 3,
   projectId: 1,
   title: 'First task',
@@ -16,6 +17,7 @@ const task: ProjectTask = {
   dueDate: null,
 };
 const project: ProjectDetail = {
+  milestones: [],
   id: 1,
   name: 'Example',
   description: 'Description',
@@ -156,6 +158,7 @@ test('creates tasks only after saving, edits fields, and counts only saved Done 
       notes: 'Remember',
       priority: 'None',
       dueDate: null,
+      milestoneId: null,
     }),
   });
   await act(async () => {
@@ -191,6 +194,7 @@ test('creates tasks only after saving, edits fields, and counts only saved Done 
       status: 'To do',
       priority: 'None',
       dueDate: null,
+      milestoneId: null,
     }),
   });
   await user.type(create.getByLabelText('Task title'), 'Second');

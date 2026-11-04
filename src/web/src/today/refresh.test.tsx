@@ -6,6 +6,7 @@ import { type ProjectDetail, type ProjectTask } from '../projects/api';
 import TodayPage, { type TodayPlan } from './TodayPage';
 
 const task: ProjectTask = {
+  milestoneId: null,
   id: 1,
   projectId: 7,
   title: 'Task A',
@@ -18,6 +19,7 @@ const other = { ...task, id: 2, title: 'Task B' };
 const item = (value: ProjectTask) => ({ task: value, projectName: 'Work' });
 const plan: TodayPlan = { selected: [item(task), item(other)], due: [], completed: [] };
 const project: ProjectDetail = {
+  milestones: [],
   id: 7,
   name: 'Work',
   description: 'Saved description',

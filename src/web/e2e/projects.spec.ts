@@ -30,7 +30,9 @@ test('project pages and scoped tasks persist through UI reload and API restart',
     await page.getByRole('button', { name: 'Save project' }).click();
     await expect(page.getByRole('alert')).toHaveText('Project name is required.');
     await page.getByLabel('Project name').fill('  Cloud persistence project — planned  ');
-    await page.getByLabel('Description (optional)').fill('A small project\nSaved across restarts.');
+    await page
+      .getByLabel('Description (optional)', { exact: true })
+      .fill('A small project\nSaved across restarts.');
     await page.getByRole('button', { name: 'Save project' }).click();
     await expect(page.getByText('Project saved.')).toBeVisible();
     await expect(
@@ -87,11 +89,13 @@ test('project pages and scoped tasks persist through UI reload and API restart',
   await expect(page.getByRole('listitem')).toHaveText([
     'Cloud persistence project — planned',
     'Separate project',
-    ...(process.env.E2E_PHASE === 'restart' ? ['Captured work', 'Board work'] : []),
+    ...(process.env.E2E_PHASE === 'restart'
+      ? ['Captured work', 'Board work', 'Milestone delivery']
+      : []),
   ]);
   await page.getByRole('link', { name: 'Cloud persistence project — planned' }).click();
   await expect(page.getByLabel('Project name')).toHaveValue('Cloud persistence project — planned');
-  await expect(page.getByLabel('Description (optional)')).toHaveValue(
+  await expect(page.getByLabel('Description (optional)', { exact: true })).toHaveValue(
     'A small project\nSaved across restarts.',
   );
   await expect(page.getByText('1 of 2 tasks complete.')).toBeVisible();
@@ -190,7 +194,7 @@ test('project pages and scoped tasks persist through UI reload and API restart',
   await expect(
     page.getByRole('region', { name: 'Completed today' }).getByRole('heading', { level: 3 }),
   ).toHaveText([
-    ...(process.env.E2E_PHASE === 'restart' ? ['Board delivery'] : []),
+    ...(process.env.E2E_PHASE === 'restart' ? ['Board delivery', 'Deliver an outcome'] : []),
     'Draft outline revised',
   ]);
   // Refreshing A's selection must leave B's unsaved status in place.
@@ -555,3 +559,127 @@ for (const duplicateTitles of [false, true]) {
     });
   }
 }
+
+test('milestones retain assignments and progress across list, board, Today, reload and API restart', async ({
+  page,
+}, info) => {
+  await page.clock.setFixedTime(new Date('2026-11-04T01:30:00Z'));
+  await page.goto('/');
+  const projectName = 'Milestone delivery';
+  const milestoneTitle = 'First usable version';
+  const taskTitle = 'Deliver an outcome';
+  if (process.env.E2E_PHASE === 'create') {
+    await page.getByLabel('Project name').fill(projectName);
+    await page.getByRole('button', { name: 'Create project' }).click();
+  }
+  await page.getByRole('link', { name: projectName, exact: true }).click();
+  const milestone = page.getByRole('region', { name: `Milestone: ${milestoneTitle}`, exact: true });
+  const edit = page.getByRole('form', { name: `Edit task: ${taskTitle}`, exact: true });
+  if (process.env.E2E_PHASE === 'create') {
+    await expect(
+      page.getByText('No milestones yet. Create an outcome to work toward.'),
+    ).toBeVisible();
+    await page.getByText('Create milestone', { exact: true }).click();
+    const create = page.getByRole('form', { name: 'New milestone', exact: true });
+    await create.getByLabel('Milestone title').fill('   ');
+    await create.getByRole('button', { name: 'Add milestone' }).click();
+    await expect(create.getByRole('alert')).toHaveText('Milestone title is required.');
+    await create.getByLabel('Milestone title').fill(` ${milestoneTitle} `);
+    await create.getByLabel('Milestone description (optional)').fill('A useful, testable outcome.');
+    await create.getByLabel('Target date (optional)').fill('2028-02-29');
+    await create.getByRole('button', { name: 'Add milestone' }).click();
+    await expect(milestone.getByText('No tasks assigned')).toBeVisible();
+    await expect(milestone.getByRole('progressbar')).toHaveAttribute('value', '0');
+    await create.getByLabel('Milestone title').fill('Future outcome');
+    await create.getByRole('button', { name: 'Add milestone' }).click();
+    await expect(page.getByRole('region', { name: 'Milestone: Future outcome' })).toBeVisible();
+    const newTask = page.getByRole('form', { name: 'New task', exact: true });
+    await newTask.getByLabel('Task title').fill(taskTitle);
+    await newTask.getByLabel('Notes (optional)').fill('Preserve every field.');
+    await newTask.getByLabel('Priority').selectOption('High');
+    await newTask.getByLabel('Due date (optional)').fill('2026-11-03');
+    await newTask.getByRole('button', { name: 'Add task' }).click();
+    await expect(edit).toBeVisible();
+    await edit.getByLabel('Milestone (optional)').selectOption({ label: milestoneTitle });
+    await edit.getByRole('button', { name: 'Save task' }).click();
+    await expect(milestone.getByRole('status')).toHaveText('0 of 1 tasks complete');
+    await page.getByRole('button', { name: 'Add to today' }).click();
+    await expect(page.getByRole('button', { name: 'Remove from today' })).toBeVisible();
+    await newTask.getByLabel('Task title').fill('Later work');
+    await newTask.getByLabel('Milestone (optional)').selectOption({ label: milestoneTitle });
+    await newTask.getByRole('button', { name: 'Add task' }).click();
+    await expect(milestone.getByRole('status')).toHaveText('0 of 2 tasks complete');
+    const later = page.getByRole('form', { name: 'Edit task: Later work', exact: true });
+    await later.getByLabel('Milestone (optional)').selectOption({ label: 'Future outcome' });
+    await later.getByRole('button', { name: 'Save task' }).click();
+    await expect(milestone.getByRole('status')).toHaveText('0 of 1 tasks complete');
+    await later.getByLabel('Milestone (optional)').selectOption('');
+    await later.getByRole('button', { name: 'Save task' }).click();
+    await expect(
+      page
+        .getByRole('region', { name: 'Milestone: Future outcome' })
+        .getByText('No tasks assigned'),
+    ).toBeVisible();
+    await milestone.getByRole('button', { name: 'View tasks' }).click();
+    await expect(later).toBeHidden();
+    await edit.getByLabel('Status', { exact: true }).selectOption('Done');
+    await edit.getByRole('button', { name: 'Save task' }).click();
+    await expect(milestone.getByRole('status')).toHaveText('1 of 1 tasks complete · Complete');
+    await page.getByRole('button', { name: 'Board', exact: true }).click();
+    const card = page.getByRole('listitem', { name: taskTitle, exact: true });
+    await expect(card.getByText(`Milestone: ${milestoneTitle}`, { exact: true })).toBeVisible();
+    await card.getByLabel(`Status for ${taskTitle}`).selectOption('In progress');
+    await expect(milestone.getByRole('status')).toHaveText('0 of 1 tasks complete');
+    await page.getByRole('link', { name: 'Today', exact: true }).click();
+    const todayTask = page
+      .getByRole('region', { name: 'Selected for today' })
+      .getByRole('listitem', { name: taskTitle, exact: true });
+    await todayTask.getByLabel(`Status for ${taskTitle}`).selectOption('Done');
+    await todayTask.getByRole('button', { name: 'Save status' }).click();
+    await page
+      .getByRole('region', { name: 'Completed today' })
+      .getByRole('listitem', { name: taskTitle, exact: true })
+      .getByRole('link', { name: projectName })
+      .click();
+  }
+  await expect(milestone.getByRole('status')).toHaveText('1 of 1 tasks complete · Complete');
+  await expect(milestone.getByRole('progressbar')).toHaveAttribute('value', '1');
+  await expect(milestone.getByRole('progressbar')).toHaveAttribute('max', '1');
+  await expect(milestone.locator('time')).toHaveAttribute('datetime', '2028-02-29');
+  await expect(edit.getByLabel('Milestone (optional)')).toHaveValue(/\d+/);
+  await expect(edit.getByLabel('Notes (optional)')).toHaveValue('Preserve every field.');
+  await expect(edit.getByLabel('Due date (optional)')).toHaveValue('2026-11-03');
+  await expect(page.getByText('1 of 2 tasks complete.')).toBeVisible();
+  await page.reload();
+  await expect(milestone.getByRole('status')).toHaveText('1 of 1 tasks complete · Complete');
+  await expect(page.getByRole('button', { name: 'Remove from today' })).toBeVisible();
+  await page.screenshot({
+    path: info.outputPath(`${process.env.E2E_PHASE ?? 'invalid'}-milestones.png`),
+    fullPage: true,
+  });
+  if (process.env.E2E_PHASE === 'restart') {
+    await milestone.getByRole('button', { name: 'Edit milestone' }).click();
+    const milestoneEdit = milestone.getByRole('form', {
+      name: `Edit milestone: ${milestoneTitle}`,
+    });
+    await milestoneEdit.getByLabel('Milestone description (optional)').fill('Updated outcome.');
+    await milestoneEdit.getByRole('button', { name: 'Clear target date' }).click();
+    await milestoneEdit.getByRole('button', { name: 'Save milestone' }).click();
+    await expect(milestone.getByText('Updated outcome.')).toBeVisible();
+    await expect(milestone.getByText('No target date')).toBeVisible();
+    await milestone.getByRole('button', { name: 'Remove milestone' }).click();
+    await expect(milestone.getByText(/Its tasks will be preserved/)).toBeVisible();
+    await milestone.getByRole('button', { name: 'Keep milestone' }).click();
+    await milestone.getByRole('button', { name: 'Remove milestone' }).click();
+    await milestone.getByRole('button', { name: 'Confirm removal' }).click();
+    await expect(milestone).toHaveCount(0);
+    await page.reload();
+    await expect(edit.getByLabel('Milestone (optional)')).toHaveValue('');
+    await expect(edit.getByLabel('Status', { exact: true })).toHaveValue('Done');
+    await expect(edit.getByLabel('Priority')).toHaveValue('High');
+    await expect(edit.getByLabel('Notes (optional)')).toHaveValue('Preserve every field.');
+    await expect(edit.getByLabel('Due date (optional)')).toHaveValue('2026-11-03');
+    await expect(page.getByRole('button', { name: 'Remove from today' })).toBeVisible();
+    await expect(page.getByText('1 of 2 tasks complete.')).toBeVisible();
+  }
+});

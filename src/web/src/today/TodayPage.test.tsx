@@ -9,6 +9,7 @@ import { localDay, useLocalDay } from './dates';
 import SelectionButton from './SelectionButton';
 
 const task: ProjectTask = {
+  milestoneId: null,
   id: 1,
   projectId: 7,
   title: 'Plan release',
@@ -75,6 +76,7 @@ test('cross-project rows show text metadata, add/remove, complete and reopen wit
       title: 'Buy supplies',
       priority: 'None' as const,
       dueDate: null,
+      milestoneId: null,
     },
     projectName: 'Home',
   };
@@ -288,7 +290,13 @@ test('project task priorities/dates can be created, edited and cleared; selectio
   expect(fetchMock).toHaveBeenCalledWith(
     '/api/projects/7/tasks',
     expect.objectContaining({
-      body: JSON.stringify({ title: task.title, notes: '', priority: 'High', dueDate: day }),
+      body: JSON.stringify({
+        title: task.title,
+        notes: '',
+        priority: 'High',
+        dueDate: day,
+        milestoneId: null,
+      }),
     }),
   );
   expect(create.getByLabelText('Priority')).toHaveValue('None');
@@ -314,6 +322,7 @@ test('project task priorities/dates can be created, edited and cleared; selectio
         status: 'To do',
         priority: 'None',
         dueDate: null,
+        milestoneId: null,
       }),
     }),
   );

@@ -6,9 +6,21 @@ export type ProjectTask = {
   status: 'To do' | 'In progress' | 'Done';
   priority: 'None' | 'Low' | 'Medium' | 'High';
   dueDate: string | null;
+  milestoneId: number | null;
+};
+export type ProjectMilestone = {
+  id: number;
+  projectId: number;
+  title: string;
+  description: string | null;
+  targetDate: string | null;
 };
 export type Project = { id: number; name: string; description: string | null };
-export type ProjectDetail = Project & { tasks: ProjectTask[]; selectedTaskIds: number[] };
+export type ProjectDetail = Project & {
+  tasks: ProjectTask[];
+  selectedTaskIds: number[];
+  milestones: ProjectMilestone[];
+};
 
 export async function request<T>(
   url: string,
