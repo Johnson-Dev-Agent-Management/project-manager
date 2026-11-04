@@ -1,0 +1,1109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Project Manager · Design directions</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      :root {
+        font-family:
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          'Segoe UI',
+          sans-serif;
+        color: #202b38;
+        background: #e9edf2;
+        line-height: 1.5;
+      }
+      body {
+        margin: 0;
+      }
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+      }
+      button,
+      a,
+      summary {
+        -webkit-tap-highlight-color: transparent;
+      }
+      button,
+      summary {
+        cursor: pointer;
+      }
+      button {
+        min-height: 42px;
+      }
+      a {
+        color: inherit;
+      }
+      :focus-visible {
+        outline: 3px solid var(--accent, #375bbc);
+        outline-offset: 4px;
+      }
+      [hidden] {
+        display: none !important;
+      }
+      .explorer {
+        max-width: 1440px;
+        margin: auto;
+        padding: 24px 32px;
+      }
+      .intro {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        gap: 24px;
+      }
+      .intro h1 {
+        margin: 0 0 4px;
+        font-size: 22px;
+        letter-spacing: -0.5px;
+      }
+      .intro p {
+        margin: 0;
+        color: #526074;
+        font-size: 14px;
+      }
+      .intro a {
+        font-size: 14px;
+        white-space: nowrap;
+      }
+      .choices {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 20px 0 14px;
+      }
+      .choice {
+        background: #fff;
+        border: 1px solid #abb6c5;
+        border-radius: 10px;
+        padding: 10px 16px;
+        color: #273448;
+        text-align: left;
+      }
+      .choice[aria-pressed='true'] {
+        border-color: #365caa;
+        box-shadow: 0 0 0 2px #365caa;
+      }
+      .choice strong,
+      .choice small {
+        display: block;
+      }
+      .choice small {
+        color: #526074;
+        font-size: 12px;
+      }
+      .description {
+        margin: 0;
+        max-width: 900px;
+        font-size: 14px;
+        color: #46546a;
+      }
+      .app {
+        --canvas: #f8fafc;
+        --surface: #ffffff;
+        --side: #f1f4f8;
+        --ink: #253247;
+        --muted: #58687c;
+        --line: #dce3ec;
+        --control: #8595ab;
+        --accent: #305db4;
+        --accent-ink: #ffffff;
+        --tint: #e5edfa;
+        --radius: 12px;
+        --space: 28px;
+        --title-font: inherit;
+        display: grid;
+        grid-template-columns: 200px minmax(0, 1fr);
+        color: var(--ink);
+        background: var(--canvas);
+        max-width: 1376px;
+        min-height: 760px;
+        margin: 0 auto 28px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        overflow: hidden;
+      }
+      .app[data-theme='notebook'] {
+        --canvas: #faf7f0;
+        --surface: #fffdf8;
+        --side: #f0eadf;
+        --ink: #363e36;
+        --muted: #656b60;
+        --line: #dfdfd0;
+        --control: #889080;
+        --accent: #376451;
+        --accent-ink: #ffffff;
+        --tint: #e3ecdf;
+        --radius: 5px;
+        --space: 32px;
+        --title-font: Georgia, 'Times New Roman', serif;
+      }
+      .app[data-theme='studio'] {
+        --canvas: #191c23;
+        --surface: #22262f;
+        --side: #14171e;
+        --ink: #ebedf4;
+        --muted: #a8b1c3;
+        --line: #353d4d;
+        --control: #758298;
+        --accent: #b8a8f5;
+        --accent-ink: #201935;
+        --tint: #302b45;
+        --radius: 7px;
+        --space: 22px;
+        color-scheme: dark;
+      }
+      .sidebar {
+        background: var(--side);
+        padding: 30px 18px;
+        border-right: 1px solid var(--line);
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 700;
+        font-size: 16px;
+        margin: 0 8px 38px;
+        letter-spacing: -0.4px;
+      }
+      .brandmark {
+        width: 27px;
+        height: 27px;
+        display: grid;
+        place-content: center;
+        background: var(--accent);
+        color: var(--accent-ink);
+        border-radius: 8px;
+        font-size: 15px;
+      }
+      nav {
+        display: grid;
+        gap: 6px;
+      }
+      nav button {
+        border: 0;
+        background: transparent;
+        color: var(--muted);
+        padding: 10px 13px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        text-align: left;
+        font-weight: 500;
+      }
+      nav button[aria-current='page'] {
+        color: var(--accent);
+        background: var(--tint);
+      }
+      .nav-icon {
+        font-size: 18px;
+        width: 22px;
+        text-align: center;
+      }
+      .side-note {
+        border-top: 1px solid var(--line);
+        margin: 34px 10px 0;
+        padding-top: 19px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      main {
+        padding: 36px 44px 48px;
+        min-width: 0;
+      }
+      .eyebrow {
+        color: var(--muted);
+        font-size: 12px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin: 0 0 7px;
+      }
+      .page-heading {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        align-items: center;
+        margin-bottom: var(--space);
+      }
+      h2 {
+        margin: 0;
+        font-family: var(--title-font);
+        font-size: 32px;
+        font-weight: 650;
+        letter-spacing: -0.8px;
+        line-height: 1.2;
+        overflow-wrap: anywhere;
+      }
+      .subtitle {
+        color: var(--muted);
+        margin: 9px 0 0;
+        font-size: 14px;
+      }
+      .action,
+      .quiet,
+      .text-button {
+        border-radius: 7px;
+        padding: 8px 14px;
+        font-size: 13px;
+        font-weight: 600;
+      }
+      .action {
+        background: var(--accent);
+        color: var(--accent-ink);
+        border: 1px solid var(--accent);
+      }
+      .quiet {
+        background: var(--surface);
+        color: var(--ink);
+        border: 1px solid var(--control);
+      }
+      .text-button {
+        background: transparent;
+        color: var(--accent);
+        border: 0;
+      }
+      .capture {
+        padding: 20px 22px;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        margin: 0 0 32px;
+      }
+      .capture label {
+        display: block;
+        font-size: 15px;
+        font-weight: 650;
+        margin-bottom: 10px;
+      }
+      .capture-line {
+        display: flex;
+        gap: 12px;
+      }
+      input,
+      textarea,
+      select {
+        background: var(--surface);
+        color: var(--ink);
+        border: 1px solid var(--control);
+        border-radius: 6px;
+        padding: 10px 12px;
+        min-width: 0;
+      }
+      input::placeholder {
+        color: var(--muted);
+        opacity: 1;
+      }
+      .capture input {
+        flex: 1;
+        width: 100%;
+      }
+      .capture small {
+        display: block;
+        color: var(--muted);
+        margin-top: 10px;
+        font-size: 12px;
+      }
+      .section-heading {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin: 0 0 15px;
+      }
+      h3 {
+        font-size: 16px;
+        font-weight: 650;
+        margin: 0;
+      }
+      .section-heading span {
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .project-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+      }
+      .project-card {
+        display: flex;
+        flex-direction: column;
+        text-decoration: none;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 22px;
+        background: var(--surface);
+        min-width: 0;
+      }
+      .project-card:hover {
+        border-color: var(--accent);
+      }
+      .project-card .project-icon {
+        color: var(--accent);
+        background: var(--tint);
+        width: 36px;
+        height: 36px;
+        display: grid;
+        place-content: center;
+        border-radius: 9px;
+        margin-bottom: 23px;
+      }
+      .project-card h3 {
+        line-height: 1.35;
+        overflow-wrap: anywhere;
+      }
+      .project-card p {
+        margin: 9px 0 24px;
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .project-card .open {
+        color: var(--accent);
+        font-size: 12px;
+        margin-top: auto;
+      }
+      .inbox-nudge {
+        margin-top: 28px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        border-top: 1px solid var(--line);
+        padding-top: 20px;
+      }
+      .inbox-nudge p {
+        margin: 0;
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .inbox-nudge strong {
+        color: var(--ink);
+        display: block;
+        margin-bottom: 3px;
+        font-weight: 600;
+      }
+      .breadcrumb {
+        display: inline-block;
+        font-size: 12px;
+        margin: 0 0 22px;
+        color: var(--muted);
+      }
+      .milestone {
+        padding: 15px 18px;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        margin: 0 0 28px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+      }
+      .milestone strong {
+        display: block;
+        font-size: 13px;
+      }
+      .milestone span {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .milestone progress {
+        width: 120px;
+        max-width: 100%;
+        height: 7px;
+        accent-color: var(--accent);
+      }
+      .task-list {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        border-top: 1px solid var(--line);
+      }
+      .task-row {
+        border-bottom: 1px solid var(--line);
+        padding: 15px 0;
+      }
+      .task-row summary {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        min-height: 32px;
+      }
+      .task-row summary::-webkit-details-marker {
+        display: none;
+      }
+      .status-symbol {
+        flex: 0 0 19px;
+        width: 19px;
+        height: 19px;
+        display: grid;
+        place-content: center;
+        border: 1.5px solid var(--control);
+        border-radius: 50%;
+        color: var(--accent);
+        font-size: 12px;
+      }
+      .status-symbol.doing {
+        border-color: var(--accent);
+        background: var(--tint);
+      }
+      .task-title {
+        font-size: 14px;
+        flex: 1;
+        min-width: 0;
+        overflow-wrap: anywhere;
+      }
+      .meta {
+        color: var(--muted);
+        font-size: 12px;
+        white-space: nowrap;
+      }
+      .pill {
+        background: var(--tint);
+        color: var(--accent);
+        padding: 3px 8px;
+        border-radius: 5px;
+        font-size: 11px;
+      }
+      .task-note {
+        margin: 12px 0 0 32px;
+        background: var(--surface);
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .task-note p {
+        margin: 0 0 8px;
+      }
+      .task-note a {
+        color: var(--accent);
+      }
+      .hint {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 16px;
+      }
+      .idea-row {
+        padding: 21px 0;
+        border-top: 1px solid var(--line);
+      }
+      .idea-row h3 {
+        font-size: 15px;
+      }
+      .idea-row p {
+        margin: 7px 0 0;
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .idea-row summary {
+        margin-top: 12px;
+        color: var(--accent);
+        font-size: 13px;
+        min-height: 32px;
+      }
+      .idea-row details p {
+        max-width: 65ch;
+      }
+      .notice {
+        min-height: 20px;
+        font-size: 12px;
+        color: var(--accent);
+        margin: 0 0 10px;
+      }
+      .dialog {
+        background: var(--surface);
+        color: var(--ink);
+        border: 1px solid var(--control);
+        border-radius: var(--radius);
+        padding: 24px;
+        margin-bottom: 24px;
+      }
+      .dialog label {
+        display: block;
+        margin: 12px 0 5px;
+        font-size: 13px;
+      }
+      .dialog input {
+        width: 100%;
+      }
+      .dialog .actions {
+        margin-top: 15px;
+        display: flex;
+        gap: 10px;
+      }
+      [data-theme='notebook'] h2 {
+        font-size: 38px;
+        font-weight: 500;
+      }
+      [data-theme='notebook'] .project-grid,
+      [data-theme='studio'] .project-grid {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+      [data-theme='notebook'] .project-card,
+      [data-theme='studio'] .project-card {
+        border-radius: 0;
+        border-width: 0 0 1px;
+        padding: 19px 4px;
+        background: transparent;
+        display: grid;
+        grid-template-columns: 40px 1fr auto;
+        column-gap: 17px;
+      }
+      [data-theme='notebook'] .project-icon,
+      [data-theme='studio'] .project-icon {
+        margin: 3px 0 0;
+        grid-row: span 2;
+      }
+      [data-theme='notebook'] .project-card p,
+      [data-theme='studio'] .project-card p {
+        grid-column: 2;
+        margin: 5px 0 0;
+      }
+      [data-theme='notebook'] .project-card .open,
+      [data-theme='studio'] .project-card .open {
+        grid-column: 3;
+        grid-row: 1 / 3;
+        align-self: center;
+        margin: 0;
+      }
+      [data-theme='studio'] .project-card {
+        padding: 15px 4px;
+      }
+      [data-theme='studio'] .task-row {
+        padding: 11px 0;
+      }
+      .footer {
+        max-width: 1376px;
+        padding: 0 0 24px;
+        margin: auto;
+        font-size: 12px;
+        color: #526074;
+      }
+      .comparison {
+        display: none;
+        padding: 32px;
+        max-width: 1680px;
+        margin: auto;
+      }
+      .comparison h1 {
+        margin: 0 0 5px;
+        font-size: 28px;
+        letter-spacing: -0.8px;
+      }
+      .comparison > p {
+        margin: 0 0 28px;
+        color: #526074;
+        font-size: 15px;
+      }
+      .comparison-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+      }
+      .comparison-card {
+        min-width: 0;
+      }
+      .comparison-card h2 {
+        font-family: inherit;
+        font-size: 21px;
+        margin: 18px 0 6px;
+      }
+      .comparison-card p {
+        font-size: 14px;
+        color: #526074;
+        max-width: 42ch;
+      }
+      .frame {
+        width: 100%;
+        height: 465px;
+        overflow: hidden;
+        border: 1px solid #c4cedb;
+        border-radius: 10px;
+      }
+      .frame iframe {
+        width: 1100px;
+        height: 1030px;
+        border: 0;
+        transform-origin: top left;
+        pointer-events: none;
+      }
+      body.embedded .explorer,
+      body.embedded .footer {
+        display: none;
+      }
+      body.embedded .app {
+        margin: 0;
+        border: 0;
+        border-radius: 0;
+        min-height: 100vh;
+      }
+      body.compare .comparison {
+        display: block;
+      }
+      body.compare > .explorer,
+      body.compare > .app,
+      body.compare > .footer {
+        display: none;
+      }
+      @media (max-width: 1000px) {
+        .app {
+          margin: 0 18px 20px;
+          grid-template-columns: 170px minmax(0, 1fr);
+        }
+        main {
+          padding: 28px;
+        }
+        .project-grid {
+          grid-template-columns: 1fr;
+        }
+        .project-card {
+          padding: 18px;
+        }
+        .project-card .project-icon {
+          margin-bottom: 12px;
+        }
+        .project-card p {
+          margin-bottom: 14px;
+        }
+        .footer {
+          padding: 0 22px 22px;
+        }
+        .comparison-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 650px) {
+        .explorer {
+          padding: 20px 18px;
+        }
+        .intro {
+          display: block;
+        }
+        .intro a {
+          display: inline-block;
+          margin-top: 12px;
+        }
+        .choices {
+          display: grid;
+          grid-template-columns: 1fr;
+        }
+        .choice {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 10px;
+        }
+        .app {
+          display: block;
+          margin: 0 10px 20px;
+        }
+        .sidebar {
+          padding: 14px;
+          border-right: 0;
+          border-bottom: 1px solid var(--line);
+        }
+        .brand {
+          margin: 0 0 12px;
+        }
+        nav {
+          grid-template-columns: repeat(3, 1fr);
+          gap: 3px;
+        }
+        nav button {
+          justify-content: center;
+          gap: 6px;
+          padding: 8px;
+          font-size: 13px;
+        }
+        .side-note {
+          display: none;
+        }
+        main {
+          padding: 25px 18px;
+        }
+        h2,
+        [data-theme='notebook'] h2 {
+          font-size: 28px;
+        }
+        .page-heading {
+          flex-wrap: wrap;
+          gap: 15px;
+        }
+        .capture {
+          padding: 16px;
+        }
+        .capture-line {
+          flex-direction: column;
+          gap: 10px;
+        }
+        .capture-line .action {
+          align-self: start;
+        }
+        .milestone {
+          flex-wrap: wrap;
+        }
+        .task-row summary {
+          flex-wrap: wrap;
+        }
+        .task-title {
+          flex-basis: calc(100% - 36px);
+        }
+        .task-row .meta {
+          margin-left: 32px;
+        }
+        .inbox-nudge {
+          flex-wrap: wrap;
+        }
+        [data-theme] .project-card {
+          grid-template-columns: 36px 1fr;
+        }
+        [data-theme] .project-card .open {
+          grid-column: 2;
+          grid-row: auto;
+          margin-top: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="explorer">
+      <div class="intro">
+        <div>
+          <h1>Find the feel of your workspace.</h1>
+          <p>Three directions, the same projects. Explore Projects, a project, Today, and Inbox.</p>
+        </div>
+        <a href="?compare=1">Compare all three →</a>
+      </div>
+      <div class="choices" role="group" aria-label="Design direction">
+        <button class="choice" data-choice="calm" aria-pressed="true">
+          <strong>A · Calm workspace</strong><small>Clear · light · balanced</small>
+        </button>
+        <button class="choice" data-choice="notebook" aria-pressed="false">
+          <strong>B · Warm notebook</strong><small>Personal · thoughtful · soft</small>
+        </button>
+        <button class="choice" data-choice="studio" aria-pressed="false">
+          <strong>C · Dark studio</strong><small>Focused · compact · precise</small>
+        </button>
+      </div>
+      <p class="description" id="theme-description"></p>
+    </header>
+    <div class="app" id="app" data-theme="calm">
+      <aside class="sidebar">
+        <div class="brand"><span class="brandmark" aria-hidden="true">p.</span>Project Manager</div>
+        <nav aria-label="Preview navigation">
+          <button data-view="projects" aria-current="page">
+            <span class="nav-icon" aria-hidden="true">▦</span>Projects
+          </button>
+          <button data-view="today"><span class="nav-icon" aria-hidden="true">☼</span>Today</button>
+          <button data-view="inbox"><span class="nav-icon" aria-hidden="true">⌑</span>Inbox</button>
+        </nav>
+        <p class="side-note">A little structure.<br />Room to think.</p>
+      </aside>
+      <main id="content"></main>
+    </div>
+    <p class="footer">
+      Design study · Synthetic examples · Changes in this preview reset on reload. Layout, colors,
+      and typography are proposals.
+    </p>
+    <section class="comparison" aria-label="Three design directions">
+      <p class="eyebrow">PROJECT MANAGER / DIRECTION STUDY</p>
+      <h1>One workspace. Three ways it could feel.</h1>
+      <p>Quick capture stays on Projects. Content leads; controls appear when you need them.</p>
+      <div class="comparison-grid">
+        <article class="comparison-card">
+          <div class="frame">
+            <iframe title="Calm workspace preview" src="?theme=calm&embed=1" tabindex="-1"></iframe>
+          </div>
+          <h2>A · Calm workspace</h2>
+          <p>
+            Soft white, a restrained blue accent, and distinct project cards. A balanced starting
+            point for planning and ideas.
+          </p>
+        </article>
+        <article class="comparison-card">
+          <div class="frame">
+            <iframe
+              title="Warm notebook preview"
+              src="?theme=notebook&embed=1"
+              tabindex="-1"
+            ></iframe>
+          </div>
+          <h2>B · Warm notebook</h2>
+          <p>
+            Warm paper, forest green, and book-like headings. More personal and reflective, with a
+            simple project list.
+          </p>
+        </article>
+        <article class="comparison-card">
+          <div class="frame">
+            <iframe title="Dark studio preview" src="?theme=studio&embed=1" tabindex="-1"></iframe>
+          </div>
+          <h2>C · Dark studio</h2>
+          <p>
+            Graphite, lavender, and tighter rows. A focused feel for scanning tasks and moving
+            between projects.
+          </p>
+        </article>
+      </div>
+      <p style="margin-top: 24px">
+        Provisional concepts · Synthetic data ·
+        <a href="?theme=calm">Explore the interactive previews →</a>
+      </p>
+    </section>
+    <script>
+      const params = new URLSearchParams(location.search);
+      const app = document.getElementById('app');
+      const content = document.getElementById('content');
+      const themes = {
+        calm: 'Recommended starting point: soft white surfaces, a quiet blue accent, and clear separation between projects. Comfortable for both planning and capturing ideas.',
+        notebook:
+          'Warm paper surfaces, forest green, and serif page headings. A more personal place to think, with generous spacing and simple lists.',
+        studio:
+          'Graphite surfaces, lavender accents, and more compact rows. Useful if you prefer a tool-like workspace with more information visible at once.',
+      };
+      let view = 'projects';
+      let projectIndex = 0;
+      let notice = '';
+      const projects = [
+        {
+          name: 'Personal workspace',
+          description: 'A calmer place to plan projects and collect ideas.',
+          icon: '▦',
+        },
+        {
+          name: 'Home studio',
+          description: 'Make a little more room for creative work.',
+          icon: '⌂',
+        },
+        {
+          name: 'Reading & research',
+          description: 'Follow interesting questions and keep useful notes.',
+          icon: '≡',
+        },
+      ];
+      const ideas = [
+        'Try a weekly reflection',
+        'A place for ideas that are not tasks',
+        'Keep the workspace feeling calm',
+      ];
+      const tasks = [
+        ['Review the main screens', 'In progress', 'High · Due today'],
+        ['Collect visual references', 'To do', 'Medium'],
+        ['Write down design principles', 'To do', 'None'],
+        ['Simplify quick capture placement', 'To do', 'High · Overdue'],
+        ['Explore a calmer project page', 'To do', 'Low'],
+        ['List the core workflows', 'Done', 'None'],
+      ];
+      function escapeText(value) {
+        const element = document.createElement('span');
+        element.textContent = value;
+        return element.innerHTML;
+      }
+      function setTheme(theme) {
+        if (!Object.hasOwn(themes, theme)) theme = 'calm';
+        app.dataset.theme = theme;
+        document.getElementById('theme-description').textContent = themes[theme];
+        document
+          .querySelectorAll('[data-choice]')
+          .forEach((button) =>
+            button.setAttribute('aria-pressed', String(button.dataset.choice === theme)),
+          );
+      }
+      function heading(title, subtitle, action) {
+        return (
+          '<div class="page-heading"><div><p class="eyebrow">Your workspace</p><h2 id="page-title" tabindex="-1">' +
+          escapeText(title) +
+          '</h2><p class="subtitle">' +
+          escapeText(subtitle) +
+          '</p></div>' +
+          (action || '') +
+          '</div>'
+        );
+      }
+      function taskRows(items) {
+        return (
+          '<ul class="task-list">' +
+          items
+            .map(
+              (task) =>
+                '<li class="task-row"><details><summary><span aria-hidden="true" class="status-symbol ' +
+                (task[1] === 'In progress' ? 'doing' : '') +
+                '">' +
+                (task[1] === 'Done' ? '✓' : task[1] === 'In progress' ? '◐' : '') +
+                '</span><span class="task-title">' +
+                escapeText(task[0]) +
+                '</span><span class="meta">' +
+                task[2] +
+                '</span><span class="pill">' +
+                task[1] +
+                '</span></summary><div class="task-note"><p>Synthetic audit example. Keep the next step clear.</p><p>Milestone: A clear direction</p><p>In the app, this area would hold the task editor with explicit save and cancel actions.</p></div></details></li>',
+            )
+            .join('') +
+          '</ul>'
+        );
+      }
+      function render(next, focus) {
+        view = next;
+        document.querySelectorAll('nav [data-view]').forEach((button) => {
+          if (button.dataset.view === (view === 'project' ? 'projects' : view))
+            button.setAttribute('aria-current', 'page');
+          else button.removeAttribute('aria-current');
+        });
+        if (view === 'projects') {
+          content.innerHTML =
+            heading(
+              'Projects',
+              'A place for what you’re working on and what comes next.',
+              '<button class="quiet" data-new-project>+ New project</button>',
+            ) +
+            '<form class="dialog" id="new-project" hidden><h3>New sample project</h3><label for="project-name">Project name</label><input id="project-name" required /><div class="actions"><button class="action">Create project</button><button type="button" class="quiet" data-cancel-project>Cancel</button></div></form>' +
+            '<form class="capture" id="capture"><label for="capture-title">What’s on your mind?</label><div class="capture-line"><input id="capture-title" required placeholder="An idea, a task, a loose thought…" /><button class="action">Capture</button></div><small>Saved to Inbox. Organize it when you’re ready.</small></form>' +
+            '<p class="notice" role="status">' +
+            escapeText(notice) +
+            '</p><div class="section-heading"><h3>Your projects</h3><span>' +
+            projects.length +
+            ' projects</span></div><div class="project-grid">' +
+            projects
+              .map(
+                (project, index) =>
+                  '<a href="#project-' +
+                  index +
+                  '" class="project-card" data-project="' +
+                  index +
+                  '"><span class="project-icon" aria-hidden="true">' +
+                  project.icon +
+                  '</span><h3>' +
+                  escapeText(project.name) +
+                  '</h3><p>' +
+                  escapeText(project.description) +
+                  '</p><span class="open">Open project →</span></a>',
+              )
+              .join('') +
+            '</div>' +
+            '<div class="inbox-nudge"><p><strong>' +
+            ideas.length +
+            ' ideas in your Inbox</strong>Pick them up whenever you’re ready.</p><button class="text-button" data-view="inbox">Open Inbox →</button></div>';
+        } else if (view === 'project') {
+          const project = projects[projectIndex];
+          content.innerHTML =
+            '<a class="breadcrumb" href="#projects" data-view="projects">← All projects</a>' +
+            heading(project.name, project.description) +
+            (projectIndex === 0
+              ? '<section class="milestone" aria-label="Milestone summary"><div><strong>A clear direction</strong><span>Target Nov 12 · 1 of 6 tasks complete</span></div><progress max="6" value="1" aria-label="Milestone progress"></progress></section><div class="section-heading"><h3>Tasks</h3><span>1 of 6 complete</span></div>' +
+                taskRows(tasks) +
+                '<p class="hint">Open a task to see its notes. Task creation, Board, and milestone editing remain part of the app; this study shows the default reading view.</p>'
+              : '<h3>No tasks yet</h3><p class="subtitle">This sample project is ready for its first task.</p>');
+        } else if (view === 'today') {
+          content.innerHTML =
+            heading('Today', 'Wednesday, November 4 · Choose a little to focus on.') +
+            '<div class="section-heading"><h3>Selected for today</h3><span>Personal workspace</span></div>' +
+            taskRows([tasks[0]]) +
+            '<div class="section-heading" style="margin-top:32px"><h3>Due now</h3></div>' +
+            taskRows([tasks[3]]) +
+            '<div class="section-heading" style="margin-top:32px"><h3>Completed today</h3></div><p class="subtitle">Selected tasks you complete today will stay here.</p><p class="hint">Today’s selections reset at local midnight. Your tasks stay in their projects.</p>';
+        } else {
+          content.innerHTML =
+            heading('Inbox', 'A place to collect first and make sense of things later.') +
+            ideas
+              .map(
+                (idea) =>
+                  '<article class="idea-row"><h3>' +
+                  escapeText(idea) +
+                  '</h3><p>Captured idea · Ready when you are</p><details><summary>Organize idea</summary><p>In the app, edit the idea’s notes, move it into a project, or discard it with confirmation. This study explores revealing these controls only for the item you open.</p></details></article>',
+              )
+              .join('');
+        }
+        if (focus) document.getElementById('page-title').focus();
+      }
+      document.addEventListener('click', (event) => {
+        const choice = event.target.closest('[data-choice]');
+        if (choice) setTheme(choice.dataset.choice);
+        const navigation = event.target.closest('[data-view]');
+        if (navigation) {
+          event.preventDefault();
+          render(navigation.dataset.view, true);
+        }
+        const project = event.target.closest('[data-project]');
+        if (project) {
+          event.preventDefault();
+          projectIndex = Number(project.dataset.project);
+          render('project', true);
+        }
+        if (event.target.closest('[data-new-project]')) {
+          document.getElementById('new-project').hidden = false;
+          document.getElementById('project-name').focus();
+        }
+        if (event.target.closest('[data-cancel-project]')) {
+          document.getElementById('new-project').hidden = true;
+          document.querySelector('[data-new-project]').focus();
+        }
+      });
+      document.addEventListener('submit', (event) => {
+        event.preventDefault();
+        if (event.target.id === 'capture') {
+          const input = document.getElementById('capture-title');
+          const title = input.value.trim();
+          if (!title) {
+            input.setCustomValidity('Enter a title.');
+            input.reportValidity();
+            return;
+          }
+          ideas.unshift(title);
+          notice = 'Captured “' + title + '” in the sample Inbox.';
+          render('projects', false);
+          document.getElementById('capture-title').focus();
+        }
+        if (event.target.id === 'new-project') {
+          const input = document.getElementById('project-name');
+          const name = input.value.trim();
+          if (!name) {
+            input.setCustomValidity('Enter a project name.');
+            input.reportValidity();
+            return;
+          }
+          projects.push({ name, description: 'A new sample project.', icon: '▦' });
+          notice = 'Created sample project “' + name + '”.';
+          render('projects', false);
+          document.querySelector('[data-new-project]').focus();
+        }
+      });
+      document.addEventListener('input', (event) => {
+        if (event.target instanceof HTMLInputElement) event.target.setCustomValidity('');
+      });
+      if (params.has('embed')) document.body.classList.add('embedded');
+      if (params.has('compare')) {
+        document.body.classList.add('compare');
+        function scaleFrames() {
+          document.querySelectorAll('.frame').forEach((frame) => {
+            frame.querySelector('iframe').style.transform =
+              'scale(' + frame.clientWidth / 1100 + ')';
+            frame.style.height = (frame.clientWidth / 1100) * 1030 + 'px';
+          });
+        }
+        window.addEventListener('resize', scaleFrames);
+        scaleFrames();
+      } else document.querySelectorAll('iframe').forEach((frame) => frame.remove());
+      setTheme(params.get('theme') || 'calm');
+      render(
+        ['projects', 'project', 'today', 'inbox'].includes(params.get('view'))
+          ? params.get('view')
+          : 'projects',
+        false,
+      );
+    </script>
+  </body>
+</html>
