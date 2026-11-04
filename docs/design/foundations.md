@@ -1,8 +1,8 @@
-# Graphite + teal foundations
+# Graphite accent foundations
 
-The owner selected **C1: Graphite + Teal** on November 4, 2026. Use a dark,
-compact workspace with restrained teal accents, readable type, and clear action
-priority. The goal is a calm personal place to manage projects and collect ideas.
+The owner selected **C: Graphite**, with a choice of **Blue** or **Teal** accents,
+on November 4, 2026. Blue is the default. Use a dark, compact workspace with
+restrained accents, readable type, and clear action priority. The goal is a calm personal place to manage projects and collect ideas.
 
 These foundations implement steps 1–2 of the design plan. Existing pages inherit
 the theme and control styles. Steps 3–4 apply them to Projects: capture beneath
@@ -41,14 +41,14 @@ python3 -m http.server 5180 --bind 127.0.0.1
 | Supporting text   | `--color-text-muted`     | `#a8b1c3`; never lower opacity for ordinary text              |
 | Dividers          | `--color-border`         | `#3b4351`; decorative grouping, not the only control boundary |
 | Control boundary  | `--color-control-border` | `#8593a8`; distinct from subtle dividers                      |
-| Brand/action      | `--color-accent`         | `#63cbb7` teal                                                |
-| Selected surface  | `--color-accent-surface` | `#203c38`                                                     |
-| Text on teal      | `--color-on-accent`      | `#102923`; do not put white small text on teal                |
+| Brand/action      | `--color-accent`         | `#7aa9ff` Blue / `#63cbb7` Teal                               |
+| Selected surface  | `--color-accent-surface` | `#203451` Blue / `#203c38` Teal                               |
+| Text on accent    | `--color-on-accent`      | `#102448` Blue / `#102923` Teal; use dark text on both        |
 | Error/destructive | `--color-danger`         | `#ffa399` coral; include explanatory text                     |
 | Success           | `--color-success`        | `#a3d5a7`; reserve for confirmed success                      |
 | Warning           | `--color-warning`        | `#e4b36f`; reserve for caution                                |
 
-Keep most surfaces neutral. Use teal for the current destination, primary action,
+Keep most surfaces neutral. Use the selected accent for the current destination, primary action,
 progress, and focus. Status meanings remain distinct from the brand color. Avoid
 purple accents, gradients, glow, decorative charts, and color-only state cues.
 A loading message is not success; do not style every live region green.
@@ -67,6 +67,21 @@ page compositions retain their existing widths.
 The existing board stacks below 52 rem; CSS custom properties do not work in media
 query conditions, so that breakpoint remains a documented literal.
 
+## Accent preference
+
+Use **Appearance → Accent color** in the app navigation. Blue is the initial
+choice; Teal retains the earlier palette. The selection applies to primary actions,
+links, active navigation, progress, and focus without changing status colors.
+Hover uses `#9cc0ff` for Blue and `#83d9c9` for Teal.
+
+`Appearance.tsx` owns the browser preference (`project-manager-accent`) and applies
+`data-accent` to the document root. Invalid or inaccessible stored values fall back
+to Blue; a failed storage write does not prevent changing the current session.
+Use the shared semantic tokens in new features instead of literal accent colors.
+The Teal override uses `:where()` to keep its specificity equal to `:root`, so
+forced-colors system tokens override both choices. Keep reduced motion and system
+button foreground/background pairs intact.
+
 ## Native control patterns
 
 Use semantic HTML, existing handlers, and native `disabled` behavior. These CSS
@@ -81,7 +96,7 @@ in new code: form commits use `submit`; other actions use `button`.
 <button type="button" data-variant="danger">Confirm discard</button>
 ```
 
-Default/`primary` is a filled teal commit action. Secondary is outlined for editing,
+Default/`primary` is a filled accent commit action. Secondary is outlined for editing,
 retry, or selection. Quiet is low-emphasis for optional controls and opening a
 confirmation. Danger is a filled coral confirmation for a destructive action.
 Cancel/Keep stays secondary. Limit strong emphasis to the current commit action;
@@ -121,7 +136,7 @@ List/Board buttons retain `aria-pressed`; the same foundation styles express the
 selected/unselected states. Do not remove the accessible status selector from
 draggable cards. Keep labels and status/error announcements intact.
 
-Keyboard focus has a 3 px teal outline with a 3 px offset. Never remove outlines or
+Keyboard focus has a 3 px accent outline with a 3 px offset. Never remove outlines or
 clip them inside containers. Native `details`/`summary` stays keyboard operable.
 Color feedback transitions last 120 ms and become immediate with reduced motion.
 Forced-colors mode uses system colors; control borders and the current-nav underline
@@ -132,7 +147,7 @@ remain visible. Native date/select popovers use the dark color scheme.
 Review at desktop and 390/320 px widths, with long names, keyboard navigation,
 200% zoom/text growth, reduced motion, and forced colors. Normal text needs at
 least 4.5:1 contrast; meaningful control boundaries and focus indicators need 3:1
-against their adjacent backgrounds. The selected dark text on teal is intentional.
+against their adjacent backgrounds. Dark text on either accent is intentional.
 Check actual rendered combinations, including hover and selected states.
 
 Keep empty, loading, error, saving, and success states distinguishable. Preserve

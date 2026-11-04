@@ -6,6 +6,7 @@ import TodayPage from './today/TodayPage';
 import QuickCapture from './inbox/QuickCapture';
 import InboxPage from './inbox/InboxPage';
 import useQuickCapture from './inbox/useQuickCapture';
+import Appearance from './ui/Appearance';
 
 export default function App() {
   const [captureVersion, setCaptureVersion] = useState(0);
@@ -28,6 +29,7 @@ export default function App() {
         <a href="#/inbox" aria-current={route === '#/inbox' ? 'page' : undefined}>
           Inbox
         </a>
+        <Appearance />
       </nav>
     </>
   );

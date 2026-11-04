@@ -1,6 +1,6 @@
 @import './ui/foundations.css';
 
-/* Feature layouts use the shared graphite + teal foundations. */
+/* Feature layouts use the shared graphite accent foundations. */
 main {
   max-width: var(--layout-content);
   margin: var(--space-6) auto;

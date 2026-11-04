@@ -26,8 +26,9 @@ Read this file, [engineering standards](docs/engineering.md), and
 [CI operation](docs/ci.md), then use the [PR template](.github/pull_request_template.md).
 These are the standing instructions for assigned feature, fix, and documentation work.
 For UI work, read the [design brief](docs/design/README.md) and
-[graphite + teal foundations](docs/design/foundations.md). The owner selected C1:
-Graphite + Teal. Reuse the shared tokens and native control patterns. Concept
+[graphite accent foundations](docs/design/foundations.md). The owner selected C:
+Graphite with Blue (default) or Teal accents, selectable through Appearance.
+Reuse semantic accent tokens so new features follow that preference. Concept
 layouts are references. The Projects pilot puts capture only on Projects, retains
 capture drafts across in-app navigation, and reveals project creation on demand.
 Compact task summaries and other page refactors remain later work.
