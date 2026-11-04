@@ -1,5 +1,5 @@
 import { useId, useRef, useState } from 'react';
-import { errorMessage, jsonRequest, request, type ProjectTask } from './api';
+import { errorMessage, jsonRequest, request, type ProjectTask, type ProjectMilestone } from './api';
 
 export default function TaskForm({
   projectId,
@@ -7,7 +7,9 @@ export default function TaskForm({
   onSaved,
   disabled = false,
   onSavingChange,
+  milestones = [],
 }: {
+  milestones?: ProjectMilestone[];
   disabled?: boolean;
   onSavingChange?: (saving: boolean) => void;
   projectId: string;
@@ -20,6 +22,17 @@ export default function TaskForm({
   const [status, setStatus] = useState(task?.status ?? 'To do');
   const [priority, setPriority] = useState<ProjectTask['priority']>(task?.priority ?? 'None');
   const [dueDate, setDueDate] = useState(task?.dueDate ?? '');
+  const [milestoneId, setMilestoneId] = useState(task?.milestoneId ?? null);
+  const [savedMilestoneId, setSavedMilestoneId] = useState(task?.milestoneId);
+  // Follow saved changes only for an unedited selection; preserve draft reassignments.
+  // The option check below still clears a selection whose milestone was removed.
+  if (task?.milestoneId !== savedMilestoneId) {
+    setSavedMilestoneId(task?.milestoneId);
+    if (milestoneId === (savedMilestoneId ?? null)) setMilestoneId(task?.milestoneId ?? null);
+  }
+  const selectedMilestoneId = milestones.some((item) => item.id === milestoneId)
+    ? milestoneId
+    : null;
   const [saving, setSaving] = useState(false);
   const busy = useRef(false);
   const [savedStatus, setSavedStatus] = useState(task?.status);
@@ -48,6 +61,7 @@ export default function TaskForm({
           ...(task ? { status } : {}),
           priority,
           dueDate: dueDate || null,
+          milestoneId: selectedMilestoneId,
         }),
       );
       onSaved(result);
@@ -56,6 +70,7 @@ export default function TaskForm({
       setStatus(result.status);
       setPriority(task ? result.priority : 'None');
       setDueDate(task ? (result.dueDate ?? '') : '');
+      setMilestoneId(task ? result.milestoneId : null);
       setSaved(true);
     } catch (reason) {
       setError(errorMessage(reason, fallback));
@@ -133,6 +148,21 @@ export default function TaskForm({
         >
           Clear due date
         </button>
+        <label htmlFor={`${id}-milestone`}>Milestone (optional)</label>
+        <select
+          id={`${id}-milestone`}
+          value={selectedMilestoneId ?? ''}
+          onChange={(event) =>
+            setMilestoneId(event.target.value ? Number(event.target.value) : null)
+          }
+        >
+          <option value="">No milestone</option>
+          {milestones.map((milestone) => (
+            <option key={milestone.id} value={milestone.id}>
+              {milestone.title}
+            </option>
+          ))}
+        </select>
         <button>{saving ? 'Saving task…' : task ? 'Save task' : 'Add task'}</button>
       </fieldset>
       {error && <p role="alert">{error}</p>}

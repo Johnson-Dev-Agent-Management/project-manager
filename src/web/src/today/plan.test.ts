@@ -9,7 +9,16 @@ function task(
   status: ProjectTask['status'] = 'To do',
 ): TodayTask {
   return {
-    task: { id, projectId: 1, title: `Task ${id}`, notes: null, status, priority, dueDate },
+    task: {
+      id,
+      projectId: 1,
+      milestoneId: null,
+      title: `Task ${id}`,
+      notes: null,
+      status,
+      priority,
+      dueDate,
+    },
     projectName: 'Work',
   };
 }

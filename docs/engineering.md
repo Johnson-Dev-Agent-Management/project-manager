@@ -150,10 +150,48 @@ retained field and Today membership across SQLite restarts. Browser coverage
 exercises pointer dragging, keyboard/touch controls, failure, list/Today consistency,
 responsive layout, reload and the harness's actual API process restart.
 
+### Stage 4B project milestones
+
+`GET /api/projects/{id}` additionally returns `milestones`, ordered by ascending
+ID, and each task includes nullable `milestoneId`. Milestone JSON is
+`{ id, projectId, title, description, targetDate }`.
+
+| Endpoint                                           | Behavior                                                                                                |
+| -------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `POST /api/projects/{projectId}/milestones`        | `{ title, description?, targetDate? }`; trims the required title, returns 201, saved JSON and Location. |
+| `GET /api/projects/{projectId}/milestones/{id}`    | Returns the milestone only within its project.                                                          |
+| `PUT /api/projects/{projectId}/milestones/{id}`    | Same input as POST; omitted/null description and target date clear them.                                |
+| `DELETE /api/projects/{projectId}/milestones/{id}` | Removes only the milestone and its associations; returns `{ id }`.                                      |
+
+Blank titles return `errors.title`. Target dates reuse the existing strict calendar
+date validation and return `errors.targetDate`; no timezone conversion or task due
+date changes occur. Missing/cross-project resources return 404. Task POST/PUT
+accepts nullable `milestoneId` (omitted/null means unassigned). Missing or
+cross-project assignments return 400 with `errors.milestoneId` and change no fields.
+Immediate SQLite transactions serialize assignment validation/writes with removal.
+The milestone foreign key uses `ON DELETE SET NULL`; a single DELETE statement
+atomically removes the milestone and clears membership without modifying any other
+task data or Today selections.
+
+The project UI derives milestone totals/completed counts from its saved task
+snapshot, counting only Done. Completion requires a nonempty assignment set.
+Milestone inspection filters the existing task list/board, retaining hidden task
+drafts and the full project completion count. Pending milestone mutations and task
+writes coordinate to prevent stale responses restoring removed membership; Quick
+capture remains independent. Project mutation versions reject older refresh reads.
+
+`MilestonesTests` covers validation, scoping, membership changes, progress inputs,
+reopening, fresh and upgraded SQLite schemas, forced removal rollback, preserved
+planning/Inbox data and repeated restarts. `ProjectMilestones.test.tsx` covers saved
+progress, empty milestones, task actions/filtering, failure/retry, confirmation,
+retained drafts and capture focus. Browser coverage adds milestone creation,
+assignment/reassignment/clearing, list/board/Today progress, reload, actual API
+restart, editing and task-preserving removal.
+
 ### Development database schema changes
 
 The API calls `Database.EnsureCreated()` at startup, followed by the bounded
-Stage 2 and Stage 3 upgrades above. EnsureCreated alone only creates fresh schemas; future
+Stage 2, Stage 3 and Stage 4B upgrades above. EnsureCreated alone only creates fresh schemas; future
 schema changes still need an explicit preservation or reset strategy. `scripts/dev.sh` retains
 synthetic data in ignored `.data/projects.db`; tests use temporary databases.
 Passing fresh-database tests alone does not establish compatibility with existing data.

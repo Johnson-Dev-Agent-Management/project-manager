@@ -1,6 +1,8 @@
 import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { errorMessage, jsonRequest, request, type ProjectTask } from './api';
 import TaskMeta from '../today/TaskMeta';
+import MilestoneMembership from './MilestoneMembership';
+import { type ProjectMilestone } from './api';
 
 const statuses: ProjectTask['status'][] = ['To do', 'In progress', 'Done'];
 type MoveFocus = { id: number; origin: Element | null };
@@ -13,7 +15,9 @@ export default function ProjectBoard({
   onSaved,
   onEdit,
   selection,
+  milestones,
 }: {
+  milestones: ProjectMilestone[];
   tasks: ProjectTask[];
   day: string;
   busyIds: number[];
@@ -147,6 +151,7 @@ export default function ProjectBoard({
                   >
                     <h4>{task.title}</h4>
                     <TaskMeta task={task} day={day} />
+                    <MilestoneMembership task={task} milestones={milestones} />
                     <label htmlFor={`board-status-${task.id}`}>Status for {task.title}</label>
                     <select
                       id={`board-status-${task.id}`}

@@ -6,6 +6,7 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope()) DatabaseSchema.Initialize(scope.ServiceProvider.GetRequiredService<ProjectDb>());
 app.MapGet("/api/health", () => Results.Ok(new { status = "ok" }));
 app.MapProjects();
+app.MapMilestones();
 app.MapToday();
 app.MapInbox();
 app.Run();

@@ -26,7 +26,8 @@ public static class ProjectEndpoints
                 .Where(selection => db.Tasks.Any(task => task.Id == selection.TaskId && task.ProjectId == id))
                 .Select(selection => selection.TaskId).ToListAsync();
             var tasks = await db.Tasks.Where(task => task.ProjectId == id).OrderBy(task => task.Id).ToListAsync();
-            return Results.Ok(new { project.Id, project.Name, project.Description, Tasks = tasks, SelectedTaskIds = selectedTaskIds });
+            var milestones = await db.Milestones.Where(milestone => milestone.ProjectId == id).OrderBy(milestone => milestone.Id).ToListAsync();
+            return Results.Ok(new { project.Id, project.Name, project.Description, Tasks = tasks, SelectedTaskIds = selectedTaskIds, Milestones = milestones });
         });
         projects.MapPut("/{id:int}", async (int id, EditProject input, ProjectDb db) =>
         {
@@ -40,13 +41,17 @@ public static class ProjectEndpoints
         });
         projects.MapPost("/{projectId:int}/tasks", async (int projectId, CreateTask input, ProjectDb db) =>
         {
+            // Serialize validation and assignment with milestone removal.
+            await using var transaction = await db.Database.BeginTransactionAsync();
             if (!await db.Projects.AnyAsync(project => project.Id == projectId)) return Results.NotFound();
             if (string.IsNullOrWhiteSpace(input.Title)) return Required("title", "Task title is required.");
             var errors = TaskPlanning.Validate(input.Priority, input.DueDate);
+            await MilestoneEndpoints.ValidateAssignment(db, projectId, input.MilestoneId, errors);
             if (errors.Count > 0) return Results.ValidationProblem(errors);
-            var task = new ProjectTask { ProjectId = projectId, Title = input.Title.Trim(), Notes = input.Notes, Priority = input.Priority!, DueDate = input.DueDate };
+            var task = new ProjectTask { ProjectId = projectId, Title = input.Title.Trim(), Notes = input.Notes, Priority = input.Priority!, DueDate = input.DueDate, MilestoneId = input.MilestoneId };
             db.Tasks.Add(task);
             await db.SaveChangesAsync();
+            await transaction.CommitAsync();
             return Results.Created($"/api/projects/{projectId}/tasks/{task.Id}", task);
         });
         projects.MapGet("/{projectId:int}/tasks/{taskId:int}", async (int projectId, int taskId, ProjectDb db) =>
@@ -56,9 +61,11 @@ public static class ProjectEndpoints
         });
         projects.MapPut("/{projectId:int}/tasks/{taskId:int}", async (int projectId, int taskId, EditTask input, ProjectDb db) =>
         {
+            await using var transaction = await db.Database.BeginTransactionAsync();
             var task = await db.Tasks.SingleOrDefaultAsync(task => task.ProjectId == projectId && task.Id == taskId);
             if (task is null) return Results.NotFound();
             var errors = TaskPlanning.Validate(input.Priority, input.DueDate);
+            await MilestoneEndpoints.ValidateAssignment(db, projectId, input.MilestoneId, errors);
             if (string.IsNullOrWhiteSpace(input.Title)) errors["title"] = ["Task title is required."];
             if (!TaskPlanning.IsStatus(input.Status))
                 errors["status"] = ["Choose To do, In progress, or Done."];
@@ -68,7 +75,9 @@ public static class ProjectEndpoints
             task.Status = input.Status!;
             task.Priority = input.Priority!;
             task.DueDate = input.DueDate;
+            task.MilestoneId = input.MilestoneId;
             await db.SaveChangesAsync();
+            await transaction.CommitAsync();
             return Results.Ok(task);
         });
     }

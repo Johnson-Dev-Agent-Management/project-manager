@@ -7,6 +7,7 @@ import { type ProjectTask } from './api';
 import { localDay } from '../today/dates';
 
 const task: ProjectTask = {
+  milestoneId: null,
   id: 3,
   projectId: 1,
   title: 'Plan work',
@@ -249,6 +250,7 @@ test('a saved board status survives later detail edits and Today selection seria
         status: 'In progress',
         priority: 'High',
         dueDate: task.dueDate,
+        milestoneId: null,
       }),
     }),
   );

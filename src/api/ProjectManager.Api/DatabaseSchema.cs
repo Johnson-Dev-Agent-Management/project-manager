@@ -5,7 +5,7 @@ namespace ProjectManager.Api;
 
 public static class DatabaseSchema
 {
-    // Bounded, additive upgrades for the synthetic Stage 1 and 2 development schemas.
+    // Bounded, additive upgrades for the synthetic Stage 1–4 development schemas.
     // Never reset data. The transaction makes schema changes atomic on restart.
     public static void Initialize(ProjectDb db)
     {
@@ -37,6 +37,20 @@ public static class DatabaseSchema
                 CapturedAt TEXT NOT NULL
             )
             """);
+        db.Database.ExecuteSqlRaw("""
+            CREATE TABLE IF NOT EXISTS Milestones (
+                Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                ProjectId INTEGER NOT NULL,
+                Title TEXT NOT NULL,
+                Description TEXT NULL,
+                TargetDate TEXT NULL,
+                FOREIGN KEY (ProjectId) REFERENCES Projects (Id) ON DELETE CASCADE
+            )
+            """);
+        db.Database.ExecuteSqlRaw("CREATE INDEX IF NOT EXISTS IX_Milestones_ProjectId ON Milestones (ProjectId)");
+        if (!columns.Contains("MilestoneId"))
+            db.Database.ExecuteSqlRaw("ALTER TABLE Tasks ADD COLUMN MilestoneId INTEGER NULL REFERENCES Milestones (Id) ON DELETE SET NULL");
+        db.Database.ExecuteSqlRaw("CREATE INDEX IF NOT EXISTS IX_Tasks_MilestoneId ON Tasks (MilestoneId)");
         transaction.Commit();
     }
 }
