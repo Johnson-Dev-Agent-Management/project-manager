@@ -10,11 +10,17 @@ Authentication, shared access, deployments, and production migrations are future
 
 ## Design foundation
 
-The selected direction is **Graphite + Teal**: dark surfaces, readable system
-type, and restrained teal accents. Shared tokens and native control patterns
+The selected direction is **Graphite**: dark surfaces, readable system type, and
+restrained accents. **Blue** is the default; **Teal** is also available. Shared tokens and native control patterns
 are documented in the [design foundations](docs/design/foundations.md), with a
 [live component reference](docs/design/foundations.html). Existing pages use
 these styles; the Projects layout pilot and capture relocation are later work.
+
+Choose **Appearance → Accent color** in the app navigation to switch between Blue
+and Teal. The choice applies throughout the app and is remembered in this browser
+across reloads. If browser storage is unavailable, switching still works for the
+current session. Keyboard users can open Appearance, Tab to the select, and use
+Escape to close the panel and return focus to Appearance.
 
 ## Setup and development
 

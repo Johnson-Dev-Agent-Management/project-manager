@@ -1,7 +1,8 @@
 # Design audit and direction brief
 
-Status: **C1 · Graphite + Teal selected**, November 4, 2026.
-The owner chose the compact Dark studio direction with teal replacing purple.
+Status: **C · Graphite selected, with Blue or Teal accents**, November 4, 2026.
+The owner chose the compact Dark studio direction. Blue is the default; Appearance
+lets the owner switch to Teal and remembers the selection in this browser.
 Use the [design foundations](foundations.md) for implemented tokens and control
 patterns, and the [live component reference](foundations.html) to inspect them.
 Steps 1–2 record the direction and establish shared styles; page restructuring
@@ -19,7 +20,7 @@ ideas. The owner wants a polished, modern experience and values quick capture.
   direction; the current app still renders it globally.
 - Make projects easy to return to, ideas easy to find, and daily work easy to scan.
 - Keep Projects, Today, and Inbox as understandable destinations.
-- Use graphite surfaces, restrained teal accents, system sans-serif text, and
+- Use graphite surfaces, selectable Blue/Teal accents, system sans-serif text, and
   compact readable rows. Keep primary actions distinct from secondary controls.
 
 A useful definition of polished here: consistent alignment, readable hierarchy,
@@ -110,11 +111,12 @@ python3 -m http.server 5180 --bind 127.0.0.1 --directory docs/design
 | ------------------ | ---------------------------------------------------------------------------------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------- |
 | A · Calm workspace | Soft white, restrained blue, system sans-serif, moderate spacing, distinct project cards | A balanced home for projects, daily work, and capture | Cards take more space as the project count grows; a list may eventually be better           |
 | B · Warm notebook  | Warm paper, forest green, serif page headings, sans-serif controls, simple project rows  | A personal thinking space with a reflective tone      | More generous spacing; serif headings need care with long names                             |
-| C · Dark studio    | Graphite, teal, sans-serif, compact rows, subtle separators                              | Frequent scanning and a tool-like feel                | Dark appearance and tighter density are preferences, not universal readability improvements |
+| C · Dark studio    | Graphite, Blue/Teal accents, sans-serif, compact rows, subtle separators                 | Frequent scanning and a tool-like feel                | Dark appearance and tighter density are preferences, not universal readability improvements |
 
-**Selected: C1 · Graphite + Teal.** The owner preferred C's dark, compact feel
-and selected teal after comparing teal, amber, and blue alternatives. The concept
-explorer now defaults to the teal version of C. A and B remain comparison
+**Selected: C · Graphite with Blue or Teal accents.** The owner preferred C's
+dark, compact feel and requested an in-app choice between the blue and teal
+alternatives. Blue is the default. The concept explorer illustrates blue C; the
+live component reference previews either accent. A and B remain comparison
 references, not competing implementation directions.
 
 All three use the same information architecture so comparison stays useful.
@@ -152,11 +154,12 @@ They inform the concepts; they are not a request to clone a product or buy it.
 
 ## Implementation sequence
 
-1. **Record the direction (implemented).** C1 · Graphite + Teal is the selected
+1. **Record the direction (implemented).** C · Graphite with Blue/Teal accents is the selected
    visual language; this brief and AGENTS.md point to the shared foundations.
 2. **Shared foundation (implemented).** Semantic tokens and native-control
    patterns cover typography, spacing, surfaces, actions, fields, navigation,
    selected/disabled/error/focus states, reduced motion, and forced colors.
+   Appearance switches between Blue and Teal and remembers the browser preference.
    Existing screens inherit these styles while keeping their layout and behavior.
 3. **Projects pilot (next).** Bring capture and projects forward, reveal project
    creation on demand, and limit capture to Projects. Update Inbox's empty state

@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Graphite + teal · Foundation reference</title>
+    <title>Graphite · Blue and Teal accents · Foundation reference</title>
     <link rel="stylesheet" href="../../src/web/src/ui/foundations.css" />
     <style>
       main {
@@ -96,15 +96,21 @@
     <main>
       <header>
         <span class="eyebrow">PROJECT MANAGER / DESIGN FOUNDATIONS</span>
-        <h1>Graphite + teal</h1>
+        <h1>Graphite · Blue and Teal accents</h1>
         <p>
           A calm, compact foundation for projects and ideas. These specimens use the same tokens and
           native-control styles as the application.
         </p>
         <p>
           Reference only: sample controls do not save data. Tab through the page to inspect focus.
-          Navigation examples link to the sections below.
+          Navigation examples link to the sections below. Accent previews do not change your app
+          preference.
         </p>
+        <label for="reference-accent">Accent preview</label>
+        <select id="reference-accent">
+          <option value="blue">Blue</option>
+          <option value="teal">Teal</option>
+        </select>
       </header>
       <div class="specimens">
         <section class="wide" aria-labelledby="palette-heading">
@@ -120,7 +126,7 @@
             </div>
             <div>
               <div class="swatch" style="background: var(--color-accent)"></div>
-              <p>Teal<code>#63cbb7</code></p>
+              <p><span id="accent-name">Blue</span><code id="accent-value">#7aa9ff</code></p>
             </div>
             <div>
               <div class="swatch" style="background: var(--color-text)"></div>
@@ -203,5 +209,17 @@
         </section>
       </div>
     </main>
+    <script>
+      document.getElementById('reference-accent').addEventListener('change', (event) => {
+        document.documentElement.dataset.accent = event.target.value;
+        document.getElementById('accent-name').textContent =
+          event.target.selectedOptions[0].textContent;
+        document.getElementById('accent-value').textContent = getComputedStyle(
+          document.documentElement,
+        )
+          .getPropertyValue('--color-accent')
+          .trim();
+      });
+    </script>
   </body>
 </html>
