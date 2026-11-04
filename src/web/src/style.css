@@ -31,8 +31,14 @@ main {
 }
 .capture-controls {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: var(--space-3);
+}
+.capture-controls input {
+  flex: 1 1 12rem;
+  /* Keep room for text before wrapping, even when the user enlarges text. */
+  min-width: min(100%, 12rem);
 }
 .capture-controls button {
   margin: 0;
