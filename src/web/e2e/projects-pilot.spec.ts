@@ -6,14 +6,15 @@ const projects = [
   { id: 103, name: 'AProjectNameWithoutAnySpaces'.repeat(4) },
 ];
 
-for (const [width, scale] of [
+for (const [width, scale, font] of [
   [1440, 100],
   [390, 100],
   [320, 100],
   [390, 200],
   [320, 200],
-]) {
-  test(`Projects pilot supports long names and creation at ${width}px / ${scale}% text`, async ({
+  [320, 200, 'DejaVu Sans, sans-serif'],
+] as const) {
+  test(`Projects pilot supports long names and creation at ${width}px / ${scale}% text${font ? ' with a wider fallback font' : ''}`, async ({
     page,
   }, info) => {
     await page.setViewportSize({ width, height: 1000 });
@@ -27,9 +28,13 @@ for (const [width, scale] of [
       return route.fulfill({ json: projects });
     });
     await page.goto('/');
-    await page.evaluate((value) => {
-      document.documentElement.style.fontSize = `${value}%`;
-    }, scale);
+    await page.evaluate(
+      ({ scale, font }) => {
+        document.documentElement.style.fontSize = `${scale}%`;
+        if (font) document.documentElement.style.setProperty('--font-body', font);
+      },
+      { scale, font },
+    );
     const collection = page.getByRole('region', { name: 'Your projects' });
     await expect(collection.getByRole('listitem')).toHaveCount(3);
     await expect(page.getByRole('form', { name: 'New project' })).toBeHidden();
@@ -52,26 +57,43 @@ for (const [width, scale] of [
       document: document.documentElement.scrollWidth,
       controls: Array.from(main.querySelectorAll('input, button, .project-link')).map((control) => {
         const box = control.getBoundingClientRect();
+        const style = getComputedStyle(control);
+        const context = document.createElement('canvas').getContext('2d');
+        if (!context) throw new Error('Text measurement is unavailable');
+        context.font = style.font;
         return {
+          control: control.id || control.textContent,
+          input: control instanceof HTMLInputElement,
           left: box.left,
           right: box.right,
           height: box.height,
           scrollWidth: control.scrollWidth,
           clientWidth: control.clientWidth,
+          usableTextWidth:
+            control.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight),
+          readableTextWidth: context.measureText('00000000').width,
         };
       }),
     }));
+    await info.attach('layout-measurements', {
+      body: JSON.stringify(geometry, null, 2),
+      contentType: 'application/json',
+    });
     expect(geometry.document).toBeLessThanOrEqual(geometry.viewport);
     for (const box of geometry.controls) {
       expect(box.left).toBeGreaterThanOrEqual(0);
       expect(box.right).toBeLessThanOrEqual(geometry.viewport);
       expect(box.height).toBeGreaterThanOrEqual(44);
-      expect(box.scrollWidth).toBeLessThanOrEqual(box.clientWidth);
+      if (box.input) {
+        // A single-line input scrolls long values by design. Reserve enough
+        // visible text space instead of treating that native scrolling as clipping.
+        expect(box.usableTextWidth, box.control ?? 'input').toBeGreaterThanOrEqual(
+          box.readableTextWidth,
+        );
+      } else {
+        expect(box.scrollWidth, box.control ?? 'control').toBeLessThanOrEqual(box.clientWidth);
+      }
     }
-    await info.attach('layout-measurements', {
-      body: JSON.stringify(geometry, null, 2),
-      contentType: 'application/json',
-    });
     await page.screenshot({ path: info.outputPath('projects-creating.png'), fullPage: true });
     await expect.poll(() => typeof finishCreate).toBe('function');
     if (!finishCreate) throw new Error('Create request was not intercepted');
@@ -82,6 +104,43 @@ for (const [width, scale] of [
     await expect(input).toHaveValue('Keep this idea');
   });
 }
+
+test('long capture titles scroll for editing without overflowing the narrow viewport', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 1000 });
+  await page.route('**/api/projects', (route) => route.fulfill({ json: projects }));
+  await page.goto('/');
+  await page.evaluate(() => {
+    document.documentElement.style.fontSize = '200%';
+    document.documentElement.style.setProperty('--font-body', 'DejaVu Sans, sans-serif');
+  });
+  const input = page.getByLabel('Capture title');
+  const draft = 'A long thought about organizing the next project without losing any detail';
+  await input.fill(draft);
+  await input.press('Home');
+  await page.keyboard.type('Start: ');
+  await expect(input).toHaveValue(`Start: ${draft}`);
+  await expect.poll(() => input.evaluate((element) => element.scrollLeft)).toBe(0);
+  await input.press('End');
+  await page.keyboard.type(' — end');
+  await expect(input).toHaveValue(`Start: ${draft} — end`);
+  await expect(input).toBeFocused();
+  await expect.poll(() => input.evaluate((element) => element.scrollLeft)).toBeGreaterThan(0);
+  const geometry = await input.evaluate((element) => ({
+    left: element.getBoundingClientRect().left,
+    right: element.getBoundingClientRect().right,
+    document: document.documentElement.scrollWidth,
+    viewport: innerWidth,
+  }));
+  expect(geometry.left).toBeGreaterThanOrEqual(0);
+  expect(geometry.right).toBeLessThanOrEqual(geometry.viewport);
+  expect(geometry.document).toBeLessThanOrEqual(geometry.viewport);
+  const capture = page.getByRole('button', { name: 'Capture', exact: true });
+  await capture.scrollIntoViewIfNeeded();
+  await expect(capture).toBeInViewport();
+  await expect(capture).toBeEnabled();
+});
 
 test('Projects load failure retries into a true empty state and keeps create failures local', async ({
   page,
