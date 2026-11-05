@@ -147,7 +147,11 @@ setup, build, the complete `check.sh` suite, development lifecycle, and one full
 production browser scenario. Linux retains ten-run browser qualification.
 The policy/security installer explicitly rejects non-Linux-x64 hosts before
 downloads or tool writes; Windows verifies both entry points report that limitation.
-Validation timeouts remain ten minutes, gate two minutes.
+Validation timeouts are ten minutes except E2E qualification, which has fifteen
+minutes for browser setup, ten complete executions, evidence upload, and cleanup.
+The expanded browser suite approaches the former ten-minute job limit even when
+every execution passes. The gate remains two minutes; individual test timeouts,
+the ten-run requirement, and zero retries are unchanged.
 Superseded runs are cancelled. Tokens are contents:read; checkout credentials are
 not persisted. Supply-chain checkout fetches full history for secret scanning.
 The privileged metadata-only attribution workflow is unchanged and never runs
