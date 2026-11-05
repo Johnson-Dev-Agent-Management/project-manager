@@ -1,5 +1,6 @@
 import {
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
   type FormEvent,
@@ -20,6 +21,33 @@ export default function ProjectList({ capture }: { capture: ReactNode }) {
   const nameInput = useRef<HTMLInputElement>(null);
   const createButton = useRef<HTMLButtonElement>(null);
   const busy = useRef(false);
+  const focusOwner = useRef<Element | null>(null);
+  useEffect(() => {
+    const relinquishFocus = () => {
+      focusOwner.current = null;
+    };
+    const movedFocus = (event: FocusEvent) => {
+      // Native disabling may blur to body. A real destination revokes ownership
+      // permanently, even if that control subsequently blurs back to body.
+      if (event.target !== document.body) relinquishFocus();
+    };
+    document.addEventListener('focusin', movedFocus);
+    window.addEventListener('hashchange', relinquishFocus);
+    return () => {
+      relinquishFocus();
+      document.removeEventListener('focusin', movedFocus);
+      window.removeEventListener('hashchange', relinquishFocus);
+    };
+  }, []);
+  // Restore only after React has re-enabled the controls. Checking each commit
+  // also handles responses batched without an intermediate saving render.
+  useLayoutEffect(() => {
+    if (saving || !focusOwner.current) return;
+    const origin = focusOwner.current;
+    focusOwner.current = null;
+    if (document.activeElement === origin || document.activeElement === document.body)
+      nameInput.current?.focus();
+  });
   useEffect(() => {
     if (creating) nameInput.current?.focus();
   }, [creating]);
@@ -40,9 +68,12 @@ export default function ProjectList({ capture }: { capture: ReactNode }) {
       });
     return () => controller.abort();
   }, [attempt]);
-  async function submit(event: FormEvent) {
+  async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (busy.current || loading || loadError) return;
+    focusOwner.current = event.currentTarget.contains(document.activeElement)
+      ? document.activeElement
+      : null;
     busy.current = true;
     setSaving(true);
     setCreateError('');

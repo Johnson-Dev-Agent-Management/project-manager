@@ -49,6 +49,7 @@ test('loading disables submission; empty state becomes a saved project and clear
   });
   expect(screen.getByRole('listitem')).toHaveTextContent('Example');
   expect(screen.getByLabelText('Project name')).toHaveValue('');
+  expect(screen.getByLabelText('Project name')).toHaveFocus();
   expect(screen.getByRole('button', { name: /Create project|Creating…/ })).toBeEnabled();
   expect(screen.queryByText('No projects yet.')).not.toBeInTheDocument();
 });

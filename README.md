@@ -174,6 +174,9 @@ Projects leads with Quick capture and a compact collection of project links. Cho
 **Hide form** or Escape closes it without clearing the name while you stay on the
 page. Escape returns focus to New project. Creation uses an explicit **Create
 project** action, retains text on failure, and appends the saved project on success.
+When creation settles, focus returns to Project name unless you moved focus or
+navigated away while it was pending. Escape then closes the form and returns to
+New project without discarding the retained draft.
 Loading, a failed load with **Retry projects**, and a genuinely empty collection
 are distinct. Creation stays disabled until the collection has loaded successfully.
 Capture remains usable while projects load or a project operation fails.
