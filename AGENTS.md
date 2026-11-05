@@ -29,7 +29,9 @@ For UI work, read the [design brief](docs/design/README.md) and
 [graphite accent foundations](docs/design/foundations.md). The owner selected C:
 Graphite with Blue (default) or Teal accents, selectable through Appearance.
 Reuse semantic accent tokens so new features follow that preference. Concept
-layouts are references; the Projects pilot and capture relocation are later work.
+layouts are references. The Projects pilot puts capture only on Projects, retains
+capture drafts across in-app navigation, and reveals project creation on demand.
+Compact task summaries and other page refactors remain later work.
 Start from the owner's specified branch or current main and the task's observable acceptance criteria; resolve routine
 implementation choices within that scope without seeking permission at each step.
 

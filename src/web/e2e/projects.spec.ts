@@ -14,6 +14,7 @@ test('project pages and scoped tasks persist through UI reload and API restart',
   expect(await health.json()).toEqual({ status: 'ok' });
   if (process.env.E2E_PHASE === 'create') {
     await expect(page.getByText('No projects yet.')).toBeVisible();
+    await page.getByRole('button', { name: 'New project', exact: true }).click();
     await page.getByLabel('Project name').fill('   ');
     await page.getByRole('button', { name: 'Create project' }).click();
     await expect(page.getByRole('alert')).toHaveText('Project name is required.');
@@ -76,6 +77,7 @@ test('project pages and scoped tasks persist through UI reload and API restart',
     await page.getByRole('link', { name: 'Back to projects' }).click();
     // Both pages have a Project name field; wait for the destination before filling it.
     await expect(page.getByRole('heading', { name: 'Projects', exact: true })).toBeVisible();
+    await page.getByRole('button', { name: 'New project', exact: true }).click();
     await page.getByLabel('Project name').fill('Separate project');
     await page.getByRole('button', { name: 'Create project' }).click();
     await page.getByRole('link', { name: 'Separate project' }).click();
@@ -119,7 +121,7 @@ test('project pages and scoped tasks persist through UI reload and API restart',
   await page.goto('/#/projects/999999');
   await expect(page.getByRole('alert')).toContainText('could not be found');
   await page.getByRole('link', { name: 'Back to projects' }).click();
-  await expect(page.getByRole('heading', { name: 'Projects' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Projects', exact: true })).toBeVisible();
   if (process.env.E2E_PHASE === 'create') {
     await page
       .getByRole('link', { name: 'Cloud persistence project — planned', exact: true })
@@ -256,6 +258,7 @@ test('quick capture, Inbox edits and atomic filing preserve content across reloa
     const edited = page.getByRole('listitem', { name: filedTitle, exact: true });
     await expect(edited.getByText(notes)).toBeVisible();
     await page.getByRole('link', { name: 'Projects', exact: true }).click();
+    await page.getByRole('button', { name: 'New project', exact: true }).click();
     await page.getByLabel('Project name').fill('Captured work');
     await page.getByRole('button', { name: 'Create project' }).click();
     await expect(page.getByRole('link', { name: 'Captured work', exact: true })).toBeVisible();
@@ -274,14 +277,17 @@ test('quick capture, Inbox edits and atomic filing preserve content across reloa
     await page.getByRole('link', { name: 'Open destination project' }).click();
     await expect(page.getByRole('heading', { name: 'Captured work' })).toBeVisible();
     await expect(page.getByText('0 of 1 tasks complete.')).toBeVisible();
-    // Capture also works from project details; discard remains scoped to Inbox.
+    // Capture is limited to Projects; discard remains scoped to Inbox.
+    await expect(capture).toHaveCount(0);
+    await page.getByRole('link', { name: 'Projects', exact: true }).click();
     await capture.getByLabel('Capture title').fill('Discard this thought');
     await capture.getByLabel('Capture title').press('Enter');
     await expect(capture.getByRole('status')).toContainText('Captured “Discard this thought”');
-    await page.getByRole('link', { name: 'Today', exact: true }).click();
     await capture.getByLabel('Capture title').fill('Review later');
     await capture.getByLabel('Capture title').press('Enter');
     await expect(capture.getByRole('status')).toContainText('Captured “Review later”');
+    await page.getByRole('link', { name: 'Today', exact: true }).click();
+    await expect(capture).toHaveCount(0);
     await expect(page.getByRole('listitem', { name: 'Review later' })).toHaveCount(0);
     await inbox.click();
     const discard = page.getByRole('listitem', { name: 'Discard this thought' });
@@ -360,6 +366,7 @@ test('project board supports drag, keyboard and touch moves with saved counts an
   const title = 'Board delivery';
   const notes = 'Preserve board notes\nAcross every move.';
   if (process.env.E2E_PHASE === 'create') {
+    await page.getByRole('button', { name: 'New project', exact: true }).click();
     await page.getByLabel('Project name').fill('Board work');
     await page.getByRole('button', { name: 'Create project' }).click();
   }
@@ -569,6 +576,7 @@ test('milestones retain assignments and progress across list, board, Today, relo
   const milestoneTitle = 'First usable version';
   const taskTitle = 'Deliver an outcome';
   if (process.env.E2E_PHASE === 'create') {
+    await page.getByRole('button', { name: 'New project', exact: true }).click();
     await page.getByLabel('Project name').fill(projectName);
     await page.getByRole('button', { name: 'Create project' }).click();
   }

@@ -1,31 +1,83 @@
-import { useEffect, useState, type FormEvent } from 'react';
+import {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type FormEvent,
+  type KeyboardEvent,
+  type ReactNode,
+} from 'react';
 type Project = { id: number; name: string };
-export default function ProjectList() {
+export default function ProjectList({ capture }: { capture: ReactNode }) {
   const [projects, setProjects] = useState<Project[]>([]);
   const [name, setName] = useState('');
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [error, setError] = useState('');
+  const [loadError, setLoadError] = useState('');
+  const [createError, setCreateError] = useState('');
+  const [notice, setNotice] = useState('');
+  const [attempt, setAttempt] = useState(0);
+  const [creating, setCreating] = useState(false);
+  const nameInput = useRef<HTMLInputElement>(null);
+  const createButton = useRef<HTMLButtonElement>(null);
+  const busy = useRef(false);
+  const focusOwner = useRef<Element | null>(null);
+  useEffect(() => {
+    const relinquishFocus = () => {
+      focusOwner.current = null;
+    };
+    const movedFocus = (event: FocusEvent) => {
+      // Native disabling may blur to body. A real destination revokes ownership
+      // permanently, even if that control subsequently blurs back to body.
+      if (event.target !== document.body) relinquishFocus();
+    };
+    document.addEventListener('focusin', movedFocus);
+    window.addEventListener('hashchange', relinquishFocus);
+    return () => {
+      relinquishFocus();
+      document.removeEventListener('focusin', movedFocus);
+      window.removeEventListener('hashchange', relinquishFocus);
+    };
+  }, []);
+  // Restore only after React has re-enabled the controls. Checking each commit
+  // also handles responses batched without an intermediate saving render.
+  useLayoutEffect(() => {
+    if (saving || !focusOwner.current) return;
+    const origin = focusOwner.current;
+    focusOwner.current = null;
+    if (document.activeElement === origin || document.activeElement === document.body)
+      nameInput.current?.focus();
+  });
+  useEffect(() => {
+    if (creating) nameInput.current?.focus();
+  }, [creating]);
   useEffect(() => {
     const controller = new AbortController();
     void fetch('/api/projects', { signal: controller.signal })
       .then(async (response) => {
         if (!response.ok) throw new Error('Could not load projects.');
-        setProjects((await response.json()) as Project[]);
+        const value = (await response.json()) as Project[];
+        if (!controller.signal.aborted) setProjects(value);
       })
       .catch((reason: unknown) => {
         if (!controller.signal.aborted)
-          setError(reason instanceof Error ? reason.message : 'Could not load projects.');
+          setLoadError(reason instanceof Error ? reason.message : 'Could not load projects.');
       })
       .finally(() => {
         if (!controller.signal.aborted) setLoading(false);
       });
     return () => controller.abort();
-  }, []);
-  async function submit(event: FormEvent) {
+  }, [attempt]);
+  async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (busy.current || loading || loadError) return;
+    focusOwner.current = event.currentTarget.contains(document.activeElement)
+      ? document.activeElement
+      : null;
+    busy.current = true;
     setSaving(true);
-    setError('');
+    setCreateError('');
+    setNotice('');
     try {
       const response = await fetch('/api/projects', {
         method: 'POST',
@@ -39,38 +91,118 @@ export default function ProjectList() {
       const project = (await response.json()) as Project;
       setProjects((current) => [...current, project]);
       setName('');
+      setNotice(`Created “${project.name}”.`);
     } catch (reason) {
-      setError(reason instanceof Error ? reason.message : 'Could not create project.');
+      setCreateError(reason instanceof Error ? reason.message : 'Could not create project.');
     } finally {
+      busy.current = false;
       setSaving(false);
     }
   }
+  function hideOnEscape(event: KeyboardEvent) {
+    if (event.key === 'Escape' && !saving) {
+      setCreating(false);
+      createButton.current?.focus();
+    }
+  }
   return (
-    <main>
-      <h1>Projects</h1>
-      <form
-        onSubmit={(event) => {
-          void submit(event);
-        }}
-      >
-        <label htmlFor="project-name">Project name</label>
-        <input id="project-name" value={name} onChange={(event) => setName(event.target.value)} />
-        <button disabled={loading || saving}>{saving ? 'Creating…' : 'Create project'}</button>
-      </form>
-      {error && <p role="alert">{error}</p>}
-      {loading ? (
-        <p role="status">Loading projects…</p>
-      ) : projects.length === 0 ? (
-        <p>No projects yet.</p>
-      ) : (
-        <ul>
-          {projects.map((project) => (
-            <li key={project.id}>
-              <a href={`#/projects/${project.id}`}>{project.name}</a>
-            </li>
-          ))}
-        </ul>
-      )}
+    <main className="projects-page">
+      <header className="page-heading">
+        <h1>Projects</h1>
+        <p>A home for your work and ideas.</p>
+      </header>
+      {capture}
+      <section aria-labelledby="projects-heading">
+        <div className="collection-heading">
+          <h2 id="projects-heading">Your projects</h2>
+          <button
+            type="button"
+            data-variant="secondary"
+            ref={createButton}
+            onKeyDown={hideOnEscape}
+            aria-expanded={creating}
+            aria-controls="new-project"
+            disabled={saving}
+            onClick={() => setCreating((value) => !value)}
+          >
+            {creating ? 'Hide form' : 'New project'}
+          </button>
+        </div>
+        <form
+          id="new-project"
+          className="project-create"
+          aria-label="New project"
+          hidden={!creating}
+          onSubmit={(event) => {
+            void submit(event);
+          }}
+        >
+          <fieldset disabled={saving}>
+            <legend>New project</legend>
+            <label htmlFor="project-name">Project name</label>
+            <input
+              id="project-name"
+              ref={nameInput}
+              onKeyDown={hideOnEscape}
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+              aria-invalid={createError ? true : undefined}
+              aria-describedby={createError ? 'project-create-error' : undefined}
+            />
+            <button
+              type="submit"
+              onKeyDown={hideOnEscape}
+              disabled={loading || !!loadError || saving}
+            >
+              {saving ? 'Creating…' : 'Create project'}
+            </button>
+          </fieldset>
+          {createError && (
+            <p id="project-create-error" role="alert">
+              {createError}
+            </p>
+          )}
+          {notice && <p role="status">{notice}</p>}
+        </form>
+        {loading ? (
+          <p role="status" className="collection-state">
+            Loading projects…
+          </p>
+        ) : loadError ? (
+          <div className="collection-state">
+            <p role="alert">{loadError}</p>
+            <button
+              type="button"
+              data-variant="secondary"
+              onClick={() => {
+                setLoading(true);
+                setLoadError('');
+                setAttempt((value) => value + 1);
+              }}
+            >
+              Retry projects
+            </button>
+          </div>
+        ) : projects.length === 0 ? (
+          <div className="collection-state">
+            <p>No projects yet.</p>
+            <p className="collection-hint">
+              Start a project when you’re ready. Loose ideas can stay in Inbox.
+            </p>
+          </div>
+        ) : (
+          <ul className="project-collection">
+            {projects.map((project) => (
+              <li key={project.id}>
+                <a className="project-link" href={`#/projects/${project.id}`}>
+                  <span>{project.name}</span>
+                  <span className="project-arrow" aria-hidden="true" />
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
     </main>
   );
 }

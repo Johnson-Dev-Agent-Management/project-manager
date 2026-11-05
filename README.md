@@ -13,8 +13,9 @@ Authentication, shared access, deployments, and production migrations are future
 The selected direction is **Graphite**: dark surfaces, readable system type, and
 restrained accents. **Blue** is the default; **Teal** is also available. Shared tokens and native control patterns
 are documented in the [design foundations](docs/design/foundations.md), with a
-[live component reference](docs/design/foundations.html). Existing pages use
-these styles; the Projects layout pilot and capture relocation are later work.
+[live component reference](docs/design/foundations.html). The Projects pilot uses
+compact project rows, creation on demand, and Quick capture beneath its heading.
+Capture appears only on Projects; its draft survives in-app navigation.
 
 Choose **Appearance → Accent color** in the app navigation to switch between Blue
 and Teal. The choice applies throughout the app and is remembered in this browser
@@ -150,7 +151,7 @@ with counts, including empty columns. **List** returns to the existing task form
 switching views preserves unsaved task and new-task drafts. Each card shows its
 saved title, milestone membership, priority and optional due date, with the same due-today/overdue labels
 for incomplete tasks. **Edit task** opens and focuses its form in List view.
-**New task** and Quick capture remain available in either view.
+**New task** remains available in either view. Quick capture lives on the main Projects page.
 
 Drag a card into another column or choose its labeled **Status** control to save
 immediately, including reopening Done tasks. The native selector supports keyboard
@@ -166,12 +167,31 @@ focused another control. Moves change only status and retain Today selection;
 selected Done tasks appear in **Completed today** when Today is visited.
 Stage 4A adds no schema, API contract, dependency or database reset.
 
+### Projects home
+
+Projects leads with Quick capture and a compact collection of project links. Choose
+**New project** to reveal the labeled creation form; focus moves to Project name.
+**Hide form** or Escape closes it without clearing the name while you stay on the
+page. Escape returns focus to New project. Creation uses an explicit **Create
+project** action, retains text on failure, and appends the saved project on success.
+When creation settles, focus returns to Project name unless you moved focus or
+navigated away while it was pending. Escape then closes the form and returns to
+New project without discarding the retained draft.
+Loading, a failed load with **Retry projects**, and a genuinely empty collection
+are distinct. Creation stays disabled until the collection has loaded successfully.
+Capture remains usable while projects load or a project operation fails.
+
 ### Quick capture and Inbox
 
-**Quick capture** is available on Projects, project pages, Today, and Inbox. Enter
-just a title and press Enter or **Capture**. Titles are trimmed; blank titles are
+**Quick capture** is available only on the main **Projects** page, beneath its heading.
+Enter just a title and press Enter or **Capture**. Titles are trimmed; blank titles are
 rejected. Successful capture clears and focuses the field for another item. A
 failed save keeps the text, and saving disables repeated submissions.
+
+An unfinished capture stays in memory when navigating to another page and returning
+to Projects. A pending capture continues while you navigate; failure retains the
+text for retry. Unsaved text does not survive a browser reload. Capture is omitted
+from individual projects (List and Board), Today, Inbox, and unknown routes.
 
 Open **Inbox** to review unassigned tasks and ideas, newest capture first (higher
 ID first when capture timestamps tie). Capture dates display in your local time.
@@ -191,7 +211,7 @@ item first to set priority, due date, status, or select it for Today.
 
 Captured items, saved edits, discards and moves persist across reloads and API
 restarts. Unsaved Inbox edits are lost when leaving or reloading the page; failed
-saves and captures made while editing do not clear those drafts.
+saves and captures that finish while editing do not clear those drafts.
 
 ### Planning Today
 

@@ -5,9 +5,11 @@ on November 4, 2026. Blue is the default. Use a dark, compact workspace with
 restrained accents, readable type, and clear action priority. The goal is a calm personal place to manage projects and collect ideas.
 
 These foundations implement steps 1–2 of the design plan. Existing pages inherit
-the theme and control styles. The Projects pilot, capture relocation, compact
-project/task rows, and on-demand creation/editing are later work. Capture currently
-remains on all routes. Do not infer new workflows from the concept mockups.
+the theme and control styles. Steps 3–4 apply them to Projects: capture beneath
+the heading, compact project links, on-demand creation, and explicit load/retry
+states. Capture appears only on Projects, with its draft retained across in-app
+navigation. Compact task summaries and other page refactors remain later work.
+Do not infer new workflows from the concept mockups.
 
 ## Sources of truth
 
@@ -60,7 +62,8 @@ The spacing scale is 4, 8, 12, 16, 24, 32, and 48 px. Use tokens for gaps and
 padding. Controls have a 6 px radius; surfaces 8 px. Frequent controls are at least
 44 px high. Dense content should use compact rows, not tiny text or cramped targets.
 Current content containers are 48 rem including gutters; boards may use 78 rem.
-These tokens preserve existing layouts until the pilot decides page composition.
+Projects uses the content width for its heading, capture, and collection; other
+page compositions retain their existing widths.
 The existing board stacks below 52 rem; CSS custom properties do not work in media
 query conditions, so that breakpoint remains a documented literal.
 
@@ -126,7 +129,8 @@ logical DOM/tab order. Do not use CSS reordering to contradict that order.
 Use `.app-nav` on a labeled `nav` with ordinary anchors and `aria-current="page"`
 on the active destination. The active state combines a tint, stronger text, and
 an underline. Navigation wraps on narrow screens. The production app retains its
-existing top navigation; a desktop sidebar is still a pilot layout decision.
+compact top navigation for its three destinations; a sidebar is not needed for
+the Projects pilot.
 
 List/Board buttons retain `aria-pressed`; the same foundation styles express their
 selected/unselected states. Do not remove the accessible status selector from
