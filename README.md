@@ -8,6 +8,20 @@ and a daily focus selection across projects. Only Done tasks count as complete. 
 are rejected with useful validation errors. Data is synthetic.
 Authentication, shared access, deployments, and production migrations are future work.
 
+## Design foundation
+
+The selected direction is **Graphite**: dark surfaces, readable system type, and
+restrained accents. **Blue** is the default; **Teal** is also available. Shared tokens and native control patterns
+are documented in the [design foundations](docs/design/foundations.md), with a
+[live component reference](docs/design/foundations.html). Existing pages use
+these styles; the Projects layout pilot and capture relocation are later work.
+
+Choose **Appearance → Accent color** in the app navigation to switch between Blue
+and Teal. The choice applies throughout the app and is remembered in this browser
+across reloads. If browser storage is unavailable, switching still works for the
+current session. Keyboard users can open Appearance, Tab to the select, and use
+Escape to close the panel and return focus to Appearance.
+
 ## Setup and development
 
 Use Node **26.13.0 LTS**, npm **12.2.1**, and .NET SDK **10.0.402**, pinned in `.nvmrc`,

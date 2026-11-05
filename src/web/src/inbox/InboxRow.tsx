@@ -91,6 +91,7 @@ export default function InboxRow({
             />
             <button>{saving ? 'Saving item…' : 'Save item'}</button>{' '}
             <button
+              data-variant="secondary"
               type="button"
               onClick={() => {
                 setEditing(false);
@@ -105,6 +106,7 @@ export default function InboxRow({
         <>
           {item.notes && <p className="item-notes">{item.notes}</p>}
           <button
+            data-variant="secondary"
             disabled={!!saving}
             onClick={() => {
               setTitle(item.title);
@@ -148,10 +150,15 @@ export default function InboxRow({
           {confirmDiscard ? (
             <div role="group" aria-label={`Discard ${item.title}?`}>
               <p>Discard this item? This cannot be undone.</p>
-              <button disabled={!!saving} onClick={() => void mutate('discard')}>
+              <button
+                data-variant="danger"
+                disabled={!!saving}
+                onClick={() => void mutate('discard')}
+              >
                 {saving === 'discard' ? 'Discarding…' : 'Confirm discard'}
               </button>{' '}
               <button
+                data-variant="secondary"
                 disabled={!!saving}
                 onClick={() => {
                   setConfirmDiscard(false);
@@ -162,7 +169,11 @@ export default function InboxRow({
               </button>
             </div>
           ) : (
-            <button disabled={!!saving} onClick={() => setConfirmDiscard(true)}>
+            <button
+              data-variant="quiet"
+              disabled={!!saving}
+              onClick={() => setConfirmDiscard(true)}
+            >
               Discard item
             </button>
           )}

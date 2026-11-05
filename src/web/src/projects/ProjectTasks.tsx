@@ -118,6 +118,7 @@ export default function ProjectTasks({
         )}
         <div role="group" aria-label="Task view" className="view-switch">
           <button
+            data-variant="secondary"
             type="button"
             aria-pressed={view === 'list'}
             disabled={milestoneBusy || busyIds.length > 0}
@@ -129,6 +130,7 @@ export default function ProjectTasks({
             List
           </button>
           <button
+            data-variant="secondary"
             type="button"
             aria-pressed={view === 'board'}
             disabled={milestoneBusy || busyIds.length > 0}

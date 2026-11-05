@@ -1,208 +1,118 @@
-:root {
-  font-family: system-ui, sans-serif;
-  color: #233142;
-  background: #f6f7f9;
-  line-height: 1.5;
-}
-body {
-  margin: 0;
-}
+@import './ui/foundations.css';
+
+/* Existing feature layouts. Page composition is refined in the Projects pilot. */
 main {
-  max-width: 46rem;
-  margin: 2rem auto;
-  padding: 0 1rem 3rem;
-}
-h1 {
-  overflow-wrap: anywhere;
-}
-a {
-  color: #165b9c;
-}
-form {
-  margin: 1rem 0;
-}
-fieldset {
-  border: 1px solid #ccd3dc;
-  border-radius: 0.4rem;
-  background: white;
-  padding: 1rem;
-  min-width: 0;
-}
-legend {
-  font-weight: 600;
-  overflow-wrap: anywhere;
-  max-width: 100%;
-}
-label {
-  display: block;
-  margin-top: 0.5rem;
-}
-input,
-textarea,
-select,
-button {
-  font: inherit;
-}
-input,
-textarea,
-select {
-  box-sizing: border-box;
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #758294;
-  border-radius: 0.25rem;
-}
-textarea {
-  min-height: 5rem;
-  resize: vertical;
-}
-button {
-  margin-top: 0.75rem;
-  padding: 0.5rem 0.9rem;
-  background: #165b9c;
-  color: white;
-  border: 0;
-  border-radius: 0.25rem;
-  cursor: pointer;
-}
-button:disabled {
-  opacity: 0.65;
-  cursor: wait;
-}
-:focus-visible {
-  outline: 3px solid #bd6c00;
-  outline-offset: 3px;
-}
-[role='alert'] {
-  color: #a41f24;
+  max-width: var(--layout-content);
+  margin: var(--space-6) auto;
+  padding: 0 var(--page-gutter) var(--space-7);
 }
 .task-list {
   list-style: none;
   padding: 0;
 }
-
-nav {
-  max-width: 46rem;
-  margin: 1rem auto;
-  padding: 0 1rem;
-  display: flex;
-  gap: 1.5rem;
+.app-nav {
+  max-width: var(--layout-content);
+  margin: var(--space-4) auto;
+  padding: 0 var(--page-gutter);
 }
-[aria-current='page'] {
-  font-weight: 700;
-}
-.today-task {
-  background: white;
-  border: 1px solid #ccd3dc;
-  border-radius: 0.4rem;
-  padding: 1rem;
-  margin: 1rem 0;
+.today-task,
+.milestone-card {
+  background: var(--color-surface);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-surface);
+  padding: var(--space-4);
+  margin: var(--space-4) 0;
   overflow-wrap: anywhere;
 }
-
 .quick-capture {
-  max-width: 46rem;
-  margin: 1rem auto;
-  padding: 0 1rem;
+  max-width: var(--layout-content);
+  margin: var(--space-4) auto;
+  padding: 0 var(--page-gutter);
 }
 .capture-controls {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 0.75rem;
+  gap: var(--space-3);
+}
+.capture-controls input {
+  flex: 1 1 12rem;
+  /* Keep room for text before wrapping, even when the user enlarges text. */
+  min-width: min(100%, 12rem);
 }
 .capture-controls button {
   margin: 0;
+  flex-shrink: 0;
 }
 .inbox-item {
-  border-bottom: 1px solid #ccd3dc;
-  padding: 1rem 0;
+  border-bottom: var(--border-width) solid var(--color-border);
+  padding: var(--space-4) 0;
   overflow-wrap: anywhere;
 }
 .item-notes {
   white-space: pre-wrap;
-}
-
-.milestone-card {
-  margin: 1rem 0;
-  padding: 1rem;
-  background: white;
-  border: 1px solid #ccd3dc;
-  border-radius: 0.4rem;
-  overflow-wrap: anywhere;
 }
 .milestone-card h3 {
   margin-top: 0;
 }
 .milestone-card progress {
   width: 100%;
-  accent-color: #165b9c;
 }
 .milestone-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: var(--space-2);
 }
 .milestone-membership {
   overflow-wrap: anywhere;
 }
-summary {
-  cursor: pointer;
-}
-
 main:has(.project-board) {
-  max-width: 76rem;
+  max-width: var(--layout-board);
 }
 .view-switch {
   display: flex;
-  gap: 0.5rem;
-}
-.view-switch [aria-pressed='false'] {
-  background: white;
-  color: #165b9c;
-  box-shadow: inset 0 0 0 1px #165b9c;
+  gap: var(--space-2);
 }
 .project-board {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem;
-  margin: 1rem 0;
+  gap: var(--space-4);
+  margin: var(--space-4) 0;
 }
 .board-column {
   min-width: 0;
-  border: 2px solid #ccd3dc;
-  border-radius: 0.5rem;
-  background: #edf0f4;
-  padding: 0.75rem;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-surface);
+  background: var(--color-navigation);
+  padding: var(--space-3);
 }
 .board-column h3 {
-  margin: 0 0 1rem;
+  margin: 0 0 var(--space-4);
 }
 .column-count,
 .empty-column {
-  color: #4b596b;
+  color: var(--color-text-muted);
 }
 .drop-target {
-  border-color: #165b9c;
-  background: #e0edf9;
+  border-color: var(--color-accent);
+  background: var(--color-accent-surface);
 }
 .board-card {
-  background: white;
-  border: 1px solid #ccd3dc;
-  border-radius: 0.4rem;
-  padding: 0.75rem;
-  margin: 0.75rem 0;
+  background: var(--color-surface);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-surface);
+  padding: var(--space-3);
+  margin: var(--space-3) 0;
   overflow-wrap: anywhere;
 }
 .board-card[draggable='true'] {
   cursor: grab;
 }
 .board-card h4 {
-  font-size: 1.1rem;
   margin: 0;
 }
 .board-card button {
   width: 100%;
-  overflow-wrap: anywhere;
 }
 @media (max-width: 52rem) {
   .project-board {

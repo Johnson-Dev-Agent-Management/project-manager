@@ -101,10 +101,15 @@ export default function ProjectMilestones({
                 value={completed}
               />
               <div className="milestone-actions">
-                <button disabled={disabled} onClick={() => onInspect(milestone.id)}>
+                <button
+                  data-variant="secondary"
+                  disabled={disabled}
+                  onClick={() => onInspect(milestone.id)}
+                >
                   View tasks
                 </button>
                 <button
+                  data-variant="quiet"
                   disabled={disabled}
                   aria-expanded={editingId === milestone.id}
                   onClick={() => {
@@ -117,6 +122,7 @@ export default function ProjectMilestones({
                   Edit milestone
                 </button>
                 <button
+                  data-variant="quiet"
                   disabled={disabled}
                   aria-expanded={removingId === milestone.id}
                   onClick={() => {
@@ -154,10 +160,15 @@ export default function ProjectMilestones({
                     Remove “{milestone.title}”? Its tasks will be preserved in this project with no
                     milestone. This cannot be undone.
                   </p>
-                  <button disabled={disabled || saving} onClick={() => void remove(milestone)}>
+                  <button
+                    data-variant="danger"
+                    disabled={disabled || saving}
+                    onClick={() => void remove(milestone)}
+                  >
                     {saving ? 'Removing milestone…' : 'Confirm removal'}
                   </button>{' '}
                   <button
+                    data-variant="secondary"
                     disabled={disabled || saving}
                     onClick={() => {
                       setRemovingId(null);

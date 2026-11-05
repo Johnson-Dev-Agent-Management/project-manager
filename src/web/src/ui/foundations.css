@@ -1,0 +1,262 @@
+@import './tokens.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+:root {
+  font-family: var(--font-body);
+  font-size: 100%;
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-body);
+  color: var(--color-text);
+  background: var(--color-canvas);
+  accent-color: var(--color-accent);
+}
+body {
+  margin: 0;
+  font-size: var(--font-size-body);
+}
+h1,
+h2,
+h3,
+h4 {
+  line-height: var(--line-height-heading);
+  font-weight: var(--font-weight-strong);
+  overflow-wrap: anywhere;
+}
+h1 {
+  font-size: var(--font-size-title);
+}
+h2 {
+  font-size: var(--font-size-section);
+}
+h3,
+h4 {
+  font-size: var(--font-size-subheading);
+}
+a {
+  color: var(--color-accent);
+  text-underline-offset: 0.2em;
+  overflow-wrap: anywhere;
+}
+a:hover {
+  color: var(--color-accent-hover);
+}
+small,
+.form-hint {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-small);
+}
+form {
+  margin: var(--space-4) 0;
+}
+fieldset {
+  min-width: 0;
+  margin-inline: 0;
+  padding: var(--space-4);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-surface);
+  background: var(--color-surface);
+}
+legend {
+  font-weight: var(--font-weight-medium);
+  overflow-wrap: anywhere;
+  max-width: 100%;
+}
+label {
+  display: block;
+  margin-top: var(--space-2);
+}
+input,
+textarea,
+select,
+button {
+  font: inherit;
+}
+input:not([type='checkbox'], [type='radio']),
+textarea,
+select {
+  width: 100%;
+  min-width: 0;
+  min-height: var(--control-height);
+  padding: var(--space-2) var(--space-3);
+  color: var(--color-text);
+  background: var(--color-canvas);
+  border: var(--border-width) solid var(--color-control-border);
+  border-radius: var(--radius-control);
+}
+textarea {
+  min-height: 5rem;
+  resize: vertical;
+}
+input::placeholder,
+textarea::placeholder {
+  color: var(--color-text-muted);
+  opacity: 1;
+}
+input[readonly],
+textarea[readonly] {
+  background: var(--color-surface);
+}
+input[aria-invalid='true'],
+textarea[aria-invalid='true'],
+select[aria-invalid='true'] {
+  border-color: var(--color-danger);
+}
+button {
+  --button-background: var(--color-accent);
+  --button-text: var(--color-on-accent);
+  --button-border: var(--color-accent);
+  --button-hover: var(--color-accent-hover);
+  min-height: var(--control-height);
+  max-width: 100%;
+  margin-top: var(--space-3);
+  padding: var(--space-2) var(--space-4);
+  border: var(--border-width) solid var(--button-border);
+  border-radius: var(--radius-control);
+  background: var(--button-background);
+  color: var(--button-text);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-body);
+  overflow-wrap: anywhere;
+  cursor: pointer;
+  transition:
+    background-color var(--duration-feedback),
+    border-color var(--duration-feedback);
+}
+button[data-variant='secondary'],
+button[aria-pressed='false'] {
+  --button-background: var(--color-surface);
+  --button-text: var(--color-text);
+  --button-border: var(--color-control-border);
+  --button-hover: var(--color-surface-hover);
+}
+button[data-variant='quiet'] {
+  --button-background: transparent;
+  --button-text: var(--color-text-muted);
+  --button-border: transparent;
+  --button-hover: var(--color-surface-hover);
+}
+button[data-variant='danger'] {
+  --button-background: var(--color-danger);
+  --button-text: var(--color-on-danger);
+  --button-border: var(--color-danger);
+  --button-hover: var(--color-danger-hover);
+}
+button[aria-pressed='true'] {
+  --button-background: var(--color-accent-surface);
+  --button-text: var(--color-accent);
+  --button-border: var(--color-accent);
+  --button-hover: var(--color-surface-hover);
+}
+button:not(:disabled):hover {
+  background: var(--button-hover);
+}
+button:not(:disabled):active {
+  border-color: var(--color-text);
+}
+button:disabled,
+input:disabled,
+textarea:disabled,
+select:disabled {
+  color: var(--color-disabled-text);
+  background: var(--color-disabled-surface);
+  border-color: var(--color-disabled-border);
+  cursor: not-allowed;
+  opacity: 1;
+}
+:focus-visible {
+  outline: var(--focus-width) solid var(--color-focus);
+  outline-offset: var(--focus-offset);
+}
+[role='alert'],
+.field-error {
+  color: var(--color-danger);
+  overflow-wrap: anywhere;
+}
+[role='status'] {
+  overflow-wrap: anywhere;
+}
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+.app-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.app-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--control-height);
+  padding: var(--space-2) var(--space-3);
+  border: var(--border-width) solid transparent;
+  border-radius: var(--radius-control);
+  color: var(--color-text-muted);
+  text-decoration: none;
+}
+.app-nav a:hover {
+  color: var(--color-text);
+  background: var(--color-surface-hover);
+}
+.app-nav a[aria-current='page'] {
+  color: var(--color-accent);
+  background: var(--color-accent-surface);
+  font-weight: var(--font-weight-strong);
+  text-decoration: underline;
+}
+summary {
+  cursor: pointer;
+  min-height: var(--control-height);
+  padding-block: var(--space-2);
+  overflow-wrap: anywhere;
+}
+progress {
+  accent-color: var(--color-accent);
+}
+.appearance-settings {
+  position: relative;
+  margin-inline-start: auto;
+}
+.appearance-settings > summary {
+  padding: var(--space-2) var(--space-3);
+  border: var(--border-width) solid var(--color-control-border);
+  border-radius: var(--radius-control);
+  color: var(--color-text);
+  background: var(--color-surface);
+}
+.appearance-panel {
+  position: absolute;
+  inset-inline-end: 0;
+  z-index: 2;
+  width: min(16rem, calc(100vw - 2 * var(--page-gutter)));
+  margin-top: var(--space-2);
+  padding: min(var(--space-4), 4vw);
+  border: var(--border-width) solid var(--color-control-border);
+  border-radius: var(--radius-surface);
+  background: var(--color-surface);
+}
+.appearance-panel label {
+  margin: 0 0 var(--space-2);
+}
+@media (forced-colors: active) {
+  button,
+  button:not(:disabled):hover {
+    color: ButtonText;
+    background: ButtonFace;
+    border-color: ButtonText;
+  }
+  .app-nav a[aria-current='page'] {
+    border-color: ButtonText;
+  }
+  button:disabled {
+    color: GrayText;
+    background: ButtonFace;
+    border-color: GrayText;
+  }
+}
